@@ -1,0 +1,120 @@
+# React-Month-Picker
+
+Month-Picker Component offers a popup month selection panel with responsive layouts.
+
+
+## Installation
+
+	npm install react-month-picker --save
+	
+## Snapshots
+
+###### Desktop View (Picking A Months)
+![Desktop WEB](http://pub.lvrian.com/react-month-picker/pc-snapshots-01.jpg "Desktop Browser View For Single Month")
+
+-----------------
+###### Desktop View (Picking Span of Months)
+![Desktop WEB](http://pub.lvrian.com/react-month-picker/pc-snapshots-02.jpg "Desktop Browser View For Span of Months")
+
+-----------------
+###### Mobile View (Picking A Months)
+![Mobile WEB](http://pub.lvrian.com/react-month-picker/mobile-snapshots-01.jpg "Mobile Browser View For Single Month")
+
+-----------------
+###### Mobile View (Picking Span of Months)
+![Mobile WEB](http://pub.lvrian.com/react-month-picker/mobile-snapshots-02.jpg "Mobile Browser View Span of Months")
+
+## Demo
+
+[Online Demo](http://pub.lvrian.com/react-month-picker/demo.html)
+
+Demo file in repository: ./examples/demo.html
+
+## Example
+
+./examples/demo.jsx
+
+#### Import component into your react project
+
+```
+import Picker from 'month-picker'
+```
+
+```
+render() {
+
+    let pickerLang = {
+            months: ['Jan', 'Feb', 'Mar', 'Spr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+            , from: 'From', to: 'To'
+        }
+        , mvalue = {year: 2015, month: 11}
+        , mrange = {from: {year: 2014, month: 8}, to: {year: 2015, month: 5}}
+
+    let makeText = m => {
+        if (m && m.year && m.month) return (pickerLang.months[m.month-1] + '. ' + m.year)
+        return '?'
+    }
+
+    return (
+        <ul>
+            <li>
+                <label>Pick A Month</label>
+                <div className="edit">
+                    <Picker
+                        ref="pickAMonth"
+                        years={[2008, 2010, 2011, 2012, 2014, 2015, 2016, 2017]}
+                        value={mvalue}
+                        lang={pickerLang.months}
+                        onChange={this.handleAMonthChange}
+                        onDismiss={this.handleAMonthDissmis}
+                        >
+                        <MonthBox value={makeText(mvalue)} onClick={this.handleClickMonthBox} />
+                    </Picker>
+                </div>
+            </li>
+            <li>
+                <label>Pick A Span of Months</label>
+                <div className="edit">
+                    <Picker
+                        ref="pickRange"
+                        years={{min: 2010, max: 2018}}
+                        range={mrange}
+                        lang={pickerLang}
+                        theme="dark"
+                        onChange={this.handleRangeChange}
+                        onDismiss={this.handleRangeDissmis}
+                        >
+                        <MonthBox value={makeText(mrange.from) + ' ~ ' + makeText(mrange.to)} onClick={this._handleClickRangeBox} />
+                    </Picker>
+                </div>
+            </li>
+        </ul>
+    )
+}
+```
+
+MonthBox is a customized component defined for the demo.
+
+
+#### Import CSS/SCSS
+
+Then, import css/month-picker.css, or scss/month-picker.scss if you are suing SCSS, into your project.
+
+
+#### Properties
+
+- @years:
+-- array: [2013, 2015, 2016]
+-- number: 5 (last 4 years and current year)
+-- object: {min: 2013, max: 2016} (from 2013 to 2016)
+- @value: default value for picking a single month, e.g. {year: 2015: month: 11}
+- @range: default value for picking a span of months, e.g. {from: {year: 2014: month: 7}, to: {year: 2015: month: 11}}
+- @lang: language texts
+-- array: array of months' texts, e.g. ['Jan', 'Feb', 'Mar', 'Spr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+-- object: including array of months' texts and other display texts, e.g. {from: "From:", to: "To:", months: [...]}
+- @theme: theme setting of month-picker; 2 options (light/dark); default theme is light
+
+
+## License
+
+[MIT](http://www.opensource.org/licenses/mit-license.php)

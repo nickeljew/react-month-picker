@@ -1,0 +1,72 @@
+@import "bourbon/bourbon";
+
+
+
+@mixin icon-content($icon, $color: false) {
+  content: "#{map-get($icons, $icon)}";
+  @if $color {
+    color: $color;
+  }
+}
+
+
+// For adding font icons to elements using CSS pseudo-elements
+// http://jaydenseric.com/blog/fun-with-sass-and-font-icons
+@mixin icon($position: before, $icon: false, $size: false, $color: false, $mr: false, $ml: false, $line-height: false, $styles: true) {
+  @if $position == both {
+    $position: 'before, &:after';
+  }
+  // Either a :before or :after pseudo-element, or both, defaulting to :before
+  &:#{$position} {
+    @if $icon {
+      // A particular icon has been specified
+      //content: "#{map-get($icons, $icon)}";
+      @include icon-content($icon);
+    }
+    @if $styles {
+      // Supportive icon styles required
+      speak: none;
+      font-style: normal;
+      font-weight: normal;
+      font-family: $iconfont-name;
+      -webkit-font-smoothing: antialiased; //correct being-bold in safari/chrome
+      -webkit-text-stroke-width: 0.2px;
+    }
+    @if $size {
+      font-size: $size;
+    }
+    @if $color {
+      color: $color;
+    }
+    @if $mr {
+      margin-right: $mr;
+    }
+    @if $ml {
+      margin-left: $ml;
+    }
+    @if $line-height {
+      line-height: $line-height;
+    }
+    // Include any extra rules supplied for the pseudo-element
+    @content;
+  }
+}
+
+@mixin icon-text($size: false) {
+  @if $size {
+    font-size: $size;
+  }
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-stroke-width: 0.2px;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+
+
+
+
+@include font-face($iconfont-name, $iconfont-path + $iconfont-name, $file-formats: eot woff ttf svg);
+
+

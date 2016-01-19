@@ -1,0 +1,14 @@
+
+.idea/
+
+*.scssc
+
+node_modules/
+
+examples/react-with-addons-0.14.4.js
+
+examples/react-with-addons-0.14.4.min.js
+
+snapshots/pc-snapshots.psd
+
+snapshots/mobile-snapshots.psd
