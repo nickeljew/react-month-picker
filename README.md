@@ -12,15 +12,15 @@ Month-Picker Component offers a popup month selection panel with responsive layo
 ###### Desktop View (Picking A Months)
 ![Desktop WEB](http://pub.lvrian.com/react-month-picker/pc-snapshots-01.jpg "Desktop Browser View For Single Month")
 
------------------
+
 ###### Desktop View (Picking Span of Months)
 ![Desktop WEB](http://pub.lvrian.com/react-month-picker/pc-snapshots-02.jpg "Desktop Browser View For Span of Months")
 
------------------
+
 ###### Mobile View (Picking A Months)
 ![Mobile WEB](http://pub.lvrian.com/react-month-picker/mobile-snapshots-01.jpg "Mobile Browser View For Single Month")
 
------------------
+
 ###### Mobile View (Picking Span of Months)
 ![Mobile WEB](http://pub.lvrian.com/react-month-picker/mobile-snapshots-02.jpg "Mobile Browser View Span of Months")
 
