@@ -104,7 +104,7 @@ DocReady(function() {
                         <div className="edit">
                             <Picker
                                 ref="pickRange"
-                                years={{min: 2010, max: 2018}}
+                                years={{min: 2013}}
                                 range={mrange}
                                 lang={pickerLang}
                                 theme="dark"

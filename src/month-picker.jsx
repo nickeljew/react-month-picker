@@ -4,8 +4,8 @@
  * Properties:
  * @years:
  *  - array: [2013, 2015, 2016]
- *  - number: 5 (last 4 years and current year)
- *  - object: {min: 2013, max: 2016} (from 2013 to 2016)
+ *  - number: 5 (last 4 years and this year)
+ *  - object: {min: 2013, max: 2016} (from 2013 to 2016); {min: 2013} (from 2013 to this year); {max: 2015} (5 years to 2015)
  * @value: default value for picking a single month, e.g. {year: 2015: month: 11}
  * @range: default value for picking a span of months, e.g. {from: {year: 2014: month: 7}, to: {year: 2015: month: 11}}
  * @lang: language texts
@@ -33,20 +33,40 @@ function mapToArray(num, callback) {
     return arr
 }
 
-function getYearsByNum(n, year) {
-    year = year || (new Date()).getFullYear()
+function getYearsByNum(n, minYear) {
+    let maxYear = (new Date()).getFullYear()
+    // n is number of years
+    if (n && n > 0 && n < 1000) {
+        minYear = minYear || (maxYear - n + 1)
+    }
+    // n is invalid value
+    else {
+        // n is max year
+        if (n && n >= 1000)
+            maxYear = n
+
+        if (minYear) {
+            n = maxYear - minYear + 1
+        } else {
+            n = 5
+            minYear = maxYear - n + 1
+        }
+    }
     return mapToArray(n, i => {
-        return (year + i)
+        return (minYear + i)
     })
 }
 
 function getYearArray(years) {
     if (Array.isArray(years))
         return years
-    if ((typeof years === 'object')
-        && (typeof years.min === 'number') && (typeof years.max === 'number')
-        && years.max > years.min && years.min > __MIN_VALID_YEAR) {
-        return getYearsByNum(years.max - years.min + 1, years.min)
+    if ((typeof years === 'object')) {
+        let n = 0, min = 0
+        if ((typeof years.min === 'number') && years.min > __MIN_VALID_YEAR)
+            min = years.min
+        if ((typeof years.max === 'number') && years.max >= min)
+            n = years.max
+        return getYearsByNum(n, min)
     }
     else if (typeof years === 'number' && years > 0)
         return getYearsByNum(years)

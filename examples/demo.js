@@ -178,7 +178,7 @@
 	                            _monthPicker2.default,
 	                            {
 	                                ref: 'pickRange',
-	                                years: { min: 2010, max: 2018 },
+	                                years: { min: 2013 },
 	                                range: mrange,
 	                                lang: pickerLang,
 	                                theme: 'dark',
@@ -422,17 +422,34 @@
 	    return arr;
 	}
 
-	function getYearsByNum(n, year) {
-	    year = year || new Date().getFullYear();
+	function getYearsByNum(n, minYear) {
+	    var maxYear = new Date().getFullYear();
+
+	    if (n && n > 0 && n < 1000) {
+	        minYear = minYear || maxYear - n + 1;
+	    } else {
+	            if (n && n >= 1000) maxYear = n;
+
+	            if (minYear) {
+	                n = maxYear - minYear + 1;
+	            } else {
+	                n = 5;
+	                minYear = maxYear - n + 1;
+	            }
+	        }
 	    return mapToArray(n, function (i) {
-	        return year + i;
+	        return minYear + i;
 	    });
 	}
 
 	function getYearArray(years) {
 	    if (Array.isArray(years)) return years;
-	    if ((typeof years === 'undefined' ? 'undefined' : _typeof(years)) === 'object' && typeof years.min === 'number' && typeof years.max === 'number' && years.max > years.min && years.min > __MIN_VALID_YEAR) {
-	        return getYearsByNum(years.max - years.min + 1, years.min);
+	    if ((typeof years === 'undefined' ? 'undefined' : _typeof(years)) === 'object') {
+	        var n = 0,
+	            min = 0;
+	        if (typeof years.min === 'number' && years.min > __MIN_VALID_YEAR) min = years.min;
+	        if (typeof years.max === 'number' && years.max >= min) n = years.max;
+	        return getYearsByNum(n, min);
 	    } else if (typeof years === 'number' && years > 0) return getYearsByNum(years);else return getYearsByNum(5);
 	}
 

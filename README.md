@@ -105,8 +105,8 @@ Then, import css/month-picker.css, or scss/month-picker.scss if you are suing SC
 
 - @years:
 -- array: [2013, 2015, 2016]
--- number: 5 (last 4 years and current year)
--- object: {min: 2013, max: 2016} (from 2013 to 2016)
+-- number: 5 (last 4 years and this year)
+-- object: {min: 2013, max: 2016} (from 2013 to 2016); {min: 2013} (from 2013 to this year); {max: 2015} (5 years to 2015)
 - @value: default value for picking a single month, e.g. {year: 2015: month: 11}
 - @range: default value for picking a span of months, e.g. {from: {year: 2014: month: 7}, to: {year: 2015: month: 11}}
 - @lang: language texts
