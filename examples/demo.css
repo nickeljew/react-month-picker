@@ -155,6 +155,7 @@ ul, li {
   opacity: 0;
   border-radius: 3px;
   padding: 0.4rem;
+  box-sizing: content-box;
 }
 @media screen and (max-width: 767px) {
   .month-picker > .container .popup {

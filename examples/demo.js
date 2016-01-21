@@ -630,7 +630,7 @@
 	                    var clickHandler = css !== 'disable' ? _this.handleClickMonth : undefined;
 	                    return _react2.default.createElement(
 	                        'li',
-	                        { className: ["btn", css].join(' '),
+	                        { key: i, className: ["btn", css].join(' '),
 	                            'data-id': padIndex + ':' + (i + 1),
 	                            onClick: clickHandler },
 	                        months.length > i ? months[i] : i
@@ -1005,6 +1005,8 @@
 	};
 
 	var eventSupport = function eventSupport(eventName) {
+	    //to support compilation in server-side
+	    if (typeof window === "undefined" || typeof document === "undefined") return false;
 	    var el = document.createElement(TAGNAMES[eventName] || 'div');
 	    eventName = 'on' + eventName;
 	    var isSupported = eventName in el;

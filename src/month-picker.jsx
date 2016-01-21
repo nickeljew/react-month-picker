@@ -240,7 +240,7 @@ let MonthPicker = React.createClass({
                             }
                             let clickHandler = css !== 'disable' ? this.handleClickMonth : undefined
                             return (
-                                <li className={["btn", css].join(' ')}
+                                <li key={i} className={["btn", css].join(' ')}
                                     data-id={padIndex + ':' + (i+1)}
                                     onClick={clickHandler}>{months.length > i ? months[i] : i}</li>
                                 )

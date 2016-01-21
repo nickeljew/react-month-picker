@@ -36,13 +36,7 @@ module.exports = function(grunt) {
                     , compass: true
                 }
                 , files: [
-                    {
-                        expand: true
-                        , cwd: './scss'
-                        , src: [ 'month-picker.scss' ]
-                        , dest: './css'
-                        , ext: '.css'
-                    }
+                    { './css/month-picker.css': './scss/pack-month-picker.scss' }
                 ]
             }
         }

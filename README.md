@@ -96,9 +96,11 @@ render() {
 MonthBox is a customized component defined for the demo.
 
 
-#### Import CSS/SCSS
+#### Using CSS/SCSS
 
-Then, import css/month-picker.css, or scss/month-picker.scss if you are suing SCSS, into your project.
+CSS:  import css/month-picker.css
+
+SCSS: 1) import bourbon library (http://bourbon.io/), 2) import scss/month-picker.scss
 
 
 #### Properties
