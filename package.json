@@ -12,10 +12,11 @@
     "react"
   ],
   "author": "Nickel Jianhui Zhu <nickeljew@hotmail.com>",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "license": "MIT",
   "private": false,
   "main": "lib/month-picker.js",
+  "style": "css/month-picker.css",
   "scripts": {
     "prebuild": "rm -rf lib",
     "_build": "grunt build",
