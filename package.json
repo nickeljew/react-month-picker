@@ -31,6 +31,14 @@
       "react"
     ]
   },
+  "browserify": {
+    "transform": [
+      "browserify-shim"
+    ]
+  },
+  "browserify-shim": {
+    "react": "global:React"
+  },
   "dependencies": {
     "react": "^15.0.2",
     "react-tapper": "^0.1.4"
