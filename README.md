@@ -6,7 +6,7 @@ Month-Picker Component offers a popup month selection panel with responsive layo
 ## Installation
 
 	npm install react-month-picker --save
-	
+
 ## Snapshots
 
 ###### Desktop View (Picking A Months)
@@ -116,6 +116,14 @@ SCSS: 1) import bourbon library (http://bourbon.io/), 2) import scss/month-picke
 -- object: including array of months' texts and other display texts, e.g. {from: "From:", to: "To:", months: [...]}
 - @theme: theme setting of month-picker; 2 options (light/dark); default theme is light
 
+
+## Developing
+
+```sh
+gem install sass compass
+npm install
+npm run _build
+```
 
 ## License
 

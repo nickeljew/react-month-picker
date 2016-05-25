@@ -698,16 +698,16 @@
 	        this.props.onDismiss && this.props.onDismiss(this.value());
 	    },
 	    handleClickMonth: function handleClickMonth(e) {
-	        var refid = this.getDID(e).split(':'),
-	            idx = parseInt(refid[0], 10),
-	            month = parseInt(refid[1], 10),
-	            year = this.state.labelYears[idx],
-	            values = this.state.values;
-	        values[idx] = { year: year, month: month };
-	        this.setState({
-	            values: values
-	        });
-	        this.props.onChange(year, month, idx);
+	        if (this.state.showed) {
+	            var refid = this.getDID(e).split(':'),
+	                idx = parseInt(refid[0], 10),
+	                month = parseInt(refid[1], 10),
+	                year = this.state.labelYears[idx],
+	                values = this.state.values;
+	            values[idx] = { year: year, month: month };
+	            this.setState({ values: values });
+	            this.props.onChange(year, month, idx);
+	        }
 	    },
 	    goPrevYear: function goPrevYear(e) {
 	        var idx = parseInt(this.getDID(e), 10);
