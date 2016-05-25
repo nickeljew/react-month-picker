@@ -396,11 +396,11 @@
 
 	'use strict';
 
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 	var _react = __webpack_require__(1);
 
@@ -456,6 +456,7 @@
 	var MonthPicker = _react2.default.createClass({
 	    displayName: 'MonthPicker',
 
+
 	    propTypes: {
 	        years: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.array, _react2.default.PropTypes.object, _react2.default.PropTypes.number]),
 	        value: _react2.default.PropTypes.object,
@@ -471,12 +472,12 @@
 	    validate: function validate(d, years, idx, yearIndexes) {
 	        var now = new Date(),
 	            thisYear = now.getFullYear(),
-	            ym = undefined;
+	            ym = void 0;
 	        if (d && typeof d.year === 'number' && d.year > __MIN_VALID_YEAR && typeof d.month === 'number' && d.month >= 1 && d.month <= 12) {
 	            ym = d;
 	        }
 
-	        var foundThisYear = undefined;
+	        var foundThisYear = void 0;
 	        for (var i = 0; i < years.length; i++) {
 	            if (ym && years[i] == ym.year) {
 	                yearIndexes[idx] = i;
@@ -576,7 +577,7 @@
 	        }
 
 	        var labelTextKey = padIndex === 0 ? 'from' : 'to',
-	            labelPreText = undefined;
+	            labelPreText = void 0;
 	        if (otherValue && this.props.lang[labelTextKey]) {
 	            labelPreText = _react2.default.createElement(
 	                'b',
@@ -974,7 +975,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var __TouchSupported = undefined;
+	var __TouchSupported = void 0;
 	var touchSupport = function touchSupport() {
 	    if (typeof __TouchSupported === 'boolean') return __TouchSupported;
 
