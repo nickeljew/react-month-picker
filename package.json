@@ -12,16 +12,12 @@
     "react"
   ],
   "author": "Nickel Jianhui Zhu <nickeljew@hotmail.com>",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "license": "MIT",
   "private": false,
   "main": "lib/month-picker.js",
   "style": "css/month-picker.css",
-  "scripts": {
-    "prebuild": "rm -rf lib",
-    "_build": "grunt build",
-    "_prepublish": "npm run build"
-  },
+  "scripts": {},
   "babel": {
     "plugins": [
       "transform-react-jsx"
@@ -30,14 +26,6 @@
       "es2015",
       "react"
     ]
-  },
-  "browserify": {
-    "transform": [
-      "browserify-shim"
-    ]
-  },
-  "browserify-shim": {
-    "react": "global:React"
   },
   "dependencies": {
     "react-tapper": "^0.1.8"
