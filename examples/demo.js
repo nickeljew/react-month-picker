@@ -951,6 +951,9 @@
 	        delete newComponentProps.preventDefault;
 	        delete newComponentProps.stopPropagation;
 	        delete newComponentProps.component;
+	        delete newComponentProps.flickThreshold;
+	        delete newComponentProps.delta;
+	        delete newComponentProps.handlers;
 
 	        return _react2.default.createElement(props.component, newComponentProps, props.children);
 	    }
