@@ -83,6 +83,7 @@ let MonthPicker = React.createClass({
         , range: React.PropTypes.object
         , lang: React.PropTypes.oneOfType([React.PropTypes.array, React.PropTypes.object])
         , onChange: React.PropTypes.func
+        , onYearChange: React.PropTypes.func
         , onShow: React.PropTypes.func
         , onDismiss: React.PropTypes.func
         , onClickAway: React.PropTypes.func
@@ -192,13 +193,13 @@ let MonthPicker = React.createClass({
             , months =  Array.isArray(lang) ? lang : (Array.isArray(lang.months) ? lang.months : [])
             , prevCss = '', nextCss = ''
             , yearMaxIdx = years.length - 1
-            , yearIdx = yearMaxIdx
-        for (let i = 0; i < years.length; i++) {
-            if (value.year === years[i]) {
-                yearIdx = i
-                break
-            }
-        }
+            , yearIdx = this.state.yearIndexes[padIndex]//yearMaxIdx
+        //for (let i = 0; i < years.length; i++) {
+        //    if (value.year === years[i]) {
+        //        yearIdx = i
+        //        break
+        //    }
+        //}
         if (yearIdx === 0) prevCss = 'disable'
         if (yearIdx === yearMaxIdx) nextCss = 'disable'
 
@@ -290,10 +291,10 @@ let MonthPicker = React.createClass({
         this._onShow()
     }
 
-    ,  _handleOverlayTouchTap() {
+    ,  _handleOverlayTouchTap(e) {
         if (this.closeable) {
             this._onDismiss()
-            this.props.onClickAway && this.props.onClickAway()
+            this.props.onClickAway && this.props.onClickAway(e)
         }
     }
 
@@ -340,6 +341,7 @@ let MonthPicker = React.createClass({
         this.setState({
             labelYears: labelYears
         })
+        this.props.onYearChange && this.props.onYearChange(this.state.years[yearIndex])
     }
 
     , getDID(e) {

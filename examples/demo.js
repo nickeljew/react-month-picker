@@ -463,6 +463,7 @@
 	        range: _react2.default.PropTypes.object,
 	        lang: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.array, _react2.default.PropTypes.object]),
 	        onChange: _react2.default.PropTypes.func,
+	        onYearChange: _react2.default.PropTypes.func,
 	        onShow: _react2.default.PropTypes.func,
 	        onDismiss: _react2.default.PropTypes.func,
 	        onClickAway: _react2.default.PropTypes.func,
@@ -560,13 +561,7 @@
 	            prevCss = '',
 	            nextCss = '',
 	            yearMaxIdx = years.length - 1,
-	            yearIdx = yearMaxIdx;
-	        for (var i = 0; i < years.length; i++) {
-	            if (value.year === years[i]) {
-	                yearIdx = i;
-	                break;
-	            }
-	        }
+	            yearIdx = this.state.yearIndexes[padIndex];
 	        if (yearIdx === 0) prevCss = 'disable';
 	        if (yearIdx === yearMaxIdx) nextCss = 'disable';
 
@@ -680,10 +675,10 @@
 	    show: function show() {
 	        this._onShow();
 	    },
-	    _handleOverlayTouchTap: function _handleOverlayTouchTap() {
+	    _handleOverlayTouchTap: function _handleOverlayTouchTap(e) {
 	        if (this.closeable) {
 	            this._onDismiss();
-	            this.props.onClickAway && this.props.onClickAway();
+	            this.props.onClickAway && this.props.onClickAway(e);
 	        }
 	    },
 	    _onShow: function _onShow() {
@@ -728,6 +723,7 @@
 	        this.setState({
 	            labelYears: labelYears
 	        });
+	        this.props.onYearChange && this.props.onYearChange(this.state.years[yearIndex]);
 	    },
 	    getDID: function getDID(e) {
 	        var el = e.target;
@@ -913,8 +909,20 @@
 
 	        this.setState(this.getInitialState());
 	    },
+	    touchCancel: function touchCancel(ev) {
+	        this.setState(this.getInitialState());
+	    },
 	    _handleClick: function _handleClick(ev) {
-	        !this.touchable && this._handleTap(ev);
+	        var _this = this;
+
+	        //!this.touchable && this._handleTap(ev)
+	        if (this.state.start === 0) {
+	            this._handleTap(ev);
+	        } else {
+	            setTimeout(function () {
+	                _this.state.start === 0 && _this._handleTap(ev);
+	            }, 300);
+	        }
 	    },
 	    _handleTap: function _handleTap(ev) {
 	        this.props.onTap && this.props.onTap(ev);
@@ -924,6 +932,7 @@
 	            onTouchStart: this.touchStart,
 	            onTouchMove: this.touchMove,
 	            onTouchEnd: this.touchEnd,
+	            onTouchCancel: this.touchCancel,
 	            onClick: this._handleClick
 	        };
 	    },
@@ -936,9 +945,9 @@
 	        var newComponentProps = _extends({}, props, {
 	            style: style,
 	            className: props.className,
-	            disabled: props.disabled,
-	            handlers: this.handlers
-	        }, this.handlers());
+	            disabled: props.disabled
+	        }, //handlers: this.handlers
+	        this.handlers());
 
 	        delete newComponentProps.onTap;
 	        delete newComponentProps.onPress;
@@ -953,7 +962,7 @@
 	        delete newComponentProps.component;
 	        delete newComponentProps.flickThreshold;
 	        delete newComponentProps.delta;
-	        delete newComponentProps.handlers;
+	        //delete newComponentProps.handlers;
 
 	        return _react2.default.createElement(props.component, newComponentProps, props.children);
 	    }

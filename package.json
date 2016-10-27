@@ -12,7 +12,7 @@
     "react"
   ],
   "author": "Nickel Jianhui Zhu <nickeljew@hotmail.com>",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "license": "MIT",
   "private": false,
   "main": "lib/month-picker.js",
@@ -28,7 +28,7 @@
     ]
   },
   "dependencies": {
-    "react-tapper": "^0.1.9"
+    "react-tapper": "^0.1.10"
   },
   "peerDependencies": {
     "react": "^15.1.0",
