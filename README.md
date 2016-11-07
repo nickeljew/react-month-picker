@@ -26,7 +26,7 @@ Month-Picker Component offers a popup month selection panel with responsive layo
 
 ## Demo
 
-[Online Demo](http://pub.lvrian.com/react-month-picker/demo.html)
+[Online Demo](http://pub.lvrian.com/react-month-picker/examples/demo.html)
 
 Demo file in repository: ./examples/demo.html
 
@@ -105,16 +105,20 @@ SCSS: 1) import bourbon library (http://bourbon.io/), 2) import scss/month-picke
 
 #### Properties
 
-- @years:
--- array: [2013, 2015, 2016]
--- number: 5 (last 4 years and this year)
--- object: {min: 2013, max: 2016} (from 2013 to 2016); {min: 2013} (from 2013 to this year); {max: 2015} (5 years to 2015)
-- @value: default value for picking a single month, e.g. {year: 2015: month: 11}
-- @range: default value for picking a span of months, e.g. {from: {year: 2014: month: 7}, to: {year: 2015: month: 11}}
-- @lang: language texts
--- array: array of months' texts, e.g. ['Jan', 'Feb', 'Mar', 'Spr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
--- object: including array of months' texts and other display texts, e.g. {from: "From:", to: "To:", months: [...]}
-- @theme: theme setting of month-picker; 2 options (light/dark); default theme is light
+@years:
+- array: [2013, 2015, 2016]
+- number: 5 (last 4 years and this year)
+- object: {min: 2013, max: 2016} (from 2013 to 2016); {min: 2013} (from 2013 to this year); {max: 2015} (5 years to 2015)
+
+@value: default value for picking a single month, e.g. {year: 2015: month: 11}
+
+@range: default value for picking a span of months, e.g. {from: {year: 2014: month: 7}, to: {year: 2015: month: 11}}
+
+@lang: language texts
+- array: array of months' texts, e.g. ['Jan', 'Feb', 'Mar', 'Spr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+- object: including array of months' texts and other display texts, e.g. {from: "From:", to: "To:", months: [...]}
+
+@theme: theme setting of month-picker; 2 options (light/dark); default theme is light
 
 
 ## Developing

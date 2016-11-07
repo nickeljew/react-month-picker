@@ -260,7 +260,7 @@
   color: white;
   cursor: default;
 }
-.month-picker > .container .popup.light .pad li.disable, .month-picker > .container .popup.light .pad li.disable:hover {
+.month-picker > .container .popup.light .pad .disable, .month-picker > .container .popup.light .pad .disable:hover {
   background-color: transparent;
   color: #bbb;
   cursor: default;
@@ -295,7 +295,7 @@
   color: #303030;
   cursor: default;
 }
-.month-picker > .container .popup.dark .pad li.disable, .month-picker > .container .popup.dark .pad li.disable:hover {
+.month-picker > .container .popup.dark .pad .disable, .month-picker > .container .popup.dark .pad .disable:hover {
   background-color: transparent;
   color: #717171;
   cursor: default;
