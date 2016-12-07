@@ -206,6 +206,18 @@ $m-click-area-color: #777777;
           //width: 9rem;
           color: #440f24;
           font-size: 1.12rem;
+
+          b {
+            font-size: 1.1em;
+          }
+          span {
+            position: absolute;
+            display: block;
+            font-size: 0.8rem;
+            color: #bfbfbf;
+            left: $content-hmargin;
+            top: 1.5em;
+          }
         }
         .edit {
           margin-left: 9rem;
@@ -250,6 +262,7 @@ $m-click-area-color: #777777;
           span {
             display: block;
             font-size: 0.9em;
+            color: #afafaf;
             margin-top: 0.4em;
           }
         }

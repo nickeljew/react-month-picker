@@ -453,6 +453,17 @@ ul, li {
     color: #440f24;
     font-size: 1.12rem;
   }
+  .list-area > ul > li > label b {
+    font-size: 1.1em;
+  }
+  .list-area > ul > li > label span {
+    position: absolute;
+    display: block;
+    font-size: 0.8rem;
+    color: #bfbfbf;
+    left: 1.6rem;
+    top: 1.5em;
+  }
   .list-area > ul > li .edit {
     margin-left: 9rem;
     line-height: 5rem;
@@ -486,6 +497,7 @@ ul, li {
   .list-area > ul > li > label span {
     display: block;
     font-size: 0.9em;
+    color: #afafaf;
     margin-top: 0.4em;
   }
   .list-area > ul > li .edit {
