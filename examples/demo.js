@@ -113,7 +113,8 @@
 	        },
 	        getInitialState: function getInitialState() {
 	            return {
-	                mvalue: { year: 2015, month: 11 },
+	                mvalue: { year: 2014, month: 11 },
+	                mvalue2: { year: 2016, month: 7 },
 	                mrange: { from: { year: 2014, month: 8 }, to: { year: 2015, month: 5 } },
 	                mrange2: { from: { year: 2013, month: 11 }, to: { year: 2016, month: 3 } }
 	            };
@@ -129,6 +130,7 @@
 	                from: 'From', to: 'To'
 	            },
 	                mvalue = this.state.mvalue,
+	                mvalue2 = this.state.mvalue2,
 	                mrange = this.state.mrange,
 	                mrange2 = this.state.mrange2;
 
@@ -150,6 +152,11 @@
 	                            'b',
 	                            null,
 	                            'Pick A Month'
+	                        ),
+	                        _react2.default.createElement(
+	                            'span',
+	                            null,
+	                            '(Available years: 2008, 2011, 2012, 2014, 2016)'
 	                        )
 	                    ),
 	                    _react2.default.createElement(
@@ -159,13 +166,48 @@
 	                            _monthPicker2.default,
 	                            {
 	                                ref: 'pickAMonth',
-	                                years: [2008, 2010, 2011, 2012, 2014, 2015, 2016, 2017],
+	                                years: [2008, 2011, 2012, 2014, 2016],
 	                                value: mvalue,
 	                                lang: pickerLang.months,
 	                                onChange: this.handleAMonthChange,
 	                                onDismiss: this.handleAMonthDissmis
 	                            },
 	                            _react2.default.createElement(MonthBox, { value: makeText(mvalue), onClick: this.handleClickMonthBox })
+	                        )
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'li',
+	                    null,
+	                    _react2.default.createElement(
+	                        'label',
+	                        null,
+	                        _react2.default.createElement(
+	                            'b',
+	                            null,
+	                            'Pick A Month'
+	                        ),
+	                        _react2.default.createElement(
+	                            'span',
+	                            null,
+	                            '(Available months from Feb.2016 to Sep.2016)'
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'edit' },
+	                        _react2.default.createElement(
+	                            _monthPicker2.default,
+	                            {
+	                                ref: 'pickAMonth2',
+	                                years: { min: { year: 2016, month: 2 }, max: { year: 2016, month: 9 } },
+	                                value: mvalue2,
+	                                lang: pickerLang.months,
+	                                theme: 'dark',
+	                                onChange: this.handleAMonthChange2,
+	                                onDismiss: this.handleAMonthDissmis2
+	                            },
+	                            _react2.default.createElement(MonthBox, { value: makeText(mvalue2), onClick: this.handleClickMonthBox2 })
 	                        )
 	                    )
 	                ),
@@ -196,7 +238,7 @@
 	                                years: { min: 2013 },
 	                                range: mrange,
 	                                lang: pickerLang,
-	                                theme: 'dark',
+	                                theme: 'light',
 	                                onChange: this.handleRangeChange,
 	                                onDismiss: this.handleRangeDissmis
 	                            },
@@ -218,7 +260,7 @@
 	                        _react2.default.createElement(
 	                            'span',
 	                            null,
-	                            '(Available months from April 2013 to September 2016)'
+	                            '(Available months from Apr.2013 to Sep.2016)'
 	                        )
 	                    ),
 	                    _react2.default.createElement(
@@ -231,7 +273,7 @@
 	                                years: { min: { year: 2013, month: 4 }, max: { year: 2016, month: 9 } },
 	                                range: mrange2,
 	                                lang: pickerLang,
-	                                theme: 'light',
+	                                theme: 'dark',
 	                                onChange: this.handleRangeChange2,
 	                                onDismiss: this.handleRangeDissmis2
 	                            },
@@ -247,6 +289,13 @@
 	        handleAMonthChange: function handleAMonthChange(value, text) {},
 	        handleAMonthDissmis: function handleAMonthDissmis(value) {
 	            this.setState({ mvalue: value });
+	        },
+	        handleClickMonthBox2: function handleClickMonthBox2(e) {
+	            this.refs.pickAMonth2.show();
+	        },
+	        handleAMonthChange2: function handleAMonthChange2(value, text) {},
+	        handleAMonthDissmis2: function handleAMonthDissmis2(value) {
+	            this.setState({ mvalue2: value });
 	        },
 	        _handleClickRangeBox: function _handleClickRangeBox(e) {
 	            this.refs.pickRange.show();
@@ -479,8 +528,11 @@
 	    return arr;
 	}
 
-	function getYearMon(year, month) {
-	    return (typeof year === 'undefined' ? 'undefined' : _typeof(year)) === 'object' && year.year && year.month ? year : { year: year, month: month };
+	function getYearMon(year, min, max) {
+	    var ym = (typeof year === 'undefined' ? 'undefined' : _typeof(year)) === 'object' && year.year ? { year: year.year, month: year.month } : { year: year };
+	    ym.min = min || 1;
+	    ym.max = max || 12;
+	    return ym;
 	}
 
 	function getYearsByNum(n, minYear) {
@@ -499,26 +551,26 @@
 	            }
 	        }
 	    return mapToArray(n, function (i) {
-	        return getYearMon(minYear + i, i === 0 ? 1 : 12);
+	        return getYearMon(minYear + i);
 	    });
 	}
 
 	function getYearArray(years) {
 	    if (Array.isArray(years)) return years.map(function (y, i) {
-	        return getYearMon(y, i === 0 ? 1 : 12);
+	        return getYearMon(y);
 	    });
 	    if ((typeof years === 'undefined' ? 'undefined' : _typeof(years)) === 'object') {
 	        var n = 0,
 	            min = 0,
-	            ymin = getYearMon(years.min, 1),
-	            ymax = getYearMon(years.max, 12);
+	            ymin = getYearMon(years.min),
+	            ymax = getYearMon(years.max);
 	        if (typeof ymin.year === 'number' && ymin.year > __MIN_VALID_YEAR) min = ymin.year;
 	        if (typeof ymax.year === 'number' && ymax.year >= min) n = ymax.year;
 	        var arr = getYearsByNum(n, min),
 	            last = arr.length - 1;
 	        if (last >= 0) {
-	            arr[0].month = ymin.month || arr[0].month;
-	            arr[last].month = ymax.month || arr[last].month;
+	            arr[0].min = ymin.month || arr[0].month;
+	            arr[last].max = ymax.month || arr[last].month;
 	        }
 	        return arr;
 	    } else if (typeof years === 'number' && years > 0) return getYearsByNum(years);else return getYearsByNum(5);
@@ -688,10 +740,10 @@
 	                    if (yearActive && m === value.month) {
 	                        css = 'active';
 	                    }
-	                    if (atMinYear && m < ymArr[0].month) {
+	                    if (atMinYear && m < ymArr[0].min) {
 	                        css = 'disable';
 	                    }
-	                    if (atMaxYear && m > ymArr[yearMaxIdx].month) {
+	                    if (atMaxYear && m > ymArr[yearMaxIdx].max) {
 	                        css = 'disable';
 	                    }
 	                    if (otherValue) {

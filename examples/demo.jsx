@@ -57,7 +57,8 @@ DocReady(function() {
         }
         , getInitialState() {
             return {
-                mvalue: {year: 2015, month: 11}
+                mvalue: {year: 2014, month: 11}
+                , mvalue2: {year: 2016, month: 7}
                 , mrange: {from: {year: 2014, month: 8}, to: {year: 2015, month: 5}}
                 , mrange2: {from: {year: 2013, month: 11}, to: {year: 2016, month: 3}}
             }
@@ -76,6 +77,7 @@ DocReady(function() {
                     , from: 'From', to: 'To'
                 }
                 , mvalue = this.state.mvalue
+                , mvalue2 = this.state.mvalue2
                 , mrange = this.state.mrange
                 , mrange2 = this.state.mrange2
 
@@ -87,17 +89,33 @@ DocReady(function() {
             return (
                 <ul>
                     <li>
-                        <label><b>Pick A Month</b></label>
+                        <label><b>Pick A Month</b><span>(Available years: 2008, 2011, 2012, 2014, 2016)</span></label>
                         <div className="edit">
                             <Picker
                                 ref="pickAMonth"
-                                years={[2008, 2010, 2011, 2012, 2014, 2015, 2016, 2017]}
+                                years={[2008, 2011, 2012, 2014, 2016]}
                                 value={mvalue}
                                 lang={pickerLang.months}
                                 onChange={this.handleAMonthChange}
                                 onDismiss={this.handleAMonthDissmis}
                                 >
                                 <MonthBox value={makeText(mvalue)} onClick={this.handleClickMonthBox} />
+                            </Picker>
+                        </div>
+                    </li>
+                    <li>
+                        <label><b>Pick A Month</b><span>(Available months from Feb.2016 to Sep.2016)</span></label>
+                        <div className="edit">
+                            <Picker
+                                ref="pickAMonth2"
+                                years={{min: {year: 2016, month: 2}, max: {year: 2016, month: 9}}}
+                                value={mvalue2}
+                                lang={pickerLang.months}
+                                theme="dark"
+                                onChange={this.handleAMonthChange2}
+                                onDismiss={this.handleAMonthDissmis2}
+                            >
+                                <MonthBox value={makeText(mvalue2)} onClick={this.handleClickMonthBox2} />
                             </Picker>
                         </div>
                     </li>
@@ -109,7 +127,7 @@ DocReady(function() {
                                 years={{min: 2013}}
                                 range={mrange}
                                 lang={pickerLang}
-                                theme="dark"
+                                theme="light"
                                 onChange={this.handleRangeChange}
                                 onDismiss={this.handleRangeDissmis}
                                 >
@@ -118,14 +136,14 @@ DocReady(function() {
                         </div>
                     </li>
                     <li>
-                        <label><b>Pick A Span of Months</b><span>(Available months from April 2013 to September 2016)</span></label>
+                        <label><b>Pick A Span of Months</b><span>(Available months from Apr.2013 to Sep.2016)</span></label>
                         <div className="edit">
                             <Picker
                                 ref="pickRange2"
                                 years={{min: {year: 2013, month: 4}, max: {year: 2016, month: 9}}}
                                 range={mrange2}
                                 lang={pickerLang}
-                                theme="light"
+                                theme="dark"
                                 onChange={this.handleRangeChange2}
                                 onDismiss={this.handleRangeDissmis2}
                             >
@@ -145,6 +163,16 @@ DocReady(function() {
         }
         , handleAMonthDissmis(value) {
             this.setState( {mvalue: value} )
+        }
+
+        , handleClickMonthBox2(e) {
+            this.refs.pickAMonth2.show()
+        }
+        , handleAMonthChange2(value, text) {
+            //
+        }
+        , handleAMonthDissmis2(value) {
+            this.setState( {mvalue2: value} )
         }
 
         , _handleClickRangeBox(e) {

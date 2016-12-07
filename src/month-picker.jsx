@@ -33,8 +33,11 @@ function mapToArray(num, callback) {
     return arr
 }
 
-function getYearMon(year, month) {
-    return (typeof year === 'object' && year.year && year.month) ? year : {year, month}
+function getYearMon(year, min, max) {
+    let ym = typeof year === 'object' && year.year ? {year: year.year, month: year.month} : {year}
+    ym.min = min || 1
+    ym.max = max || 12
+    return ym
 }
 
 function getYearsByNum(n, minYear) {
@@ -57,18 +60,18 @@ function getYearsByNum(n, minYear) {
         }
     }
     return mapToArray(n, i => {
-        return getYearMon(minYear + i, i === 0 ? 1 : 12)
+        return getYearMon(minYear + i)
     })
 }
 
 function getYearArray(years) {
     if (Array.isArray(years))
         return years.map((y, i) => {
-            return getYearMon(y, i === 0 ? 1 : 12)
+            return getYearMon(y)
         })
     if ((typeof years === 'object')) {
         let n = 0, min = 0
-            , ymin = getYearMon(years.min, 1), ymax = getYearMon(years.max, 12)
+            , ymin = getYearMon(years.min), ymax = getYearMon(years.max)
         if ((typeof ymin.year === 'number') && ymin.year > __MIN_VALID_YEAR)
             min = ymin.year
         if ((typeof ymax.year === 'number') && ymax.year >= min)
@@ -76,8 +79,8 @@ function getYearArray(years) {
         let arr = getYearsByNum(n, min)
             , last = arr.length - 1
         if (last >= 0) {
-            arr[0].month = ymin.month || arr[0].month
-            arr[last].month = ymax.month || arr[last].month
+            arr[0].min = ymin.month || arr[0].month
+            arr[last].max = ymax.month || arr[last].month
         }
         return arr
     }
@@ -241,10 +244,10 @@ let MonthPicker = React.createClass({
                             if (yearActive && m === value.month) {
                                 css = 'active'
                             }
-                            if (atMinYear && m < ymArr[0].month) {
+                            if (atMinYear && m < ymArr[0].min) {
                                 css = 'disable'
                             }
-                            if (atMaxYear && m > ymArr[yearMaxIdx].month) {
+                            if (atMaxYear && m > ymArr[yearMaxIdx].max) {
                                 css = 'disable'
                             }
                             if (otherValue) {
