@@ -59,6 +59,7 @@ DocReady(function() {
             return {
                 mvalue: {year: 2015, month: 11}
                 , mrange: {from: {year: 2014, month: 8}, to: {year: 2015, month: 5}}
+                , mrange2: {from: {year: 2013, month: 11}, to: {year: 2016, month: 3}}
             }
         }
         , componentWillReceiveProps(nextProps){
@@ -76,6 +77,7 @@ DocReady(function() {
                 }
                 , mvalue = this.state.mvalue
                 , mrange = this.state.mrange
+                , mrange2 = this.state.mrange2
 
             let makeText = m => {
                 if (m && m.year && m.month) return (pickerLang.months[m.month-1] + '. ' + m.year)
@@ -85,7 +87,7 @@ DocReady(function() {
             return (
                 <ul>
                     <li>
-                        <label>Pick A Month</label>
+                        <label><b>Pick A Month</b></label>
                         <div className="edit">
                             <Picker
                                 ref="pickAMonth"
@@ -100,7 +102,7 @@ DocReady(function() {
                         </div>
                     </li>
                     <li>
-                        <label>Pick A Span of Months</label>
+                        <label><b>Pick A Span of Months</b><span>(Available years from 2013 to this year)</span></label>
                         <div className="edit">
                             <Picker
                                 ref="pickRange"
@@ -115,6 +117,22 @@ DocReady(function() {
                             </Picker>
                         </div>
                     </li>
+                    <li>
+                        <label><b>Pick A Span of Months</b><span>(Available months from April 2013 to September 2016)</span></label>
+                        <div className="edit">
+                            <Picker
+                                ref="pickRange2"
+                                years={{min: {year: 2013, month: 4}, max: {year: 2016, month: 9}}}
+                                range={mrange2}
+                                lang={pickerLang}
+                                theme="light"
+                                onChange={this.handleRangeChange2}
+                                onDismiss={this.handleRangeDissmis2}
+                            >
+                                <MonthBox value={makeText(mrange2.from) + ' ~ ' + makeText(mrange2.to)} onClick={this._handleClickRangeBox2} />
+                            </Picker>
+                        </div>
+                    </li>
                 </ul>
             )
         }
@@ -122,7 +140,6 @@ DocReady(function() {
         , handleClickMonthBox(e) {
             this.refs.pickAMonth.show()
         }
-
         , handleAMonthChange(value, text) {
             //
         }
@@ -133,12 +150,21 @@ DocReady(function() {
         , _handleClickRangeBox(e) {
             this.refs.pickRange.show()
         }
-
         , handleRangeChange(value, text, listIndex) {
             //
         }
         , handleRangeDissmis(value) {
             this.setState( {mrange: value} )
+        }
+
+        , _handleClickRangeBox2(e) {
+            this.refs.pickRange2.show()
+        }
+        , handleRangeChange2(value, text, listIndex) {
+            //
+        }
+        , handleRangeDissmis2(value) {
+            this.setState( {mrange2: value} )
         }
     })
 

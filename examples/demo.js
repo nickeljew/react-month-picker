@@ -114,7 +114,8 @@
 	        getInitialState: function getInitialState() {
 	            return {
 	                mvalue: { year: 2015, month: 11 },
-	                mrange: { from: { year: 2014, month: 8 }, to: { year: 2015, month: 5 } }
+	                mrange: { from: { year: 2014, month: 8 }, to: { year: 2015, month: 5 } },
+	                mrange2: { from: { year: 2013, month: 11 }, to: { year: 2016, month: 3 } }
 	            };
 	        },
 	        componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
@@ -128,7 +129,8 @@
 	                from: 'From', to: 'To'
 	            },
 	                mvalue = this.state.mvalue,
-	                mrange = this.state.mrange;
+	                mrange = this.state.mrange,
+	                mrange2 = this.state.mrange2;
 
 	            var makeText = function makeText(m) {
 	                if (m && m.year && m.month) return pickerLang.months[m.month - 1] + '. ' + m.year;
@@ -144,7 +146,11 @@
 	                    _react2.default.createElement(
 	                        'label',
 	                        null,
-	                        'Pick A Month'
+	                        _react2.default.createElement(
+	                            'b',
+	                            null,
+	                            'Pick A Month'
+	                        )
 	                    ),
 	                    _react2.default.createElement(
 	                        'div',
@@ -169,7 +175,16 @@
 	                    _react2.default.createElement(
 	                        'label',
 	                        null,
-	                        'Pick A Span of Months'
+	                        _react2.default.createElement(
+	                            'b',
+	                            null,
+	                            'Pick A Span of Months'
+	                        ),
+	                        _react2.default.createElement(
+	                            'span',
+	                            null,
+	                            '(Available years from 2013 to this year)'
+	                        )
 	                    ),
 	                    _react2.default.createElement(
 	                        'div',
@@ -188,6 +203,41 @@
 	                            _react2.default.createElement(MonthBox, { value: makeText(mrange.from) + ' ~ ' + makeText(mrange.to), onClick: this._handleClickRangeBox })
 	                        )
 	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'li',
+	                    null,
+	                    _react2.default.createElement(
+	                        'label',
+	                        null,
+	                        _react2.default.createElement(
+	                            'b',
+	                            null,
+	                            'Pick A Span of Months'
+	                        ),
+	                        _react2.default.createElement(
+	                            'span',
+	                            null,
+	                            '(Available months from April 2013 to September 2016)'
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'edit' },
+	                        _react2.default.createElement(
+	                            _monthPicker2.default,
+	                            {
+	                                ref: 'pickRange2',
+	                                years: { min: { year: 2013, month: 4 }, max: { year: 2016, month: 9 } },
+	                                range: mrange2,
+	                                lang: pickerLang,
+	                                theme: 'light',
+	                                onChange: this.handleRangeChange2,
+	                                onDismiss: this.handleRangeDissmis2
+	                            },
+	                            _react2.default.createElement(MonthBox, { value: makeText(mrange2.from) + ' ~ ' + makeText(mrange2.to), onClick: this._handleClickRangeBox2 })
+	                        )
+	                    )
 	                )
 	            );
 	        },
@@ -204,6 +254,13 @@
 	        handleRangeChange: function handleRangeChange(value, text, listIndex) {},
 	        handleRangeDissmis: function handleRangeDissmis(value) {
 	            this.setState({ mrange: value });
+	        },
+	        _handleClickRangeBox2: function _handleClickRangeBox2(e) {
+	            this.refs.pickRange2.show();
+	        },
+	        handleRangeChange2: function handleRangeChange2(value, text, listIndex) {},
+	        handleRangeDissmis2: function handleRangeDissmis2(value) {
+	            this.setState({ mrange2: value });
 	        }
 	    });
 
@@ -422,6 +479,10 @@
 	    return arr;
 	}
 
+	function getYearMon(year, month) {
+	    return (typeof year === 'undefined' ? 'undefined' : _typeof(year)) === 'object' && year.year && year.month ? year : { year: year, month: month };
+	}
+
 	function getYearsByNum(n, minYear) {
 	    var maxYear = new Date().getFullYear();
 
@@ -438,18 +499,28 @@
 	            }
 	        }
 	    return mapToArray(n, function (i) {
-	        return minYear + i;
+	        return getYearMon(minYear + i, i === 0 ? 1 : 12);
 	    });
 	}
 
 	function getYearArray(years) {
-	    if (Array.isArray(years)) return years;
+	    if (Array.isArray(years)) return years.map(function (y, i) {
+	        return getYearMon(y, i === 0 ? 1 : 12);
+	    });
 	    if ((typeof years === 'undefined' ? 'undefined' : _typeof(years)) === 'object') {
 	        var n = 0,
-	            min = 0;
-	        if (typeof years.min === 'number' && years.min > __MIN_VALID_YEAR) min = years.min;
-	        if (typeof years.max === 'number' && years.max >= min) n = years.max;
-	        return getYearsByNum(n, min);
+	            min = 0,
+	            ymin = getYearMon(years.min, 1),
+	            ymax = getYearMon(years.max, 12);
+	        if (typeof ymin.year === 'number' && ymin.year > __MIN_VALID_YEAR) min = ymin.year;
+	        if (typeof ymax.year === 'number' && ymax.year >= min) n = ymax.year;
+	        var arr = getYearsByNum(n, min),
+	            last = arr.length - 1;
+	        if (last >= 0) {
+	            arr[0].month = ymin.month || arr[0].month;
+	            arr[last].month = ymax.month || arr[last].month;
+	        }
+	        return arr;
 	    } else if (typeof years === 'number' && years > 0) return getYearsByNum(years);else return getYearsByNum(5);
 	}
 
@@ -480,10 +551,10 @@
 
 	        var foundThisYear = void 0;
 	        for (var i = 0; i < years.length; i++) {
-	            if (ym && years[i] == ym.year) {
+	            if (ym && years[i].year == ym.year) {
 	                yearIndexes[idx] = i;
 	                return ym;
-	            } else if (years[i] == thisYear) {
+	            } else if (years[i].year == thisYear) {
 	                foundThisYear = i;
 	            }
 	        }
@@ -494,7 +565,7 @@
 	        }
 
 	        var last = yearIndexes[idx] = years.length - 1;
-	        return { year: years[last] };
+	        return { year: years[last].year };
 	    },
 	    validValues: function validValues(v, years, yearIndexes) {
 	        if (!v) return [];
@@ -540,7 +611,8 @@
 	    componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
 	        var yearArr = getYearArray(nextProps.years),
 	            yearIndexes = this.state.yearIndexes,
-	            values = this.validValues(nextProps.range || nextProps.value, yearArr, yearIndexes);
+	            nextValues = nextProps.range || nextProps.value,
+	            values = this.validValues(nextValues, yearArr, yearIndexes);
 	        this.setState({
 	            years: yearArr,
 	            values: values,
@@ -555,17 +627,20 @@
 	            value = values[padIndex],
 	            labelYears = this.state.labelYears,
 	            labelYear = labelYears[padIndex] = labelYears[padIndex] || value.year,
-	            years = this.state.years,
+	            ymArr = this.state.years,
 	            lang = this.props.lang || [],
 	            months = Array.isArray(lang) ? lang : Array.isArray(lang.months) ? lang.months : [],
 	            prevCss = '',
 	            nextCss = '',
-	            yearMaxIdx = years.length - 1,
+	            yearMaxIdx = ymArr.length - 1,
 	            yearIdx = this.state.yearIndexes[padIndex];
+
 	        if (yearIdx === 0) prevCss = 'disable';
 	        if (yearIdx === yearMaxIdx) nextCss = 'disable';
 
 	        var yearActive = labelYear === value.year,
+	            atMinYear = labelYear === ymArr[0].year,
+	            atMaxYear = labelYear === ymArr[yearMaxIdx].year,
 	            otherValue = false;
 	        if (values.length > 1) {
 	            otherValue = values[1 - padIndex];
@@ -608,16 +683,23 @@
 	                'ul',
 	                null,
 	                mapToArray(12, function (i) {
-	                    var css = '';
-	                    if (yearActive && i + 1 == value.month) {
+	                    var css = '',
+	                        m = i + 1;
+	                    if (yearActive && m === value.month) {
 	                        css = 'active';
+	                    }
+	                    if (atMinYear && m < ymArr[0].month) {
+	                        css = 'disable';
+	                    }
+	                    if (atMaxYear && m > ymArr[yearMaxIdx].month) {
+	                        css = 'disable';
 	                    }
 	                    if (otherValue) {
 	                        var y = otherValue.year,
-	                            m = otherValue.month || 0,
+	                            _m = otherValue.month || 0,
 	                            vy = labelYear,
 	                            vm = i + 1;
-	                        if (y === vy && m && (padIndex === 0 && vm > m || padIndex === 1 && vm < m)) {
+	                        if (y === vy && _m && (padIndex === 0 && vm > _m || padIndex === 1 && vm < _m)) {
 	                            css = 'disable';
 	                        } else if (y > vy && padIndex === 1 || y < vy && padIndex === 0) {
 	                            css = 'disable';
@@ -718,12 +800,13 @@
 	    },
 	    setYear: function setYear(idx, step) {
 	        var yearIndex = this.state.yearIndexes[idx] += step,
-	            labelYears = this.state.labelYears;
-	        labelYears[idx] = this.state.years[yearIndex];
+	            labelYears = this.state.labelYears,
+	            theYear = this.state.years[yearIndex].year;
+	        labelYears[idx] = theYear;
 	        this.setState({
 	            labelYears: labelYears
 	        });
-	        this.props.onYearChange && this.props.onYearChange(this.state.years[yearIndex]);
+	        this.props.onYearChange && this.props.onYearChange(theYear);
 	    },
 	    getDID: function getDID(e) {
 	        var el = e.target;

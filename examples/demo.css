@@ -479,6 +479,15 @@ ul, li {
     font-size: 1.1rem;
     margin-bottom: 0.5em;
   }
+  .list-area > ul > li > label b {
+    display: block;
+    font-size: 1.1em;
+  }
+  .list-area > ul > li > label span {
+    display: block;
+    font-size: 0.9em;
+    margin-top: 0.4em;
+  }
   .list-area > ul > li .edit {
     padding: 1px;
     height: 3.3rem;

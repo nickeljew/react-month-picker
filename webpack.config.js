@@ -6,7 +6,7 @@ var path = require('path')
 
 module.exports = {
     entry: {
-        demo: './examples/demo'
+        demo: './examples/demo.jsx'
         //, react: ['react', 'react-dom']
     }
     , output: {

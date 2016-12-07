@@ -87,10 +87,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-webpack')
 
 
-    grunt.registerTask('default', ['clean:js', 'sass:dev', 'webpack:demo', 'babel'])
-    grunt.registerTask('dev', ['clean:js', 'sass:dev', 'webpack:demo', 'babel', 'watch'])
+    grunt.registerTask('default', ['sass:dev', 'webpack:demo', 'babel'])
+    grunt.registerTask('dev', ['sass:dev', 'webpack:demo', 'babel', 'watch'])
     grunt.registerTask('build', ['sass:dist', 'babel'])
 
-    grunt.registerTask('wp', ['clean:js', 'webpack:demo'])
+    grunt.registerTask('wp', ['webpack:demo'])
 
 }

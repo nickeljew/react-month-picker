@@ -33,6 +33,10 @@ function mapToArray(num, callback) {
     return arr
 }
 
+function getYearMon(year, month) {
+    return (typeof year === 'object' && year.year && year.month) ? year : {year, month}
+}
+
 function getYearsByNum(n, minYear) {
     let maxYear = (new Date()).getFullYear()
     // n is number of years
@@ -53,20 +57,29 @@ function getYearsByNum(n, minYear) {
         }
     }
     return mapToArray(n, i => {
-        return (minYear + i)
+        return getYearMon(minYear + i, i === 0 ? 1 : 12)
     })
 }
 
 function getYearArray(years) {
     if (Array.isArray(years))
-        return years
+        return years.map((y, i) => {
+            return getYearMon(y, i === 0 ? 1 : 12)
+        })
     if ((typeof years === 'object')) {
         let n = 0, min = 0
-        if ((typeof years.min === 'number') && years.min > __MIN_VALID_YEAR)
-            min = years.min
-        if ((typeof years.max === 'number') && years.max >= min)
-            n = years.max
-        return getYearsByNum(n, min)
+            , ymin = getYearMon(years.min, 1), ymax = getYearMon(years.max, 12)
+        if ((typeof ymin.year === 'number') && ymin.year > __MIN_VALID_YEAR)
+            min = ymin.year
+        if ((typeof ymax.year === 'number') && ymax.year >= min)
+            n = ymax.year
+        let arr = getYearsByNum(n, min)
+            , last = arr.length - 1
+        if (last >= 0) {
+            arr[0].month = ymin.month || arr[0].month
+            arr[last].month = ymax.month || arr[last].month
+        }
+        return arr
     }
     else if (typeof years === 'number' && years > 0)
         return getYearsByNum(years)
@@ -101,11 +114,11 @@ let MonthPicker = React.createClass({
 
         let foundThisYear
         for (let i = 0; i < years.length; i++) {
-            if (ym && years[i] == ym.year) {
+            if (ym && years[i].year == ym.year) {
                 yearIndexes[idx] = i
                 return ym
             }
-            else if (years[i] == thisYear) {
+            else if (years[i].year == thisYear) {
                 foundThisYear = i
             }
         }
@@ -116,7 +129,7 @@ let MonthPicker = React.createClass({
         }
 
         let last = yearIndexes[idx] = years.length - 1
-        return { year: years[last] }
+        return { year: years[last].year }
 
     }
     , validValues(v, years, yearIndexes) {
@@ -168,10 +181,11 @@ let MonthPicker = React.createClass({
             , yearIndexes: yearIndexes
         }
     }
-    , componentWillReceiveProps(nextProps){
+    , componentWillReceiveProps(nextProps) {
         let yearArr = getYearArray(nextProps.years)
             , yearIndexes = this.state.yearIndexes
-            , values = this.validValues(nextProps.range || nextProps.value, yearArr, yearIndexes)
+            , nextValues = nextProps.range || nextProps.value //|| this.props.range || this.props.value
+            , values = this.validValues(nextValues, yearArr, yearIndexes)
         this.setState({
             years: yearArr
             , values: values
@@ -188,22 +202,19 @@ let MonthPicker = React.createClass({
             , value = values[padIndex]
             , labelYears = this.state.labelYears
             , labelYear = labelYears[padIndex] = labelYears[padIndex] || value.year
-            , years = this.state.years
+            , ymArr = this.state.years
             , lang = this.props.lang || []
             , months =  Array.isArray(lang) ? lang : (Array.isArray(lang.months) ? lang.months : [])
             , prevCss = '', nextCss = ''
-            , yearMaxIdx = years.length - 1
+            , yearMaxIdx = ymArr.length - 1
             , yearIdx = this.state.yearIndexes[padIndex]//yearMaxIdx
-        //for (let i = 0; i < years.length; i++) {
-        //    if (value.year === years[i]) {
-        //        yearIdx = i
-        //        break
-        //    }
-        //}
+
         if (yearIdx === 0) prevCss = 'disable'
         if (yearIdx === yearMaxIdx) nextCss = 'disable'
 
         let yearActive = (labelYear === value.year)
+            , atMinYear = (labelYear === ymArr[0].year)
+            , atMaxYear = (labelYear === ymArr[yearMaxIdx].year)
             , otherValue = false
         if (values.length > 1) {
             otherValue = values[1 - padIndex]
@@ -226,8 +237,15 @@ let MonthPicker = React.createClass({
                     {
                         mapToArray(12, i => {
                             let css = ''
-                            if (yearActive && (i+1) == value.month) {
+                                , m = i + 1
+                            if (yearActive && m === value.month) {
                                 css = 'active'
+                            }
+                            if (atMinYear && m < ymArr[0].month) {
+                                css = 'disable'
+                            }
+                            if (atMaxYear && m > ymArr[yearMaxIdx].month) {
+                                css = 'disable'
                             }
                             if (otherValue) {
                                 let y = otherValue.year, m = otherValue.month || 0
@@ -337,11 +355,12 @@ let MonthPicker = React.createClass({
     , setYear(idx, step) {
         let yearIndex = (this.state.yearIndexes[idx] += step)
             , labelYears = this.state.labelYears
-        labelYears[idx] = this.state.years[yearIndex]
+            , theYear = this.state.years[yearIndex].year
+        labelYears[idx] = theYear
         this.setState({
             labelYears: labelYears
         })
-        this.props.onYearChange && this.props.onYearChange(this.state.years[yearIndex])
+        this.props.onYearChange && this.props.onYearChange(theYear)
     }
 
     , getDID(e) {
