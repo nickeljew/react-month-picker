@@ -141,9 +141,9 @@ let MonthPicker = React.createClass({
         if (v.from || v.to) {
             let from = this.validate(v.from, years, 0, yearIndexes)
                 , to = this.validate(v.to, years, 1, yearIndexes)
-            if (from.year > to.year || (from.year === to.year && from.month >= to.month)) {
+            if (from.year > to.year || (from.year === to.year && from.month > to.month)) {
                 from.year = to.year
-                from.month = to.month - 5
+                from.month = to.month
                 if (from.month < 1) {
                     from.year--
                     from.month += 12
