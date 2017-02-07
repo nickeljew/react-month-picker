@@ -287,7 +287,7 @@ let MonthPicker = React.createClass({
         return (
             <div className={["month-picker", this.props.className].join(' ')}>
                 {this.props.children}
-                <div className={["container", "table", this.props.className, (this.state.showed ? "show" : '')].join(' ')}>
+                <div className={["mpicker-container", "table", this.props.className, (this.state.showed ? "show" : '')].join(' ')}>
                     <Tappable className="overlay" onTap={this._handleOverlayTouchTap} />
                     <div className="cell">
                         <div className={["popup", popupClass , this.props.theme, (this.state.showed ? "show" : '')].join(' ')}>

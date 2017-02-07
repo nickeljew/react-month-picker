@@ -1,7 +1,7 @@
 .month-picker {
   position: relative;
 }
-.month-picker > .container {
+.month-picker > .mpicker-container {
   position: relative;
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
@@ -13,7 +13,7 @@
   transition: left 0ms cubic-bezier(0.23, 1, 0.32, 1) 450ms;
 }
 @media screen and (max-width: 767px) {
-  .month-picker > .container {
+  .month-picker > .mpicker-container {
     position: fixed;
     top: 0;
     left: -10000px;
@@ -24,19 +24,19 @@
     transition: left 0ms cubic-bezier(0.23, 1, 0.32, 1) 450ms;
   }
 }
-.month-picker > .container.table {
+.month-picker > .mpicker-container.table {
   display: table;
 }
-.month-picker > .container.show {
+.month-picker > .mpicker-container.show {
   left: 0;
   -webkit-transition: left 0ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
   -moz-transition: left 0ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
   transition: left 0ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
 }
-.month-picker > .container.show .overlay {
+.month-picker > .mpicker-container.show .overlay {
   left: 0;
 }
-.month-picker > .container .overlay {
+.month-picker > .mpicker-container .overlay {
   position: fixed;
   height: 100%;
   width: 100%;
@@ -56,11 +56,11 @@
   transition: left 0ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, opacity 400ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
 }
 @media screen and (max-width: 767px) {
-  .month-picker > .container .overlay {
+  .month-picker > .mpicker-container .overlay {
     background-color: rgba(0, 0, 0, 0.25);
   }
 }
-.month-picker > .container .cell {
+.month-picker > .mpicker-container .cell {
   display: table-cell;
   vertical-align: middle;
   box-sizing: border-box;
@@ -68,11 +68,11 @@
   height: 100%;
 }
 @media screen and (max-width: 767px) {
-  .month-picker > .container .cell {
+  .month-picker > .mpicker-container .cell {
     vertical-align: bottom;
   }
 }
-.month-picker > .container .popup {
+.month-picker > .mpicker-container .popup {
   position: absolute;
   -webkit-tap-highlight-color: transparent;
   -webkit-transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1);
@@ -87,7 +87,7 @@
   box-sizing: content-box;
 }
 @media screen and (max-width: 767px) {
-  .month-picker > .container .popup {
+  .month-picker > .mpicker-container .popup {
     box-sizing: border-box;
     bottom: 0;
     width: 100%;
@@ -99,7 +99,7 @@
     -o-transform: translate3d(0, 14.4rem, 0);
     transform: translate3d(0, 14.4rem, 0);
   }
-  .month-picker > .container .popup.range {
+  .month-picker > .mpicker-container .popup.range {
     height: 28rem;
     -webkit-transform: translate3d(0, 28rem, 0);
     -moz-transform: translate3d(0, 28rem, 0);
@@ -107,15 +107,15 @@
     -o-transform: translate3d(0, 28rem, 0);
     transform: translate3d(0, 28rem, 0);
   }
-  .month-picker > .container .popup.range .pad {
+  .month-picker > .mpicker-container .popup.range .pad {
     margin-top: 0.4rem;
   }
-  .month-picker > .container .popup.range .pad:first-of-type {
+  .month-picker > .mpicker-container .popup.range .pad:first-of-type {
     margin-top: 0;
   }
 }
 @media screen and (min-width: 768px) {
-  .month-picker > .container .popup {
+  .month-picker > .mpicker-container .popup {
     -webkit-transform: translate3d(0, -64px, 0);
     -moz-transform: translate3d(0, -64px, 0);
     -ms-transform: translate3d(0, -64px, 0);
@@ -124,12 +124,12 @@
     top: 0;
     width: 20rem;
   }
-  .month-picker > .container .popup.range {
+  .month-picker > .mpicker-container .popup.range {
     width: 40.6rem;
     padding: 0.6rem;
   }
 }
-.month-picker > .container .popup.show {
+.month-picker > .mpicker-container .popup.show {
   opacity: 1;
   -webkit-transform: translate3d(0, 0, 0);
   -moz-transform: translate3d(0, 0, 0);
@@ -137,35 +137,35 @@
   -o-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
 }
-.month-picker > .container .popup:after {
+.month-picker > .mpicker-container .popup:after {
   content: ' ';
   clear: both;
   display: table;
 }
-.month-picker > .container .popup .pad {
+.month-picker > .mpicker-container .popup .pad {
   position: relative;
 }
 @media screen and (min-width: 768px) {
-  .month-picker > .container .popup .pad {
+  .month-picker > .mpicker-container .popup .pad {
     box-sizing: border-box;
     float: left;
     width: 20rem;
   }
-  .month-picker > .container .popup .pad:nth-of-type(2) {
+  .month-picker > .mpicker-container .popup .pad:nth-of-type(2) {
     float: right;
   }
 }
-.month-picker > .container .popup .pad > div label {
+.month-picker > .mpicker-container .popup .pad > div label {
   display: block;
   font-size: 1.4rem;
   text-align: center;
   line-height: 3.4rem;
 }
-.month-picker > .container .popup .pad > div label b {
+.month-picker > .mpicker-container .popup .pad > div label b {
   font-weight: normal;
   margin-right: 0.5em;
 }
-.month-picker > .container .popup .pad > div i {
+.month-picker > .mpicker-container .popup .pad > div i {
   font-style: normal;
   text-align: center;
   width: 3.4rem;
@@ -174,27 +174,27 @@
   position: absolute;
   top: 0;
 }
-.month-picker > .container .popup .pad > div i.prev {
+.month-picker > .mpicker-container .popup .pad > div i.prev {
   left: 0;
 }
-.month-picker > .container .popup .pad > div i.next {
+.month-picker > .mpicker-container .popup .pad > div i.next {
   right: 0;
 }
-.month-picker > .container .popup .pad ul, .month-picker > .container .popup .pad li {
+.month-picker > .mpicker-container .popup .pad ul, .month-picker > .mpicker-container .popup .pad li {
   list-style-type: none;
   margin: 0;
   padding: 0;
 }
-.month-picker > .container .popup .pad ul {
+.month-picker > .mpicker-container .popup .pad ul {
   display: block;
   width: 100%;
 }
-.month-picker > .container .popup .pad ul:after {
+.month-picker > .mpicker-container .popup .pad ul:after {
   content: ' ';
   clear: both;
   display: table;
 }
-.month-picker > .container .popup .pad li {
+.month-picker > .mpicker-container .popup .pad li {
   display: block;
   float: left;
   text-align: center;
@@ -213,89 +213,89 @@
   transition: background-color 200ms ease-in-out, color 200ms ease-in-out;
 }
 @media screen and (max-width: 767px) {
-  .month-picker > .container .popup .pad li {
+  .month-picker > .mpicker-container .popup .pad li {
     width: 25%;
   }
 }
 @media screen and (min-width: 768px) {
-  .month-picker > .container .popup .pad li {
+  .month-picker > .mpicker-container .popup .pad li {
     width: 33.33333%;
   }
 }
-.month-picker > .container .popup.light {
+.month-picker > .mpicker-container .popup.light {
   color: #666;
   background-color: rgba(255, 255, 255, 0.96);
 }
 @media screen and (max-width: 767px) {
-  .month-picker > .container .popup.light {
+  .month-picker > .mpicker-container .popup.light {
     border-top: 1px solid #ccc;
     box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.08);
   }
-  .month-picker > .container .popup.light.range .pad {
+  .month-picker > .mpicker-container .popup.light.range .pad {
     border-top: 1px solid rgba(204, 204, 204, 0.5);
   }
-  .month-picker > .container .popup.light.range .pad:first-of-type {
+  .month-picker > .mpicker-container .popup.light.range .pad:first-of-type {
     border-top: 0;
   }
 }
 @media screen and (min-width: 768px) {
-  .month-picker > .container .popup.light {
+  .month-picker > .mpicker-container .popup.light {
     border: 1px solid #ccc;
     box-shadow: 0 1px 5px #ddd;
   }
-  .month-picker > .container .popup.light.range .pad {
+  .month-picker > .mpicker-container .popup.light.range .pad {
     background-color: rgba(238, 238, 238, 0.9);
   }
 }
-.month-picker > .container .popup.light .pad .btn {
+.month-picker > .mpicker-container .popup.light .pad .btn {
   cursor: pointer;
 }
 @media screen and (min-width: 768px) {
-  .month-picker > .container .popup.light .pad .btn:hover {
+  .month-picker > .mpicker-container .popup.light .pad .btn:hover {
     background-color: rgba(255, 227, 160, 0.59);
   }
 }
-.month-picker > .container .popup.light .pad li.active, .month-picker > .container .popup.light .pad li.active:hover {
+.month-picker > .mpicker-container .popup.light .pad li.active, .month-picker > .mpicker-container .popup.light .pad li.active:hover {
   background-color: rgba(31, 42, 58, 0.73);
   color: white;
   cursor: default;
 }
-.month-picker > .container .popup.light .pad .disable, .month-picker > .container .popup.light .pad .disable:hover {
+.month-picker > .mpicker-container .popup.light .pad .disable, .month-picker > .mpicker-container .popup.light .pad .disable:hover {
   background-color: transparent;
   color: #bbb;
   cursor: default;
 }
-.month-picker > .container .popup.dark {
+.month-picker > .mpicker-container .popup.dark {
   color: #fff;
   background-color: rgba(50, 50, 50, 0.96);
 }
 @media screen and (max-width: 767px) {
-  .month-picker > .container .popup.dark.range .pad {
+  .month-picker > .mpicker-container .popup.dark.range .pad {
     border-top: 1px solid rgba(113, 113, 113, 0.41);
   }
-  .month-picker > .container .popup.dark.range .pad:first-of-type {
+  .month-picker > .mpicker-container .popup.dark.range .pad:first-of-type {
     border-top: 0;
   }
 }
 @media screen and (min-width: 768px) {
-  .month-picker > .container .popup.dark.range .pad {
+  .month-picker > .mpicker-container .popup.dark.range .pad {
     background-color: rgba(70, 70, 70, 0.9);
   }
 }
-.month-picker > .container .popup.dark .pad .btn {
+.month-picker > .mpicker-container .popup.dark .pad .btn {
   cursor: pointer;
 }
 @media screen and (min-width: 768px) {
-  .month-picker > .container .popup.dark .pad .btn:hover {
+  .month-picker > .mpicker-container .popup.dark .pad .btn:hover {
     background-color: rgba(255, 210, 96, 0.33);
   }
 }
-.month-picker > .container .popup.dark .pad li.active, .month-picker > .container .popup.dark .pad li.active:hover {
+.month-picker > .mpicker-container .popup.dark .pad li.active, .month-picker > .mpicker-container .popup.dark .pad li.active:hover {
   background-color: rgba(189, 211, 242, 0.7);
   color: #303030;
   cursor: default;
 }
-.month-picker > .container .popup.dark .pad .disable, .month-picker > .container .popup.dark .pad .disable:hover {
+.month-picker > .mpicker-container .popup.dark .pad .disable, .month-picker > .mpicker-container .popup.dark .pad .disable:hover {
   background-color: transparent;
   color: #717171;
   cursor: default;
