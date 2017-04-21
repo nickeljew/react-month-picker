@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Month-Picker
  *
@@ -18,8 +20,12 @@
 
 
 
-import React from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import Tappable from 'react-tapper'
+
+
+const isBrowser = (typeof window !== "undefined" && typeof document !== "undefined")
 
 
 const __MIN_VALID_YEAR = 1970
@@ -91,22 +97,34 @@ function getYearArray(years) {
 }
 
 
-let MonthPicker = React.createClass({
 
-    propTypes: {
-        years: React.PropTypes.oneOfType([React.PropTypes.array, React.PropTypes.object, React.PropTypes.number])
-        , value: React.PropTypes.object
-        , range: React.PropTypes.object
-        , lang: React.PropTypes.oneOfType([React.PropTypes.array, React.PropTypes.object])
-        , onChange: React.PropTypes.func
-        , onYearChange: React.PropTypes.func
-        , onShow: React.PropTypes.func
-        , onDismiss: React.PropTypes.func
-        , onClickAway: React.PropTypes.func
-        , theme: React.PropTypes.string
+
+
+class MonthPicker extends Component {
+    constructor(props, context) {
+        super(props, context)
+
+        let yearArr = getYearArray(this.props.years)
+            , yearIndexes = [0]
+            , values = this.validValues(this.props.range || this.props.value, yearArr, yearIndexes)
+        this.state = {
+            years: yearArr
+            , values: values
+            , labelYears: [false, false]
+            , showed: false
+            , yearIndexes: yearIndexes
+        }
+
+        this.closeable = false
+
+        this._handleOverlayTouchTap = this._handleOverlayTouchTap.bind(this)
+        this.handleClickMonth = this.handleClickMonth.bind(this)
+        this.goPrevYear = this.goPrevYear.bind(this)
+        this.goNextYear = this.goNextYear.bind(this)
+        this._keyPress = this._keyPress.bind(this)
     }
 
-    , validate(d, years, idx, yearIndexes) {
+    validate(d, years, idx, yearIndexes) {
         let now = new Date()
             , thisYear = now.getFullYear()
             , ym
@@ -135,7 +153,7 @@ let MonthPicker = React.createClass({
         return { year: years[last].year }
 
     }
-    , validValues(v, years, yearIndexes) {
+    validValues(v, years, yearIndexes) {
         if (!v)
             return []
         if (v.from || v.to) {
@@ -154,7 +172,7 @@ let MonthPicker = React.createClass({
         return [this.validate(v, years, 0, yearIndexes)]
     }
 
-    , value() {
+    value() {
         let values = this.state.values
         if (values.length >= 2)
             return { from: values[0], to: values[1] }
@@ -164,27 +182,7 @@ let MonthPicker = React.createClass({
     }
 
 
-    , getDefaultProps() {
-        return {
-            years: getYearsByNum(5)
-            , onChange(year, month, idx) {}
-            , theme: 'light'
-        }
-    }
-
-    , getInitialState() {
-        let yearArr = getYearArray(this.props.years)
-            , yearIndexes = [0]
-            , values = this.validValues(this.props.range || this.props.value, yearArr, yearIndexes)
-        return {
-            years: yearArr
-            , values: values
-            , labelYears: [false, false]
-            , showed: false
-            , yearIndexes: yearIndexes
-        }
-    }
-    , componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps) {
         let yearArr = getYearArray(nextProps.years)
             , yearIndexes = this.state.yearIndexes
             , nextValues = nextProps.range || nextProps.value //|| this.props.range || this.props.value
@@ -197,10 +195,14 @@ let MonthPicker = React.createClass({
         })
     }
 
-    //, componentDidMount () {}
-    //, componentWillUnmount () {}
+    componentDidMount () {
+        isBrowser && document.addEventListener('keypress', this._keyPress)
+    }
+    componentWillUnmount () {
+        isBrowser && document.removeEventListener('keypress', this._keyPress)
+    }
 
-    , optionPad(padIndex) {
+    optionPad(padIndex) {
         let values = this.state.values
             , value = values[padIndex]
             , labelYears = this.state.labelYears
@@ -265,15 +267,15 @@ let MonthPicker = React.createClass({
                                 <li key={i} className={["btn", css].join(' ')}
                                     data-id={padIndex + ':' + (i+1)}
                                     onClick={clickHandler}>{months.length > i ? months[i] : i}</li>
-                                )
-                            })
+                            )
+                        })
                     }
                 </ul>
             </div>
         )
     }
 
-    , render() {
+    render() {
         let pads = []
             , popupClass = ''
         if (this.state.values.length > 1) {
@@ -299,38 +301,36 @@ let MonthPicker = React.createClass({
         )
     }
 
-    , closeable: false
-
-    , dismiss() {
+    dismiss() {
         if (this.closeable) {
             this._onDismiss()
         }
     }
 
-    , show() {
+    show() {
         // prevent rapid show/hide
         this._onShow()
     }
 
-    ,  _handleOverlayTouchTap(e) {
+    _handleOverlayTouchTap(e) {
         if (this.closeable) {
             this._onDismiss()
             this.props.onClickAway && this.props.onClickAway(e)
         }
     }
 
-    , _onShow() {
+    _onShow() {
         setTimeout(function() {this.closeable = true;}.bind(this), 250)
         this.setState({ showed: true })
         this.props.onShow && this.props.onShow()
     }
 
-    , _onDismiss() {
+    _onDismiss() {
         this.setState({ showed: false, loading: false })
         this.props.onDismiss && this.props.onDismiss(this.value())
     }
 
-    , handleClickMonth(e) {
+    handleClickMonth(e) {
         if (this.state.showed) {
             let refid = this.getDID(e).split(':')
                 , idx = parseInt(refid[0], 10)
@@ -343,19 +343,19 @@ let MonthPicker = React.createClass({
         }
     }
 
-    , goPrevYear(e) {
+    goPrevYear(e) {
         let idx = parseInt(this.getDID(e), 10)
         if (this.state.yearIndexes[idx] > 0) {
             this.setYear(idx, -1)
         }
     }
-    , goNextYear(e) {
+    goNextYear(e) {
         let idx = parseInt(this.getDID(e), 10)
         if (this.state.yearIndexes[idx] < (this.state.years.length - 1)) {
             this.setYear(idx, 1)
         }
     }
-    , setYear(idx, step) {
+    setYear(idx, step) {
         let yearIndex = (this.state.yearIndexes[idx] += step)
             , labelYears = this.state.labelYears
             , theYear = this.state.years[yearIndex].year
@@ -366,11 +366,39 @@ let MonthPicker = React.createClass({
         this.props.onYearChange && this.props.onYearChange(theYear)
     }
 
-    , getDID(e) {
+    getDID(e) {
         let el = e.target
         return el.dataset ? el.dataset.id : el.getAttribute('data-id')
     }
 
-})
+    _keyPress(e) {
+        if (!this.state.showed || this.state.values.length !== 1)
+            return
+
+        //
+    }
+}
+
+
+MonthPicker.propTypes = {
+    years: PropTypes.oneOfType([PropTypes.array, PropTypes.object, PropTypes.number])
+    , value: PropTypes.object
+    , range: PropTypes.object
+    , lang: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
+    , onChange: PropTypes.func
+    , onYearChange: PropTypes.func
+    , onShow: PropTypes.func
+    , onDismiss: PropTypes.func
+    , onClickAway: PropTypes.func
+    , theme: PropTypes.string
+}
+MonthPicker.defaultProps = {
+    years: getYearsByNum(5)
+    , onChange(year, month, idx) {}
+    , theme: 'light'
+}
+
+
+
 
 export default MonthPicker
