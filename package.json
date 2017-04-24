@@ -28,7 +28,7 @@
     ]
   },
   "dependencies": {
-    "react-tapper": "^0.1.13"
+    "react-tapper": "^0.1.14"
   },
   "peerDependencies": {
     "prop-types": "^15.5.8",
