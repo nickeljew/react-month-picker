@@ -1,0 +1,10 @@
+*.md
+.git*
+Gruntfile.js
+webpack.config.js
+src/
+test/
+examples/
+icons/
+scss/demo.scss
+scss/fonts.scss

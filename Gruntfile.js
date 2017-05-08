@@ -16,8 +16,10 @@ module.exports = function(grunt) {
             dev: {
                 options: {
                     style: 'expanded'
-                    , sourcemap: 'none'
                     , compass: true
+                    //, sourcemap: 'none'
+                    //for grunt-sass
+                    , sourceMap: false
                 }
                 , files: [
                     {
@@ -32,8 +34,10 @@ module.exports = function(grunt) {
             , dist: {
                 options: {
                     style: 'expanded' //'compressed'
-                    , sourcemap: 'none'
                     , compass: true
+                    //, sourcemap: 'none'
+                    //for grunt-sass
+                    , sourceMap: false
                 }
                 , files: [
                     { './css/month-picker.css': './scss/pack-month-picker.scss' }
@@ -81,7 +85,7 @@ module.exports = function(grunt) {
     })
 
     grunt.loadNpmTasks('grunt-contrib-watch')
-    grunt.loadNpmTasks('grunt-contrib-sass')
+    grunt.loadNpmTasks('grunt-sass')
     grunt.loadNpmTasks('grunt-contrib-clean')
     grunt.loadNpmTasks('grunt-babel')
     grunt.loadNpmTasks('grunt-webpack')
