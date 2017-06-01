@@ -48,7 +48,7 @@ Demo file in repository: ./examples/demo.html
 #### Import component into your react project
 
 ```
-import Picker from 'month-picker'
+import Picker from 'react-month-picker'
 ```
 
 ```
@@ -93,7 +93,7 @@ render() {
                         lang={pickerLang}
                         theme="dark"
                         onChange={this.handleRangeChange}
-                        onDismiss={this.handleRangeDissmis}
+                        onDismiss={this.handleRangeDismiss}
                         >
                         <MonthBox value={makeText(mrange.from) + ' ~ ' + makeText(mrange.to)} onClick={this._handleClickRangeBox} />
                     </Picker>
