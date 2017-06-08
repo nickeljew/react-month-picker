@@ -4,6 +4,9 @@ Month-Picker Component offers a popup month selection panel with responsive layo
 
 
 ## Changelogs
+#### v1.2.2
+- Fixed error in readme
+
 #### v1.2.1
 - Upgrade babel-loader & update readme
 
@@ -13,10 +16,10 @@ Month-Picker Component offers a popup month selection panel with responsive layo
 
 ## Installation
 
-	yarn add react-picker
+	yarn add react-month-picker
 or
 
-	npm install react-picker --save
+	npm install react-month-picker --save
 
 ## Snapshots
 
