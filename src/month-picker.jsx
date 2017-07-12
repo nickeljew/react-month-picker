@@ -113,6 +113,8 @@ class MonthPicker extends Component {
             , labelYears: [false, false]
             , showed: false
             , yearIndexes: yearIndexes
+            , lastRange: this.props.range
+            , lastValue: this.props.value
         }
 
         this.closeable = false
@@ -121,7 +123,7 @@ class MonthPicker extends Component {
         this.handleClickMonth = this.handleClickMonth.bind(this)
         this.goPrevYear = this.goPrevYear.bind(this)
         this.goNextYear = this.goNextYear.bind(this)
-        this._keyPress = this._keyPress.bind(this)
+        this._keyDown = this._keyDown.bind(this)
     }
 
     validate(d, years, idx, yearIndexes) {
@@ -183,7 +185,7 @@ class MonthPicker extends Component {
 
 
     componentWillReceiveProps(nextProps) {
-        let yearArr = getYearArray(nextProps.years)
+        const yearArr = getYearArray(nextProps.years)
             , yearIndexes = this.state.yearIndexes
             , nextValues = nextProps.range || nextProps.value //|| this.props.range || this.props.value
             , values = this.validValues(nextValues, yearArr, yearIndexes)
@@ -192,14 +194,20 @@ class MonthPicker extends Component {
             , values: values
             , labelYears: [false, false]
             , yearIndexes: yearIndexes
+            , lastRange: nextProps.range
+            , lastValue: nextProps.value
         })
     }
 
     componentDidMount () {
-        isBrowser && document.addEventListener('keypress', this._keyPress)
+        if (isBrowser) {
+            document.addEventListener('keydown', this._keyDown)
+        }
     }
     componentWillUnmount () {
-        isBrowser && document.removeEventListener('keypress', this._keyPress)
+        if (isBrowser) {
+            document.removeEventListener('keydown', this._keyDown)
+        }
     }
 
     optionPad(padIndex) {
@@ -325,8 +333,8 @@ class MonthPicker extends Component {
         this.props.onShow && this.props.onShow()
     }
 
-    _onDismiss() {
-        this.setState({ showed: false, loading: false })
+    _onDismiss(s) {
+        this.setState(Object.assign({showed: false, loading: false}, s))
         this.props.onDismiss && this.props.onDismiss(this.value())
     }
 
@@ -337,7 +345,7 @@ class MonthPicker extends Component {
                 , month = parseInt(refid[1], 10)
                 , year = this.state.labelYears[idx]
                 , values = this.state.values
-            values[idx] = { year: year, month: month }
+            values[idx] = { year, month }
             this.setState({ values: values })
             this.props.onChange(year, month, idx)
         }
@@ -371,11 +379,46 @@ class MonthPicker extends Component {
         return el.dataset ? el.dataset.id : el.getAttribute('data-id')
     }
 
-    _keyPress(e) {
-        if (!this.state.showed || this.state.values.length !== 1)
+    _reset() {
+        const values = this.validValues(this.state.lastRange || this.state.lastValue, this.state.years, this.state.yearIndexes)
+        return {values}
+    }
+
+    _keyDown(e) {
+        if (!this.state.showed)
             return
 
-        //
+        if (e.key === 'Escape') {
+            this._onDismiss(this._reset())
+            e.stopPropagation()
+        }
+        else if (e.key === 'Enter') {
+            this._onDismiss()
+            e.stopPropagation()
+        }
+        else if (this.state.values.length === 1) {
+            //console.log(e.key, e.keyCode)
+            // const value = this.state.values[0]
+            //     , year = value.year
+            // let month = value.month
+            // if (e.key === 'ArrowLeft') {
+            //     month--
+            // }
+            // else if (e.key === 'ArrowRight') {
+            //     month++
+            // }
+            // else if (e.key === 'ArrowUp') {
+            //     month -= 3
+            // }
+            // else if (e.key === 'ArrowDown') {
+            //     month += 3
+            // }
+            // if (month > 0 && month < 13 && month !== value.month) {
+            //     this.setState({ values: [{ year, month }] })
+            //     this.props.onChange(year, month, 0)
+            //     e.stopPropagation()
+            // }
+        }
     }
 }
 

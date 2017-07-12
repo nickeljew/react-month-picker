@@ -4,6 +4,9 @@ Month-Picker Component offers a popup month selection panel with responsive layo
 
 
 ## Changelogs
+#### v1.3.0
+- Support keyboard event with escape for cancel and enter for confirm
+
 #### v1.2.2
 - Fixed error in readme
 
