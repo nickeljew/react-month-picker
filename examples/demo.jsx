@@ -95,7 +95,7 @@ DocReady(function() {
         render() {
 
             let pickerLang = {
-                months: ['Jan', 'Feb', 'Mar', 'Spr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+                months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
                 , from: 'From', to: 'To'
             }
             let mvalue = this.state.mvalue
