@@ -128,7 +128,7 @@ SCSS: 1) import bourbon library (http://bourbon.io/), 2) import scss/month-picke
 - object: {min: 2013, max: 2016} (from 2013 to 2016); {min: 2013} (from 2013 to this year); {max: 2015} (5 years to 2015)
 - object: {min: {year: 2013, month: 4}, max: {year: 2016, month: 9}} (from Apri.2013 to Sept.2016)
 
-@value: default value for picking a single month, e.g. {year: 2015: month: 11}
+@value: default value for picking a single month, e.g. {year: 2015, month: 11}
 
 @range: default value for picking a span of months, e.g. {from: {year: 2014: month: 7}, to: {year: 2015: month: 11}}
 
