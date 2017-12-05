@@ -104,20 +104,19 @@ class MonthPicker extends Component {
     constructor(props, context) {
         super(props, context)
 
-        let yearArr = getYearArray(this.props.years)
+        const yearArr = getYearArray(this.props.years)
             , yearIndexes = [0]
             , values = this.validValues(this.props.range || this.props.value, yearArr, yearIndexes)
         this.state = {
-            years: yearArr
-            , values: values
-            , labelYears: [false, false]
-            , showed: false
-            , yearIndexes: yearIndexes
-            , lastRange: this.props.range
-            , lastValue: this.props.value
+            years: yearArr,
+            values: values,
+            labelYears: [false, false],
+            showed: this.props.show,
+            closeable: this.props.show, //special, must not be changed with setState
+            yearIndexes: yearIndexes,
+            lastRange: this.props.range,
+            lastValue: this.props.value,
         }
-
-        this.closeable = false
 
         this._handleOverlayTouchTap = this._handleOverlayTouchTap.bind(this)
         this.handleClickMonth = this.handleClickMonth.bind(this)
@@ -151,7 +150,7 @@ class MonthPicker extends Component {
             return { year: thisYear }
         }
 
-        let last = yearIndexes[idx] = years.length - 1
+        const last = yearIndexes[idx] = years.length - 1
         return { year: years[last].year }
 
     }
@@ -175,7 +174,7 @@ class MonthPicker extends Component {
     }
 
     value() {
-        let values = this.state.values
+        const values = this.state.values
         if (values.length >= 2)
             return { from: values[0], to: values[1] }
         else if (values.length === 1)
@@ -190,12 +189,12 @@ class MonthPicker extends Component {
             , nextValues = nextProps.range || nextProps.value //|| this.props.range || this.props.value
             , values = this.validValues(nextValues, yearArr, yearIndexes)
         this.setState({
-            years: yearArr
-            , values: values
-            , labelYears: [false, false]
-            , yearIndexes: yearIndexes
-            , lastRange: nextProps.range
-            , lastValue: nextProps.value
+            years: yearArr,
+            values: values,
+            labelYears: [false, false],
+            yearIndexes: yearIndexes,
+            lastRange: nextProps.range,
+            lastValue: nextProps.value,
         })
     }
 
@@ -284,8 +283,8 @@ class MonthPicker extends Component {
     }
 
     render() {
-        let pads = []
-            , popupClass = ''
+        const pads = []
+        let popupClass = ''
         if (this.state.values.length > 1) {
             pads.push( this.optionPad(0), this.optionPad(1) )
             popupClass = 'range'
@@ -310,7 +309,7 @@ class MonthPicker extends Component {
     }
 
     dismiss() {
-        if (this.closeable) {
+        if (this.state.closeable) {
             this._onDismiss()
         }
     }
@@ -321,14 +320,14 @@ class MonthPicker extends Component {
     }
 
     _handleOverlayTouchTap(e) {
-        if (this.closeable) {
+        if (this.state.closeable) {
             this._onDismiss()
             this.props.onClickAway && this.props.onClickAway(e)
         }
     }
 
     _onShow() {
-        setTimeout(function() {this.closeable = true;}.bind(this), 250)
+        setTimeout(function() {this.state.closeable = true;}.bind(this), 250)
         this.setState({ showed: true })
         this.props.onShow && this.props.onShow()
     }
@@ -340,7 +339,7 @@ class MonthPicker extends Component {
 
     handleClickMonth(e) {
         if (this.state.showed) {
-            let refid = this.getDID(e).split(':')
+            const refid = this.getDID(e).split(':')
                 , idx = parseInt(refid[0], 10)
                 , month = parseInt(refid[1], 10)
                 , year = this.state.labelYears[idx]
@@ -424,21 +423,23 @@ class MonthPicker extends Component {
 
 
 MonthPicker.propTypes = {
-    years: PropTypes.oneOfType([PropTypes.array, PropTypes.object, PropTypes.number])
-    , value: PropTypes.object
-    , range: PropTypes.object
-    , lang: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
-    , onChange: PropTypes.func
-    , onYearChange: PropTypes.func
-    , onShow: PropTypes.func
-    , onDismiss: PropTypes.func
-    , onClickAway: PropTypes.func
-    , theme: PropTypes.string
+    years: PropTypes.oneOfType([PropTypes.array, PropTypes.object, PropTypes.number]),
+    value: PropTypes.object,
+    range: PropTypes.object,
+    lang: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+    onChange: PropTypes.func,
+    onYearChange: PropTypes.func,
+    onShow: PropTypes.func,
+    onDismiss: PropTypes.func,
+    onClickAway: PropTypes.func,
+    theme: PropTypes.string,
+    show: PropTypes.bool,
 }
 MonthPicker.defaultProps = {
-    years: getYearsByNum(5)
-    , onChange(year, month, idx) {}
-    , theme: 'light'
+    years: getYearsByNum(5),
+    onChange(year, month, idx) {},
+    theme: 'light',
+    show: false,
 }
 
 

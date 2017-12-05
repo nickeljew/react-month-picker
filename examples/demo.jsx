@@ -17,7 +17,7 @@ DocReady(function() {
             super(props, context)
 
             this.state = {
-                value: this.props.value || 'N/A'
+                value: this.props.value || 'N/A',
             }
 
             this._handleClick = this._handleClick.bind(this)
@@ -25,7 +25,7 @@ DocReady(function() {
 
         componentWillReceiveProps(nextProps){
             this.setState({
-                value: nextProps.value || 'N/A'
+                value: nextProps.value || 'N/A',
             })
         }
 
@@ -45,8 +45,8 @@ DocReady(function() {
 
 
     MonthBox.propTypes = {
-        value: PropTypes.string
-        , onClick: PropTypes.func
+        value: PropTypes.string,
+        onClick: PropTypes.func,
     }
 
 
@@ -63,10 +63,10 @@ DocReady(function() {
             super(props, context)
 
             this.state = {
-                mvalue: {year: 2014, month: 11}
-                , mvalue2: {year: 2016, month: 7}
-                , mrange: {from: {year: 2014, month: 8}, to: {year: 2015, month: 5}}
-                , mrange2: {from: {year: 2013, month: 11}, to: {year: 2016, month: 3}}
+                mvalue: {year: 2014, month: 11},
+                mvalue2: {year: 2016, month: 7},
+                mrange: {from: {year: 2014, month: 8}, to: {year: 2015, month: 5}},
+                mrange2: {from: {year: 2013, month: 11}, to: {year: 2016, month: 3}},
             }
 
             this.handleClickMonthBox = this.handleClickMonthBox.bind(this)
@@ -88,22 +88,22 @@ DocReady(function() {
 
         componentWillReceiveProps(nextProps){
             this.setState({
-                value: nextProps.value || 'N/A'
+                value: nextProps.value || 'N/A',
             })
         }
 
         render() {
 
-            let pickerLang = {
-                months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-                , from: 'From', to: 'To'
+            const pickerLang = {
+                months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                from: 'From', to: 'To',
             }
-            let mvalue = this.state.mvalue
+            const mvalue = this.state.mvalue
                 , mvalue2 = this.state.mvalue2
                 , mrange = this.state.mrange
                 , mrange2 = this.state.mrange2
 
-            let makeText = m => {
+            const makeText = m => {
                 if (m && m.year && m.month) return (pickerLang.months[m.month-1] + '. ' + m.year)
                 return '?'
             }
@@ -251,8 +251,8 @@ DocReady(function() {
 
 
     Main.propTypes = {
-        value: PropTypes.string
-        , onClick: PropTypes.func
+        value: PropTypes.string,
+        onClick: PropTypes.func,
     }
 
 
@@ -260,8 +260,8 @@ DocReady(function() {
 
 
     ReactDOM.render(
-        <Main/>
-        , Dom.nodeById("page-container"))
+        <Main/>,
+        Dom.nodeById("page-container"))
 
 
 })

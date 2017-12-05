@@ -188,13 +188,12 @@ var MonthPicker = function (_Component) {
             years: yearArr,
             values: values,
             labelYears: [false, false],
-            showed: false,
+            showed: _this.props.show,
+            closeable: _this.props.show,
             yearIndexes: yearIndexes,
             lastRange: _this.props.range,
             lastValue: _this.props.value
         };
-
-        _this.closeable = false;
 
         _this._handleOverlayTouchTap = _this._handleOverlayTouchTap.bind(_this);
         _this.handleClickMonth = _this.handleClickMonth.bind(_this);
@@ -390,8 +389,8 @@ var MonthPicker = function (_Component) {
     }, {
         key: 'render',
         value: function render() {
-            var pads = [],
-                popupClass = '';
+            var pads = [];
+            var popupClass = '';
             if (this.state.values.length > 1) {
                 pads.push(this.optionPad(0), this.optionPad(1));
                 popupClass = 'range';
@@ -422,7 +421,7 @@ var MonthPicker = function (_Component) {
     }, {
         key: 'dismiss',
         value: function dismiss() {
-            if (this.closeable) {
+            if (this.state.closeable) {
                 this._onDismiss();
             }
         }
@@ -434,7 +433,7 @@ var MonthPicker = function (_Component) {
     }, {
         key: '_handleOverlayTouchTap',
         value: function _handleOverlayTouchTap(e) {
-            if (this.closeable) {
+            if (this.state.closeable) {
                 this._onDismiss();
                 this.props.onClickAway && this.props.onClickAway(e);
             }
@@ -443,7 +442,7 @@ var MonthPicker = function (_Component) {
         key: '_onShow',
         value: function _onShow() {
             setTimeout(function () {
-                this.closeable = true;
+                this.state.closeable = true;
             }.bind(this), 250);
             this.setState({ showed: true });
             this.props.onShow && this.props.onShow();
@@ -536,12 +535,15 @@ MonthPicker.propTypes = {
     onShow: _propTypes2.default.func,
     onDismiss: _propTypes2.default.func,
     onClickAway: _propTypes2.default.func,
-    theme: _propTypes2.default.string
+    theme: _propTypes2.default.string,
+    show: _propTypes2.default.bool
 };
 MonthPicker.defaultProps = {
     years: getYearsByNum(5),
     onChange: function onChange(year, month, idx) {},
-    theme: 'light'
+
+    theme: 'light',
+    show: false
 };
 
 exports.default = MonthPicker;
@@ -834,7 +836,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
             value: function render() {
 
                 var pickerLang = {
-                    months: ['Jan', 'Feb', 'Mar', 'Spr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                     from: 'From', to: 'To'
                 };
                 var mvalue = this.state.mvalue,
