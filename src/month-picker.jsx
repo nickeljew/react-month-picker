@@ -136,11 +136,11 @@ class MonthPicker extends Component {
 
         let foundThisYear
         for (let i = 0; i < years.length; i++) {
-            if (ym && years[i].year == ym.year) {
+            if (ym && years[i].year === ym.year) {
                 yearIndexes[idx] = i
                 return ym
             }
-            else if (years[i].year == thisYear) {
+            else if (years[i].year === thisYear) {
                 foundThisYear = i
             }
         }
@@ -195,6 +195,8 @@ class MonthPicker extends Component {
             yearIndexes: yearIndexes,
             lastRange: nextProps.range,
             lastValue: nextProps.value,
+            showed: nextProps.show,
+            closeable: nextProps.show,
         })
     }
 
