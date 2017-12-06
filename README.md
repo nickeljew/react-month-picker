@@ -4,6 +4,9 @@ Month-Picker Component offers a popup month selection panel with responsive layo
 
 
 ## Changelogs
+#### v1.3.3
+- fixed carelessness in peerDependencies setting
+
 #### v1.3.2
 - Support show prop in componentWillReceiveProps
 
