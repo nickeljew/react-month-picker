@@ -100,7 +100,27 @@ function getYearArray(years) {
 
 
 
-class MonthPicker extends Component {
+export default class MonthPicker extends Component {
+    static propTypes = {
+        years: PropTypes.oneOfType([PropTypes.array, PropTypes.object, PropTypes.number]),
+        value: PropTypes.object,
+        range: PropTypes.object,
+        lang: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+        onChange: PropTypes.func,
+        onYearChange: PropTypes.func,
+        onShow: PropTypes.func,
+        onDismiss: PropTypes.func,
+        onClickAway: PropTypes.func,
+        theme: PropTypes.string,
+        show: PropTypes.bool,
+    }
+    static defaultProps = {
+        years: getYearsByNum(5),
+        onChange(year, month, idx) {},
+        theme: 'light',
+        show: false,
+    }
+
     constructor(props, context) {
         super(props, context)
 
@@ -422,29 +442,3 @@ class MonthPicker extends Component {
         }
     }
 }
-
-
-MonthPicker.propTypes = {
-    years: PropTypes.oneOfType([PropTypes.array, PropTypes.object, PropTypes.number]),
-    value: PropTypes.object,
-    range: PropTypes.object,
-    lang: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-    onChange: PropTypes.func,
-    onYearChange: PropTypes.func,
-    onShow: PropTypes.func,
-    onDismiss: PropTypes.func,
-    onClickAway: PropTypes.func,
-    theme: PropTypes.string,
-    show: PropTypes.bool,
-}
-MonthPicker.defaultProps = {
-    years: getYearsByNum(5),
-    onChange(year, month, idx) {},
-    theme: 'light',
-    show: false,
-}
-
-
-
-
-export default MonthPicker

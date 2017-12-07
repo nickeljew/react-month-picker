@@ -4,6 +4,9 @@ Month-Picker Component offers a popup month selection panel with responsive layo
 
 
 ## Changelogs
+#### v1.3.4
+- upgrade react-tapper version
+
 #### v1.3.3
 - fixed carelessness in peerDependencies setting
 

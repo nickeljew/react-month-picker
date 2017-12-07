@@ -547,7 +547,6 @@ MonthPicker.defaultProps = {
     theme: 'light',
     show: false
 };
-
 exports.default = MonthPicker;
 
 /***/ }),
@@ -1188,18 +1187,23 @@ var Tappable = function (_Component) {
 
         var _this = _possibleConstructorReturn(this, (Tappable.__proto__ || Object.getPrototypeOf(Tappable)).call(this, props, context));
 
-        _this.state = {
-            x: null,
-            y: null,
-            swiping: false,
-            start: 0
-        };
+        _this.state = _this.getInitialState();
 
         _this.touchable = (0, _touchSupport2.default)();
         return _this;
     }
 
     _createClass(Tappable, [{
+        key: 'getInitialState',
+        value: function getInitialState() {
+            return {
+                x: null,
+                y: null,
+                swiping: false,
+                start: 0
+            };
+        }
+    }, {
         key: 'render',
         value: function render() {
             var props = this.props,
@@ -1401,13 +1405,11 @@ Tappable.propTypes = {
     flickThreshold: _propTypes2.default.number,
     delta: _propTypes2.default.number
 };
-
 Tappable.defaultProps = {
     component: 'div',
     flickThreshold: 0.6,
     delta: 10
 };
-
 exports.default = Tappable;
 
 
@@ -1429,6 +1431,7 @@ var touchStyles = {
     MozUserSelect: 'none',
     msUserSelect: 'none',
     userSelect: 'none'
+    //cursor: 'pointer'
 };
 
 exports.default = touchStyles;
