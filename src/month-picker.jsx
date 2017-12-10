@@ -261,11 +261,11 @@ export default class MonthPicker extends Component {
         }
 
         return (
-            <div className="pad" key={padIndex}>
+            <div className="rmp-pad" key={padIndex}>
                 <div>
                     <label>{labelPreText}{labelYear}</label>
-                    <i className={["tab", "btn", "prev", prevCss].join(' ')} data-id={padIndex} onClick={this.goPrevYear}>{'<'}</i>
-                    <i className={["tab", "btn", "next", nextCss].join(' ')} data-id={padIndex} onClick={this.goNextYear}>{'>'}</i>
+                    <i className={["rmp-tab", "rmp-btn", "prev", prevCss].join(' ')} data-id={padIndex} onClick={this.goPrevYear}>{'<'}</i>
+                    <i className={["rmp-tab", "rmp-btn", "next", nextCss].join(' ')} data-id={padIndex} onClick={this.goNextYear}>{'>'}</i>
                 </div>
                 <ul>
                     {
@@ -293,7 +293,7 @@ export default class MonthPicker extends Component {
                             }
                             let clickHandler = css !== 'disable' ? this.handleClickMonth : undefined
                             return (
-                                <li key={i} className={["btn", css].join(' ')}
+                                <li key={i} className={["rmp-btn", css].join(' ')}
                                     data-id={padIndex + ':' + (i+1)}
                                     onClick={clickHandler}>{months.length > i ? months[i] : i}</li>
                             )
@@ -318,10 +318,10 @@ export default class MonthPicker extends Component {
         return (
             <div className={["month-picker", this.props.className].join(' ')}>
                 {this.props.children}
-                <div className={["container", "table", this.props.className, (this.state.showed ? "show" : '')].join(' ')}>
-                    <Tappable className="overlay" onTap={this._handleOverlayTouchTap} />
-                    <div className="cell">
-                        <div className={["popup", popupClass , this.props.theme, (this.state.showed ? "show" : '')].join(' ')}>
+                <div className={["rmp-container", "rmp-table", this.props.className, (this.state.showed ? "show" : '')].join(' ')}>
+                    <Tappable className="rmp-overlay" onTap={this._handleOverlayTouchTap} />
+                    <div className="rmp-cell">
+                        <div className={["rmp-popup", popupClass , this.props.theme, (this.state.showed ? "show" : '')].join(' ')}>
                             {pads}
                         </div>
                     </div>

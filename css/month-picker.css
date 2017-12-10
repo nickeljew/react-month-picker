@@ -1,6 +1,6 @@
 .month-picker {
   position: relative; }
-  .month-picker > .container {
+  .month-picker > .rmp-container {
     position: relative;
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
@@ -11,7 +11,7 @@
     -moz-transition: left 0ms cubic-bezier(0.23, 1, 0.32, 1) 450ms;
     transition: left 0ms cubic-bezier(0.23, 1, 0.32, 1) 450ms; }
     @media screen and (max-width: 767px) {
-      .month-picker > .container {
+      .month-picker > .rmp-container {
         position: fixed;
         top: 0;
         left: -10000px;
@@ -20,16 +20,16 @@
         -webkit-transition: left 0ms cubic-bezier(0.23, 1, 0.32, 1) 450ms;
         -moz-transition: left 0ms cubic-bezier(0.23, 1, 0.32, 1) 450ms;
         transition: left 0ms cubic-bezier(0.23, 1, 0.32, 1) 450ms; } }
-    .month-picker > .container.table {
+    .month-picker > .rmp-container.rmp-table {
       display: table; }
-    .month-picker > .container.show {
+    .month-picker > .rmp-container.show {
       left: 0;
       -webkit-transition: left 0ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
       -moz-transition: left 0ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
       transition: left 0ms cubic-bezier(0.23, 1, 0.32, 1) 0ms; }
-      .month-picker > .container.show .overlay {
+      .month-picker > .rmp-container.show .rmp-overlay {
         left: 0; }
-    .month-picker > .container .overlay {
+    .month-picker > .rmp-container .rmp-overlay {
       position: fixed;
       height: 100%;
       width: 100%;
@@ -48,18 +48,18 @@
       -moz-transition: left 0ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, opacity 400ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
       transition: left 0ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, opacity 400ms cubic-bezier(0.23, 1, 0.32, 1) 0ms; }
       @media screen and (max-width: 767px) {
-        .month-picker > .container .overlay {
+        .month-picker > .rmp-container .rmp-overlay {
           background-color: rgba(0, 0, 0, 0.25); } }
-    .month-picker > .container .cell {
+    .month-picker > .rmp-container .rmp-cell {
       display: table-cell;
       vertical-align: middle;
       box-sizing: border-box;
       width: 100%;
       height: 100%; }
       @media screen and (max-width: 767px) {
-        .month-picker > .container .cell {
+        .month-picker > .rmp-container .rmp-cell {
           vertical-align: bottom; } }
-    .month-picker > .container .popup {
+    .month-picker > .rmp-container .rmp-popup {
       position: absolute;
       -webkit-tap-highlight-color: transparent;
       -webkit-transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1);
@@ -73,7 +73,7 @@
       padding: 0.4rem;
       box-sizing: content-box; }
       @media screen and (max-width: 767px) {
-        .month-picker > .container .popup {
+        .month-picker > .rmp-container .rmp-popup {
           box-sizing: border-box;
           bottom: 0;
           width: 100%;
@@ -84,19 +84,19 @@
           -ms-transform: translate3d(0, 14.4rem, 0);
           -o-transform: translate3d(0, 14.4rem, 0);
           transform: translate3d(0, 14.4rem, 0); }
-          .month-picker > .container .popup.range {
+          .month-picker > .rmp-container .rmp-popup.range {
             height: 28rem;
             -webkit-transform: translate3d(0, 28rem, 0);
             -moz-transform: translate3d(0, 28rem, 0);
             -ms-transform: translate3d(0, 28rem, 0);
             -o-transform: translate3d(0, 28rem, 0);
             transform: translate3d(0, 28rem, 0); }
-            .month-picker > .container .popup.range .pad {
+            .month-picker > .rmp-container .rmp-popup.range .rmp-pad {
               margin-top: 0.4rem; }
-              .month-picker > .container .popup.range .pad:first-of-type {
+              .month-picker > .rmp-container .rmp-popup.range .rmp-pad:first-of-type {
                 margin-top: 0; } }
       @media screen and (min-width: 768px) {
-        .month-picker > .container .popup {
+        .month-picker > .rmp-container .rmp-popup {
           -webkit-transform: translate3d(0, -64px, 0);
           -moz-transform: translate3d(0, -64px, 0);
           -ms-transform: translate3d(0, -64px, 0);
@@ -104,38 +104,38 @@
           transform: translate3d(0, -64px, 0);
           top: 0;
           width: 20rem; }
-          .month-picker > .container .popup.range {
+          .month-picker > .rmp-container .rmp-popup.range {
             width: 40.6rem;
             padding: 0.6rem; } }
-      .month-picker > .container .popup.show {
+      .month-picker > .rmp-container .rmp-popup.show {
         opacity: 1;
         -webkit-transform: translate3d(0, 0, 0);
         -moz-transform: translate3d(0, 0, 0);
         -ms-transform: translate3d(0, 0, 0);
         -o-transform: translate3d(0, 0, 0);
         transform: translate3d(0, 0, 0); }
-      .month-picker > .container .popup:after {
+      .month-picker > .rmp-container .rmp-popup:after {
         content: ' ';
         clear: both;
         display: table; }
-      .month-picker > .container .popup .pad {
+      .month-picker > .rmp-container .rmp-popup .rmp-pad {
         position: relative; }
         @media screen and (min-width: 768px) {
-          .month-picker > .container .popup .pad {
+          .month-picker > .rmp-container .rmp-popup .rmp-pad {
             box-sizing: border-box;
             float: left;
             width: 20rem; }
-            .month-picker > .container .popup .pad:nth-of-type(2) {
+            .month-picker > .rmp-container .rmp-popup .rmp-pad:nth-of-type(2) {
               float: right; } }
-        .month-picker > .container .popup .pad > div label {
+        .month-picker > .rmp-container .rmp-popup .rmp-pad > div label {
           display: block;
           font-size: 1.4rem;
           text-align: center;
           line-height: 3.4rem; }
-          .month-picker > .container .popup .pad > div label b {
+          .month-picker > .rmp-container .rmp-popup .rmp-pad > div label b {
             font-weight: normal;
             margin-right: 0.5em; }
-        .month-picker > .container .popup .pad > div i {
+        .month-picker > .rmp-container .rmp-popup .rmp-pad > div i {
           font-style: normal;
           text-align: center;
           width: 3.4rem;
@@ -143,22 +143,22 @@
           line-height: 3.4rem;
           position: absolute;
           top: 0; }
-          .month-picker > .container .popup .pad > div i.prev {
+          .month-picker > .rmp-container .rmp-popup .rmp-pad > div i.prev {
             left: 0; }
-          .month-picker > .container .popup .pad > div i.next {
+          .month-picker > .rmp-container .rmp-popup .rmp-pad > div i.next {
             right: 0; }
-        .month-picker > .container .popup .pad ul, .month-picker > .container .popup .pad li {
+        .month-picker > .rmp-container .rmp-popup .rmp-pad ul, .month-picker > .rmp-container .rmp-popup .rmp-pad li {
           list-style-type: none;
           margin: 0;
           padding: 0; }
-        .month-picker > .container .popup .pad ul {
+        .month-picker > .rmp-container .rmp-popup .rmp-pad ul {
           display: block;
           width: 100%; }
-          .month-picker > .container .popup .pad ul:after {
+          .month-picker > .rmp-container .rmp-popup .rmp-pad ul:after {
             content: ' ';
             clear: both;
             display: table; }
-        .month-picker > .container .popup .pad li {
+        .month-picker > .rmp-container .rmp-popup .rmp-pad li {
           display: block;
           float: left;
           text-align: center;
@@ -176,62 +176,62 @@
           -moz-transition: background-color 200ms ease-in-out, color 200ms ease-in-out;
           transition: background-color 200ms ease-in-out, color 200ms ease-in-out; }
           @media screen and (max-width: 767px) {
-            .month-picker > .container .popup .pad li {
+            .month-picker > .rmp-container .rmp-popup .rmp-pad li {
               width: 25%; } }
           @media screen and (min-width: 768px) {
-            .month-picker > .container .popup .pad li {
+            .month-picker > .rmp-container .rmp-popup .rmp-pad li {
               width: 33.3333333333%; } }
-      .month-picker > .container .popup.light {
+      .month-picker > .rmp-container .rmp-popup.light {
         color: #666;
         background-color: rgba(255, 255, 255, 0.96); }
         @media screen and (max-width: 767px) {
-          .month-picker > .container .popup.light {
+          .month-picker > .rmp-container .rmp-popup.light {
             border-top: 1px solid #ccc;
             box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.08); }
-            .month-picker > .container .popup.light.range .pad {
+            .month-picker > .rmp-container .rmp-popup.light.range .rmp-pad {
               border-top: 1px solid rgba(204, 204, 204, 0.5); }
-              .month-picker > .container .popup.light.range .pad:first-of-type {
+              .month-picker > .rmp-container .rmp-popup.light.range .rmp-pad:first-of-type {
                 border-top: 0; } }
         @media screen and (min-width: 768px) {
-          .month-picker > .container .popup.light {
+          .month-picker > .rmp-container .rmp-popup.light {
             border: 1px solid #ccc;
             box-shadow: 0 1px 5px #ddd; }
-            .month-picker > .container .popup.light.range .pad {
+            .month-picker > .rmp-container .rmp-popup.light.range .rmp-pad {
               background-color: rgba(238, 238, 238, 0.9); } }
-        .month-picker > .container .popup.light .pad .btn {
+        .month-picker > .rmp-container .rmp-popup.light .rmp-pad .rmp-btn {
           cursor: pointer; }
           @media screen and (min-width: 768px) {
-            .month-picker > .container .popup.light .pad .btn:hover {
+            .month-picker > .rmp-container .rmp-popup.light .rmp-pad .rmp-btn:hover {
               background-color: rgba(255, 227, 160, 0.59); } }
-        .month-picker > .container .popup.light .pad li.active, .month-picker > .container .popup.light .pad li.active:hover {
+        .month-picker > .rmp-container .rmp-popup.light .rmp-pad li.active, .month-picker > .rmp-container .rmp-popup.light .rmp-pad li.active:hover {
           background-color: rgba(31, 42, 58, 0.73);
           color: white;
           cursor: default; }
-        .month-picker > .container .popup.light .pad .disable, .month-picker > .container .popup.light .pad .disable:hover {
+        .month-picker > .rmp-container .rmp-popup.light .rmp-pad .disable, .month-picker > .rmp-container .rmp-popup.light .rmp-pad .disable:hover {
           background-color: transparent;
           color: #bbb;
           cursor: default; }
-      .month-picker > .container .popup.dark {
+      .month-picker > .rmp-container .rmp-popup.dark {
         color: #fff;
         background-color: rgba(50, 50, 50, 0.96); }
         @media screen and (max-width: 767px) {
-          .month-picker > .container .popup.dark.range .pad {
+          .month-picker > .rmp-container .rmp-popup.dark.range .rmp-pad {
             border-top: 1px solid rgba(113, 113, 113, 0.41); }
-            .month-picker > .container .popup.dark.range .pad:first-of-type {
+            .month-picker > .rmp-container .rmp-popup.dark.range .rmp-pad:first-of-type {
               border-top: 0; } }
         @media screen and (min-width: 768px) {
-          .month-picker > .container .popup.dark.range .pad {
+          .month-picker > .rmp-container .rmp-popup.dark.range .rmp-pad {
             background-color: rgba(70, 70, 70, 0.9); } }
-        .month-picker > .container .popup.dark .pad .btn {
+        .month-picker > .rmp-container .rmp-popup.dark .rmp-pad .rmp-btn {
           cursor: pointer; }
           @media screen and (min-width: 768px) {
-            .month-picker > .container .popup.dark .pad .btn:hover {
+            .month-picker > .rmp-container .rmp-popup.dark .rmp-pad .rmp-btn:hover {
               background-color: rgba(255, 210, 96, 0.33); } }
-        .month-picker > .container .popup.dark .pad li.active, .month-picker > .container .popup.dark .pad li.active:hover {
+        .month-picker > .rmp-container .rmp-popup.dark .rmp-pad li.active, .month-picker > .rmp-container .rmp-popup.dark .rmp-pad li.active:hover {
           background-color: rgba(189, 211, 242, 0.7);
           color: #303030;
           cursor: default; }
-        .month-picker > .container .popup.dark .pad .disable, .month-picker > .container .popup.dark .pad .disable:hover {
+        .month-picker > .rmp-container .rmp-popup.dark .rmp-pad .disable, .month-picker > .rmp-container .rmp-popup.dark .rmp-pad .disable:hover {
           background-color: transparent;
           color: #717171;
           cursor: default; }
