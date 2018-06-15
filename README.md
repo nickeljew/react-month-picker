@@ -4,6 +4,9 @@ Month-Picker Component offers a popup month selection panel with responsive layo
 
 
 ## Changelogs
+#### v1.3.7
+- any positive integer is valid year
+
 #### v1.3.5
 - using private css naming
 
