@@ -28,7 +28,7 @@ import Tappable from 'react-tapper'
 const isBrowser = (typeof window !== "undefined" && typeof document !== "undefined")
 
 
-const __MIN_VALID_YEAR = 1970
+const __MIN_VALID_YEAR = 1
 
 
 function mapToArray(num, callback) {

@@ -115,7 +115,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var isBrowser = typeof window !== "undefined" && typeof document !== "undefined";
 
-var __MIN_VALID_YEAR = 1970;
+var __MIN_VALID_YEAR = 1;
 
 function mapToArray(num, callback) {
     var arr = [];
