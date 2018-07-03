@@ -45,23 +45,21 @@ or
 ## Snapshots
 
 ###### Desktop View (Picking A Months)
-![Desktop WEB](http://pub.lvrian.com/react-month-picker/pc-snapshots-01.jpg "Desktop Browser View For Single Month")
+![Desktop WEB](https://raw.githubusercontent.com/nickeljew/react-month-picker/master/snapshots/pc-snapshots-01.jpg "Desktop Browser View For Single Month")
 
 
 ###### Desktop View (Picking Span of Months)
-![Desktop WEB](http://pub.lvrian.com/react-month-picker/pc-snapshots-02.jpg "Desktop Browser View For Span of Months")
+![Desktop WEB](https://raw.githubusercontent.com/nickeljew/react-month-picker/master/snapshots/pc-snapshots-02.jpg "Desktop Browser View For Span of Months")
 
 
 ###### Mobile View (Picking A Months)
-![Mobile WEB](http://pub.lvrian.com/react-month-picker/mobile-snapshots-01.jpg "Mobile Browser View For Single Month")
+![Mobile WEB](https://raw.githubusercontent.com/nickeljew/react-month-picker/master/snapshots/mobile-snapshots-01.jpg "Mobile Browser View For Single Month")
 
 
 ###### Mobile View (Picking Span of Months)
-![Mobile WEB](http://pub.lvrian.com/react-month-picker/mobile-snapshots-02.jpg "Mobile Browser View Span of Months")
+![Mobile WEB](https://raw.githubusercontent.com/nickeljew/react-month-picker/master/snapshots/mobile-snapshots-02.jpg "Mobile Browser View Span of Months")
 
 ## Demo
-
-[Online Demo](http://pub.lvrian.com/react-month-picker/examples/demo.html)
 
 Demo file in repository: ./examples/demo.html
 
