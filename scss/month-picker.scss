@@ -279,6 +279,9 @@
             color: #bbb;
             cursor: default;
           }
+          .rmp-btn.select {
+            background-color: #d3d3d3;
+          }
         }
       }
       // for dark theme pad
@@ -320,6 +323,9 @@
             background-color: transparent;
             color: #717171;
             cursor: default;
+          }
+          .rmp-btn.select {
+            background-color: #262828;
           }
         }
       }
