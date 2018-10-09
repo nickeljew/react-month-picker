@@ -267,6 +267,10 @@
                 background-color: rgba(255, 227, 160, 0.59);
               }
             }
+
+            &.select {
+              background-color: #d3d3d3;
+            }
           }
 
           li.active, li.active:hover {
@@ -278,9 +282,6 @@
             background-color: transparent;
             color: #bbb;
             cursor: default;
-          }
-          .rmp-btn.select {
-            background-color: #d3d3d3;
           }
         }
       }
@@ -312,6 +313,10 @@
                 background-color: rgba(255, 210, 96, 0.33);
               }
             }
+
+            &.select {
+              background-color: #262828;
+            }
           }
 
           li.active, li.active:hover {
@@ -323,9 +328,6 @@
             background-color: transparent;
             color: #717171;
             cursor: default;
-          }
-          .rmp-btn.select {
-            background-color: #262828;
           }
         }
       }
