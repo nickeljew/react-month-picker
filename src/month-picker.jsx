@@ -275,6 +275,12 @@ export default class MonthPicker extends Component {
                             if (yearActive && m === value.month) {
                                 css = 'active'
                             }
+                            if (values.length > 1 && padIndex === 0 && (labelYear > value.year || (labelYear == value.year && m > value.month))) {
+                                css = 'select';
+                            }
+                            if (values.length > 1 && padIndex === 1 && (labelYear < value.year || (labelYear == value.year && m < value.month))) {
+                                css = 'select';
+                            }
                             if (atMinYear && m < ymArr[0].min) {
                                 css = 'disable'
                             }
