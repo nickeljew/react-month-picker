@@ -76,7 +76,7 @@ Demo file in repository: ./examples/demo.html
 import Picker from 'react-month-picker'
 ```
 
-```
+```jsx
 render() {
 
     let pickerLang = {
