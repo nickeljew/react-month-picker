@@ -157,6 +157,7 @@ SCSS: 1) import bourbon library (http://bourbon.io/), 2) import scss/month-picke
 
 @theme: theme setting of month-picker; 2 options (light/dark); default theme is light
 
+@innerChildren: components that can be added inside of the popup
 
 ## Developing
 

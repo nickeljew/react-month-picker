@@ -15,6 +15,7 @@
  *  - object: including array of months' texts and other display texts
  *      e.g. {from: "From:", to: "To:", months: [...]}
  * @theme: theme setting of month-picker; 2 options (light/dark); default theme is light
+ * @innerChildren: components that can be added inside of the popup
  */
 
 
@@ -106,6 +107,7 @@ export default class MonthPicker extends Component {
         value: PropTypes.object,
         range: PropTypes.object,
         lang: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+        innerChildren: PropTypes.oneOfType([PropTypes.array, PropTypes.node]),
         onChange: PropTypes.func,
         onYearChange: PropTypes.func,
         onShow: PropTypes.func,
@@ -329,6 +331,7 @@ export default class MonthPicker extends Component {
                     <div className="rmp-cell">
                         <div className={["rmp-popup", popupClass , this.props.theme, (this.state.showed ? "show" : '')].join(' ')}>
                             {pads}
+                            {this.props.innerChildren}
                         </div>
                     </div>
                 </div>
