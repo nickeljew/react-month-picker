@@ -33,9 +33,6 @@
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 /******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -63,23 +60,655 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 6);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, exports) {
 
-module.exports = PropTypes;
+module.exports = React;
 
 /***/ }),
 /* 1 */
 /***/ (function(module, exports) {
 
-module.exports = React;
+module.exports = PropTypes;
 
 /***/ }),
 /* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(1);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _reactDom = __webpack_require__(3);
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _es6Docready = __webpack_require__(4);
+
+var _es6Docready2 = _interopRequireDefault(_es6Docready);
+
+var _es6Dom = __webpack_require__(5);
+
+var _es6Dom2 = _interopRequireDefault(_es6Dom);
+
+var _monthPicker = __webpack_require__(6);
+
+var _monthPicker2 = _interopRequireDefault(_monthPicker);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+(0, _es6Docready2.default)(function () {
+    var MonthBox = function (_Component) {
+        _inherits(MonthBox, _Component);
+
+        function MonthBox(props, context) {
+            _classCallCheck(this, MonthBox);
+
+            var _this = _possibleConstructorReturn(this, (MonthBox.__proto__ || Object.getPrototypeOf(MonthBox)).call(this, props, context));
+
+            _this.state = {
+                value: _this.props.value || 'N/A'
+            };
+
+            _this._handleClick = _this._handleClick.bind(_this);
+            return _this;
+        }
+
+        _createClass(MonthBox, [{
+            key: 'componentWillReceiveProps',
+            value: function componentWillReceiveProps(nextProps) {
+                this.setState({
+                    value: nextProps.value || 'N/A'
+                });
+            }
+        }, {
+            key: 'render',
+            value: function render() {
+
+                return _react2.default.createElement(
+                    'div',
+                    { className: 'box', onClick: this._handleClick },
+                    _react2.default.createElement(
+                        'label',
+                        null,
+                        this.state.value
+                    )
+                );
+            }
+        }, {
+            key: '_handleClick',
+            value: function _handleClick(e) {
+                this.props.onClick && this.props.onClick(e);
+            }
+        }]);
+
+        return MonthBox;
+    }(_react.Component);
+
+    MonthBox.propTypes = {
+        value: _propTypes2.default.string,
+        onClick: _propTypes2.default.func
+    };
+
+    var List = function (_Component2) {
+        _inherits(List, _Component2);
+
+        function List(props, context) {
+            _classCallCheck(this, List);
+
+            var _this2 = _possibleConstructorReturn(this, (List.__proto__ || Object.getPrototypeOf(List)).call(this, props, context));
+
+            _this2.state = {
+                mvalue: { year: 2014, month: 11 },
+                mvalue2: { year: 2016, month: 7 },
+                mrange: { from: { year: 2014, month: 8 }, to: { year: 2015, month: 5 } },
+                mrange2: { from: { year: 2013, month: 11 }, to: { year: 2016, month: 3 } }
+            };
+
+            _this2.handleClickMonthBox = _this2.handleClickMonthBox.bind(_this2);
+            _this2.handleAMonthChange = _this2.handleAMonthChange.bind(_this2);
+            _this2.handleAMonthDissmis = _this2.handleAMonthDissmis.bind(_this2);
+
+            _this2.handleClickMonthBox2 = _this2.handleClickMonthBox2.bind(_this2);
+            _this2.handleAMonthChange2 = _this2.handleAMonthChange2.bind(_this2);
+            _this2.handleAMonthDissmis2 = _this2.handleAMonthDissmis2.bind(_this2);
+
+            _this2._handleClickRangeBox = _this2._handleClickRangeBox.bind(_this2);
+            _this2.handleRangeChange = _this2.handleRangeChange.bind(_this2);
+            _this2.handleRangeDissmis = _this2.handleRangeDissmis.bind(_this2);
+
+            _this2._handleClickRangeBox2 = _this2._handleClickRangeBox2.bind(_this2);
+            _this2.handleRangeChange2 = _this2.handleRangeChange2.bind(_this2);
+            _this2.handleRangeDissmis2 = _this2.handleRangeDissmis2.bind(_this2);
+            return _this2;
+        }
+
+        _createClass(List, [{
+            key: 'componentWillReceiveProps',
+            value: function componentWillReceiveProps(nextProps) {
+                this.setState({
+                    value: nextProps.value || 'N/A'
+                });
+            }
+        }, {
+            key: 'render',
+            value: function render() {
+
+                var pickerLang = {
+                    months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    from: 'From', to: 'To'
+                };
+                var mvalue = this.state.mvalue,
+                    mvalue2 = this.state.mvalue2,
+                    mrange = this.state.mrange,
+                    mrange2 = this.state.mrange2;
+
+                var makeText = function makeText(m) {
+                    if (m && m.year && m.month) return pickerLang.months[m.month - 1] + '. ' + m.year;
+                    return '?';
+                };
+
+                return _react2.default.createElement(
+                    'ul',
+                    null,
+                    _react2.default.createElement(
+                        'li',
+                        null,
+                        _react2.default.createElement(
+                            'label',
+                            null,
+                            _react2.default.createElement(
+                                'b',
+                                null,
+                                'Pick A Month'
+                            ),
+                            _react2.default.createElement(
+                                'span',
+                                null,
+                                '(Available years: 2008, 2011, 2012, 2014, 2016)'
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'edit' },
+                            _react2.default.createElement(
+                                _monthPicker2.default,
+                                {
+                                    ref: 'pickAMonth',
+                                    years: [2008, 2011, 2012, 2014, 2016],
+                                    value: mvalue,
+                                    lang: pickerLang.months,
+                                    onChange: this.handleAMonthChange,
+                                    onDismiss: this.handleAMonthDissmis
+                                },
+                                _react2.default.createElement(MonthBox, { value: makeText(mvalue), onClick: this.handleClickMonthBox })
+                            )
+                        )
+                    ),
+                    _react2.default.createElement(
+                        'li',
+                        null,
+                        _react2.default.createElement(
+                            'label',
+                            null,
+                            _react2.default.createElement(
+                                'b',
+                                null,
+                                'Pick A Month'
+                            ),
+                            _react2.default.createElement(
+                                'span',
+                                null,
+                                '(Available months from Feb.2016 to Sep.2016)'
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'edit' },
+                            _react2.default.createElement(
+                                _monthPicker2.default,
+                                {
+                                    ref: 'pickAMonth2',
+                                    years: { min: { year: 2016, month: 2 }, max: { year: 2016, month: 9 } },
+                                    value: mvalue2,
+                                    lang: pickerLang.months,
+                                    theme: 'dark',
+                                    onChange: this.handleAMonthChange2,
+                                    onDismiss: this.handleAMonthDissmis2
+                                },
+                                _react2.default.createElement(MonthBox, { value: makeText(mvalue2), onClick: this.handleClickMonthBox2 })
+                            )
+                        )
+                    ),
+                    _react2.default.createElement(
+                        'li',
+                        null,
+                        _react2.default.createElement(
+                            'label',
+                            null,
+                            _react2.default.createElement(
+                                'b',
+                                null,
+                                'Pick A Span of Months'
+                            ),
+                            _react2.default.createElement(
+                                'span',
+                                null,
+                                '(Available years from 2013 to this year)'
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'edit' },
+                            _react2.default.createElement(
+                                _monthPicker2.default,
+                                {
+                                    ref: 'pickRange',
+                                    years: { min: 2013 },
+                                    range: mrange,
+                                    lang: pickerLang,
+                                    theme: 'light',
+                                    onChange: this.handleRangeChange,
+                                    onDismiss: this.handleRangeDissmis
+                                },
+                                _react2.default.createElement(MonthBox, { value: makeText(mrange.from) + ' ~ ' + makeText(mrange.to), onClick: this._handleClickRangeBox })
+                            )
+                        )
+                    ),
+                    _react2.default.createElement(
+                        'li',
+                        null,
+                        _react2.default.createElement(
+                            'label',
+                            null,
+                            _react2.default.createElement(
+                                'b',
+                                null,
+                                'Pick A Span of Months'
+                            ),
+                            _react2.default.createElement(
+                                'span',
+                                null,
+                                '(Available months from Apr.2013 to Sep.2016)'
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'edit' },
+                            _react2.default.createElement(
+                                _monthPicker2.default,
+                                {
+                                    ref: 'pickRange2',
+                                    years: { min: { year: 2013, month: 4 }, max: { year: 2016, month: 9 } },
+                                    range: mrange2,
+                                    lang: pickerLang,
+                                    theme: 'dark',
+                                    onChange: this.handleRangeChange2,
+                                    onDismiss: this.handleRangeDissmis2
+                                },
+                                _react2.default.createElement(MonthBox, { value: makeText(mrange2.from) + ' ~ ' + makeText(mrange2.to), onClick: this._handleClickRangeBox2 })
+                            )
+                        )
+                    )
+                );
+            }
+        }, {
+            key: 'handleClickMonthBox',
+            value: function handleClickMonthBox(e) {
+                this.refs.pickAMonth.show();
+            }
+        }, {
+            key: 'handleAMonthChange',
+            value: function handleAMonthChange(value, text) {}
+        }, {
+            key: 'handleAMonthDissmis',
+            value: function handleAMonthDissmis(value) {
+                this.setState({ mvalue: value });
+            }
+        }, {
+            key: 'handleClickMonthBox2',
+            value: function handleClickMonthBox2(e) {
+                this.refs.pickAMonth2.show();
+            }
+        }, {
+            key: 'handleAMonthChange2',
+            value: function handleAMonthChange2(value, text) {}
+        }, {
+            key: 'handleAMonthDissmis2',
+            value: function handleAMonthDissmis2(value) {
+                this.setState({ mvalue2: value });
+            }
+        }, {
+            key: '_handleClickRangeBox',
+            value: function _handleClickRangeBox(e) {
+                this.refs.pickRange.show();
+            }
+        }, {
+            key: 'handleRangeChange',
+            value: function handleRangeChange(value, text, listIndex) {}
+        }, {
+            key: 'handleRangeDissmis',
+            value: function handleRangeDissmis(value) {
+                this.setState({ mrange: value });
+            }
+        }, {
+            key: '_handleClickRangeBox2',
+            value: function _handleClickRangeBox2(e) {
+                this.refs.pickRange2.show();
+            }
+        }, {
+            key: 'handleRangeChange2',
+            value: function handleRangeChange2(value, text, listIndex) {}
+        }, {
+            key: 'handleRangeDissmis2',
+            value: function handleRangeDissmis2(value) {
+                this.setState({ mrange2: value });
+            }
+        }]);
+
+        return List;
+    }(_react.Component);
+
+    var Main = function (_Component3) {
+        _inherits(Main, _Component3);
+
+        function Main(props, context) {
+            _classCallCheck(this, Main);
+
+            var _this3 = _possibleConstructorReturn(this, (Main.__proto__ || Object.getPrototypeOf(Main)).call(this, props, context));
+
+            _this3.state = {
+                value: _this3.props.value
+            };
+            return _this3;
+        }
+
+        _createClass(Main, [{
+            key: 'componentWillReceiveProps',
+            value: function componentWillReceiveProps(nextProps) {
+                this.setState({
+                    value: nextProps.value
+                });
+            }
+        }, {
+            key: 'render',
+            value: function render() {
+
+                return _react2.default.createElement(
+                    'div',
+                    { className: 'list-area' },
+                    _react2.default.createElement(List, null)
+                );
+            }
+        }]);
+
+        return Main;
+    }(_react.Component);
+
+    Main.propTypes = {
+        value: _propTypes2.default.string,
+        onClick: _propTypes2.default.func
+    };
+
+    _reactDom2.default.render(_react2.default.createElement(Main, null), _es6Dom2.default.nodeById("page-container"));
+});
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+module.exports = ReactDOM;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports["default"] = docReady;
+
+function docReady(callback) {
+
+    function completed() {
+        document.removeEventListener("DOMContentLoaded", completed, false);
+        window.removeEventListener("load", completed, false);
+        callback();
+    }
+
+    //Events.on(document, 'DOMContentLoaded', completed)
+
+    if (document.readyState === "complete") {
+        // Handle it asynchronously to allow scripts the opportunity to delay ready
+        setTimeout(callback);
+    } else {
+
+        // Use the handy event callback
+        document.addEventListener("DOMContentLoaded", completed, false);
+
+        // A fallback to window.onload, that will always work
+        window.addEventListener("load", completed, false);
+    }
+}
+
+module.exports = exports["default"];
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+function animationFrame(tick) {
+    window.requestAnimationFrame && requestAnimationFrame(tick) || setTimeout(tick, 16);
+}
+
+var Dom = {
+    isDescendant: function isDescendant(parent, child) {
+        var node = child.parentNode;
+
+        while (node !== null) {
+            if (node === parent) return true;
+            node = node.parentNode;
+        }
+
+        return false;
+    },
+    offset: function offset(el) {
+        var rect = el.getBoundingClientRect(),
+            body = document.body,
+            html = document.documentElement,
+            scrollTop = html && html.scrollTop ? html.scrollTop : body.scrollTop,
+            scrollLeft = html && html.scrollLeft ? html.scrollLeft : body.scrollLeft;
+        return {
+            top: rect.top + scrollTop,
+            left: rect.left + scrollLeft
+        };
+    },
+    getStyleAttributeAsNumber: function getStyleAttributeAsNumber(el, attr) {
+        var attrStyle = el.style[attr];
+        var attrNum = 0;
+        if (attrStyle && attrStyle.length) {
+            attrNum = parseInt(attrStyle);
+        }
+
+        return attrNum;
+    },
+    addClass: function addClass(el, className) {
+        if (el.classList) el.classList.add(className);else el.className += ' ' + className;
+    },
+    removeClass: function removeClass(el, className) {
+        if (el.classList) el.classList.remove(className);else el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+    },
+    hasClass: function hasClass(el, className) {
+        if (el.classList) return el.classList.contains(className);else return new RegExp('(^| )' + className + '( |$)', 'gi').test(el.className);
+    },
+    toggleClass: function toggleClass(el, className) {
+        if (this.hasClass(el, className)) this.removeClass(el, className);else this.addClass(el, className);
+    },
+    forceRedraw: function forceRedraw(el) {
+        var originalDisplay = el.style.display;
+
+        el.style.display = 'none';
+        el.offsetHeight; // no need to store this anywhere, the reference is enough
+        el.style.display = originalDisplay;
+    },
+    withoutTransition: function withoutTransition(el, callback) {
+        var originalTransition = el.style.transition;
+
+        //turn off transition
+        el.style.transition = null;
+
+        callback();
+
+        //force a redraw
+        this.forceRedraw(el);
+
+        //put the transition back
+        el.style.transition = originalTransition;
+    },
+    nodeById: function nodeById(id) {
+        return document.getElementById(id);
+    },
+    nodeBySelector: function nodeBySelector(el, s) {
+        return (el || document).querySelector(s);
+    },
+    nodesBySelector: function nodesBySelector(el, s) {
+        return (el || document).querySelectorAll(s);
+    },
+    text: function text(el, _text) {
+        if (typeof _text === 'string') {
+            el && (el.innerText = _text);
+            return this;
+        }
+        return el ? el.innerText || el.textContent || '' : '';
+    },
+    documentWidth: function documentWidth() {
+        return Math.max(document.body.scrollWidth, document.body.offsetWidth, document.documentElement.clientWidth, document.documentElement.scrollWidth, document.documentElement.offsetWidth);
+    },
+    documentHeight: function documentHeight() {
+        return Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);
+    },
+    windowWidth: function windowWidth() {
+        return window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
+    },
+    windowHeight: function windowHeight() {
+        return window.innerHeight || document.documentElement.clientHeight || document.getElementsByTagName('body')[0].clientHeight;
+    },
+    animate: function animate(tick) {
+        var duration = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 200;
+        var easing = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'linear';
+
+        var easings = {
+            linear: function linear(t) {
+                return t;
+            },
+            easeInQuad: function easeInQuad(t) {
+                return t * t;
+            },
+            easeOutQuad: function easeOutQuad(t) {
+                return t * (2 - t);
+            },
+            easeInOutQuad: function easeInOutQuad(t) {
+                return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+            },
+            easeInCubic: function easeInCubic(t) {
+                return t * t * t;
+            },
+            easeOutCubic: function easeOutCubic(t) {
+                return --t * t * t + 1;
+            },
+            easeInOutCubic: function easeInOutCubic(t) {
+                return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+            },
+            easeInQuart: function easeInQuart(t) {
+                return t * t * t * t;
+            },
+            easeOutQuart: function easeOutQuart(t) {
+                return 1 - --t * t * t * t;
+            },
+            easeInOutQuart: function easeInOutQuart(t) {
+                return t < 0.5 ? 8 * t * t * t * t : 1 - 8 * --t * t * t * t;
+            },
+            easeInQuint: function easeInQuint(t) {
+                return t * t * t * t * t;
+            },
+            easeOutQuint: function easeOutQuint(t) {
+                return 1 + --t * t * t * t * t;
+            },
+            easeInOutQuint: function easeInOutQuint(t) {
+                return t < 0.5 ? 16 * t * t * t * t * t : 1 + 16 * --t * t * t * t * t;
+            }
+        };
+
+        var startTime = 'now' in window.performance ? performance.now() : new Date().getTime();
+
+        var _tick = function _tick() {
+            var now = 'now' in window.performance ? performance.now() : new Date().getTime(),
+                time = duration <= 0 ? 1 : Math.min(1, (now - startTime) / duration);
+            var percent = easings[easing](time);
+            if (duration <= 0 || !tick(percent)) return;
+
+            animationFrame(_tick);
+        };
+
+        _tick();
+    },
+    scrollTo: function scrollTo(x, y) {
+        var duration = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 200;
+        var easing = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'linear';
+
+        var startX = window.pageXOffset,
+            startY = window.pageYOffset,
+            docW = Dom.documentWidth(),
+            docH = Dom.documentHeight(),
+            winW = Dom.windowWidth(),
+            winH = Dom.windowHeight(),
+            offsetLeft = Math.round(docW - x < winW ? docW - winW : x),
+            offsetTop = Math.round(docH - y < winH ? docH - winH : y);
+
+        Dom.animate(function (percent) {
+            var scrollLeft = Math.ceil(percent * (offsetLeft - startX) + startX),
+                scrollTop = Math.ceil(percent * (offsetTop - startY) + startY);
+
+            window.scroll(scrollLeft, scrollTop);
+
+            return window.pageXOffset < offsetLeft || window.pageYOffset < offsetTop;
+        }, duration, easing);
+    }
+};
+
+exports.default = Dom;
+
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -93,15 +722,15 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(0);
+var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _reactTapper = __webpack_require__(8);
+var _reactTapper = __webpack_require__(7);
 
 var _reactTapper2 = _interopRequireDefault(_reactTapper);
 
@@ -556,552 +1185,6 @@ MonthPicker.defaultProps = {
 exports.default = MonthPicker;
 
 /***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports["default"] = docReady;
-
-function docReady(callback) {
-
-    function completed() {
-        document.removeEventListener("DOMContentLoaded", completed, false);
-        window.removeEventListener("load", completed, false);
-        callback();
-    }
-
-    //Events.on(document, 'DOMContentLoaded', completed)
-
-    if (document.readyState === "complete") {
-        // Handle it asynchronously to allow scripts the opportunity to delay ready
-        setTimeout(callback);
-    } else {
-
-        // Use the handy event callback
-        document.addEventListener("DOMContentLoaded", completed, false);
-
-        // A fallback to window.onload, that will always work
-        window.addEventListener("load", completed, false);
-    }
-}
-
-module.exports = exports["default"];
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-
-var dom = {
-
-    isDescendant: function isDescendant(parent, child) {
-        var node = child.parentNode;
-
-        while (node !== null) {
-            if (node === parent) return true;
-            node = node.parentNode;
-        }
-
-        return false;
-    },
-
-    offset: function offset(el) {
-        var rect = el.getBoundingClientRect();
-        return {
-            top: rect.top + document.body.scrollTop,
-            left: rect.left + document.body.scrollLeft
-        };
-    },
-
-    getStyleAttributeAsNumber: function getStyleAttributeAsNumber(el, attr) {
-        var attrStyle = el.style[attr];
-        var attrNum = 0;
-        if (attrStyle && attrStyle.length) {
-            attrNum = parseInt(attrStyle);
-        }
-
-        return attrNum;
-    },
-
-    addClass: function addClass(el, className) {
-        if (el.classList) el.classList.add(className);else el.className += ' ' + className;
-    },
-
-    removeClass: function removeClass(el, className) {
-        if (el.classList) el.classList.remove(className);else el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
-    },
-
-    hasClass: function hasClass(el, className) {
-        if (el.classList) return el.classList.contains(className);else return new RegExp('(^| )' + className + '( |$)', 'gi').test(el.className);
-    },
-
-    toggleClass: function toggleClass(el, className) {
-        if (this.hasClass(el, className)) this.removeClass(el, className);else this.addClass(el, className);
-    },
-
-    forceRedraw: function forceRedraw(el) {
-        var originalDisplay = el.style.display;
-
-        el.style.display = 'none';
-        el.offsetHeight;
-        el.style.display = originalDisplay;
-    },
-
-    withoutTransition: function withoutTransition(el, callback) {
-        var originalTransition = el.style.transition;
-
-        //turn off transition
-        el.style.transition = null;
-
-        callback();
-
-        //force a redraw
-        this.forceRedraw(el);
-
-        //put the transition back
-        el.style.transition = originalTransition;
-    },
-
-    nodeById: function nodeById(id) {
-        return document.getElementById(id);
-    },
-
-    nodeBySelector: function nodeBySelector(el, s) {
-        return (el || document).querySelector(s);
-    },
-
-    nodesBySelector: function nodesBySelector(el, s) {
-        return (el || document).querySelectorAll(s);
-    },
-
-    text: function text(el, _text) {
-        if (typeof _text === 'string') {
-            el && (el.innerText = _text);
-            return this;
-        }
-        return el ? el.innerText || el.textContent || '' : '';
-    }
-
-};
-
-exports['default'] = dom;
-module.exports = exports['default'];
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports) {
-
-module.exports = ReactDOM;
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(0);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _reactDom = __webpack_require__(5);
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
-var _es6Docready = __webpack_require__(3);
-
-var _es6Docready2 = _interopRequireDefault(_es6Docready);
-
-var _es6Dom = __webpack_require__(4);
-
-var _es6Dom2 = _interopRequireDefault(_es6Dom);
-
-var _monthPicker = __webpack_require__(2);
-
-var _monthPicker2 = _interopRequireDefault(_monthPicker);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-(0, _es6Docready2.default)(function () {
-    var MonthBox = function (_Component) {
-        _inherits(MonthBox, _Component);
-
-        function MonthBox(props, context) {
-            _classCallCheck(this, MonthBox);
-
-            var _this = _possibleConstructorReturn(this, (MonthBox.__proto__ || Object.getPrototypeOf(MonthBox)).call(this, props, context));
-
-            _this.state = {
-                value: _this.props.value || 'N/A'
-            };
-
-            _this._handleClick = _this._handleClick.bind(_this);
-            return _this;
-        }
-
-        _createClass(MonthBox, [{
-            key: 'componentWillReceiveProps',
-            value: function componentWillReceiveProps(nextProps) {
-                this.setState({
-                    value: nextProps.value || 'N/A'
-                });
-            }
-        }, {
-            key: 'render',
-            value: function render() {
-
-                return _react2.default.createElement(
-                    'div',
-                    { className: 'box', onClick: this._handleClick },
-                    _react2.default.createElement(
-                        'label',
-                        null,
-                        this.state.value
-                    )
-                );
-            }
-        }, {
-            key: '_handleClick',
-            value: function _handleClick(e) {
-                this.props.onClick && this.props.onClick(e);
-            }
-        }]);
-
-        return MonthBox;
-    }(_react.Component);
-
-    MonthBox.propTypes = {
-        value: _propTypes2.default.string,
-        onClick: _propTypes2.default.func
-    };
-
-    var List = function (_Component2) {
-        _inherits(List, _Component2);
-
-        function List(props, context) {
-            _classCallCheck(this, List);
-
-            var _this2 = _possibleConstructorReturn(this, (List.__proto__ || Object.getPrototypeOf(List)).call(this, props, context));
-
-            _this2.state = {
-                mvalue: { year: 2014, month: 11 },
-                mvalue2: { year: 2016, month: 7 },
-                mrange: { from: { year: 2014, month: 8 }, to: { year: 2015, month: 5 } },
-                mrange2: { from: { year: 2013, month: 11 }, to: { year: 2016, month: 3 } }
-            };
-
-            _this2.handleClickMonthBox = _this2.handleClickMonthBox.bind(_this2);
-            _this2.handleAMonthChange = _this2.handleAMonthChange.bind(_this2);
-            _this2.handleAMonthDissmis = _this2.handleAMonthDissmis.bind(_this2);
-
-            _this2.handleClickMonthBox2 = _this2.handleClickMonthBox2.bind(_this2);
-            _this2.handleAMonthChange2 = _this2.handleAMonthChange2.bind(_this2);
-            _this2.handleAMonthDissmis2 = _this2.handleAMonthDissmis2.bind(_this2);
-
-            _this2._handleClickRangeBox = _this2._handleClickRangeBox.bind(_this2);
-            _this2.handleRangeChange = _this2.handleRangeChange.bind(_this2);
-            _this2.handleRangeDissmis = _this2.handleRangeDissmis.bind(_this2);
-
-            _this2._handleClickRangeBox2 = _this2._handleClickRangeBox2.bind(_this2);
-            _this2.handleRangeChange2 = _this2.handleRangeChange2.bind(_this2);
-            _this2.handleRangeDissmis2 = _this2.handleRangeDissmis2.bind(_this2);
-            return _this2;
-        }
-
-        _createClass(List, [{
-            key: 'componentWillReceiveProps',
-            value: function componentWillReceiveProps(nextProps) {
-                this.setState({
-                    value: nextProps.value || 'N/A'
-                });
-            }
-        }, {
-            key: 'render',
-            value: function render() {
-
-                var pickerLang = {
-                    months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                    from: 'From', to: 'To'
-                };
-                var mvalue = this.state.mvalue,
-                    mvalue2 = this.state.mvalue2,
-                    mrange = this.state.mrange,
-                    mrange2 = this.state.mrange2;
-
-                var makeText = function makeText(m) {
-                    if (m && m.year && m.month) return pickerLang.months[m.month - 1] + '. ' + m.year;
-                    return '?';
-                };
-
-                return _react2.default.createElement(
-                    'ul',
-                    null,
-                    _react2.default.createElement(
-                        'li',
-                        null,
-                        _react2.default.createElement(
-                            'label',
-                            null,
-                            _react2.default.createElement(
-                                'b',
-                                null,
-                                'Pick A Month'
-                            ),
-                            _react2.default.createElement(
-                                'span',
-                                null,
-                                '(Available years: 2008, 2011, 2012, 2014, 2016)'
-                            )
-                        ),
-                        _react2.default.createElement(
-                            'div',
-                            { className: 'edit' },
-                            _react2.default.createElement(
-                                _monthPicker2.default,
-                                {
-                                    ref: 'pickAMonth',
-                                    years: [2008, 2011, 2012, 2014, 2016],
-                                    value: mvalue,
-                                    lang: pickerLang.months,
-                                    onChange: this.handleAMonthChange,
-                                    onDismiss: this.handleAMonthDissmis
-                                },
-                                _react2.default.createElement(MonthBox, { value: makeText(mvalue), onClick: this.handleClickMonthBox })
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        'li',
-                        null,
-                        _react2.default.createElement(
-                            'label',
-                            null,
-                            _react2.default.createElement(
-                                'b',
-                                null,
-                                'Pick A Month'
-                            ),
-                            _react2.default.createElement(
-                                'span',
-                                null,
-                                '(Available months from Feb.2016 to Sep.2016)'
-                            )
-                        ),
-                        _react2.default.createElement(
-                            'div',
-                            { className: 'edit' },
-                            _react2.default.createElement(
-                                _monthPicker2.default,
-                                {
-                                    ref: 'pickAMonth2',
-                                    years: { min: { year: 2016, month: 2 }, max: { year: 2016, month: 9 } },
-                                    value: mvalue2,
-                                    lang: pickerLang.months,
-                                    theme: 'dark',
-                                    onChange: this.handleAMonthChange2,
-                                    onDismiss: this.handleAMonthDissmis2
-                                },
-                                _react2.default.createElement(MonthBox, { value: makeText(mvalue2), onClick: this.handleClickMonthBox2 })
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        'li',
-                        null,
-                        _react2.default.createElement(
-                            'label',
-                            null,
-                            _react2.default.createElement(
-                                'b',
-                                null,
-                                'Pick A Span of Months'
-                            ),
-                            _react2.default.createElement(
-                                'span',
-                                null,
-                                '(Available years from 2013 to this year)'
-                            )
-                        ),
-                        _react2.default.createElement(
-                            'div',
-                            { className: 'edit' },
-                            _react2.default.createElement(
-                                _monthPicker2.default,
-                                {
-                                    ref: 'pickRange',
-                                    years: { min: 2013 },
-                                    range: mrange,
-                                    lang: pickerLang,
-                                    theme: 'light',
-                                    onChange: this.handleRangeChange,
-                                    onDismiss: this.handleRangeDissmis
-                                },
-                                _react2.default.createElement(MonthBox, { value: makeText(mrange.from) + ' ~ ' + makeText(mrange.to), onClick: this._handleClickRangeBox })
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        'li',
-                        null,
-                        _react2.default.createElement(
-                            'label',
-                            null,
-                            _react2.default.createElement(
-                                'b',
-                                null,
-                                'Pick A Span of Months'
-                            ),
-                            _react2.default.createElement(
-                                'span',
-                                null,
-                                '(Available months from Apr.2013 to Sep.2016)'
-                            )
-                        ),
-                        _react2.default.createElement(
-                            'div',
-                            { className: 'edit' },
-                            _react2.default.createElement(
-                                _monthPicker2.default,
-                                {
-                                    ref: 'pickRange2',
-                                    years: { min: { year: 2013, month: 4 }, max: { year: 2016, month: 9 } },
-                                    range: mrange2,
-                                    lang: pickerLang,
-                                    theme: 'dark',
-                                    onChange: this.handleRangeChange2,
-                                    onDismiss: this.handleRangeDissmis2
-                                },
-                                _react2.default.createElement(MonthBox, { value: makeText(mrange2.from) + ' ~ ' + makeText(mrange2.to), onClick: this._handleClickRangeBox2 })
-                            )
-                        )
-                    )
-                );
-            }
-        }, {
-            key: 'handleClickMonthBox',
-            value: function handleClickMonthBox(e) {
-                this.refs.pickAMonth.show();
-            }
-        }, {
-            key: 'handleAMonthChange',
-            value: function handleAMonthChange(value, text) {}
-        }, {
-            key: 'handleAMonthDissmis',
-            value: function handleAMonthDissmis(value) {
-                this.setState({ mvalue: value });
-            }
-        }, {
-            key: 'handleClickMonthBox2',
-            value: function handleClickMonthBox2(e) {
-                this.refs.pickAMonth2.show();
-            }
-        }, {
-            key: 'handleAMonthChange2',
-            value: function handleAMonthChange2(value, text) {}
-        }, {
-            key: 'handleAMonthDissmis2',
-            value: function handleAMonthDissmis2(value) {
-                this.setState({ mvalue2: value });
-            }
-        }, {
-            key: '_handleClickRangeBox',
-            value: function _handleClickRangeBox(e) {
-                this.refs.pickRange.show();
-            }
-        }, {
-            key: 'handleRangeChange',
-            value: function handleRangeChange(value, text, listIndex) {}
-        }, {
-            key: 'handleRangeDissmis',
-            value: function handleRangeDissmis(value) {
-                this.setState({ mrange: value });
-            }
-        }, {
-            key: '_handleClickRangeBox2',
-            value: function _handleClickRangeBox2(e) {
-                this.refs.pickRange2.show();
-            }
-        }, {
-            key: 'handleRangeChange2',
-            value: function handleRangeChange2(value, text, listIndex) {}
-        }, {
-            key: 'handleRangeDissmis2',
-            value: function handleRangeDissmis2(value) {
-                this.setState({ mrange2: value });
-            }
-        }]);
-
-        return List;
-    }(_react.Component);
-
-    var Main = function (_Component3) {
-        _inherits(Main, _Component3);
-
-        function Main(props, context) {
-            _classCallCheck(this, Main);
-
-            var _this3 = _possibleConstructorReturn(this, (Main.__proto__ || Object.getPrototypeOf(Main)).call(this, props, context));
-
-            _this3.state = {
-                value: _this3.props.value
-            };
-            return _this3;
-        }
-
-        _createClass(Main, [{
-            key: 'componentWillReceiveProps',
-            value: function componentWillReceiveProps(nextProps) {
-                this.setState({
-                    value: nextProps.value
-                });
-            }
-        }, {
-            key: 'render',
-            value: function render() {
-
-                return _react2.default.createElement(
-                    'div',
-                    { className: 'list-area' },
-                    _react2.default.createElement(List, null)
-                );
-            }
-        }]);
-
-        return Main;
-    }(_react.Component);
-
-    Main.propTypes = {
-        value: _propTypes2.default.string,
-        onClick: _propTypes2.default.func
-    };
-
-    _reactDom2.default.render(_react2.default.createElement(Main, null), _es6Dom2.default.nodeById("page-container"));
-});
-
-/***/ }),
 /* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1111,59 +1194,22 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-var TAGNAMES = {
-    'select': 'input',
-    'change': 'input',
-    'submit': 'form',
-    'reset': 'form',
-    'error': 'img',
-    'load': 'img',
-    'abort': 'img'
-};
-
-var eventSupport = function eventSupport(eventName) {
-    //to support compilation in server-side
-    if (typeof window === "undefined" || typeof document === "undefined") return false;
-    var el = document.createElement(TAGNAMES[eventName] || 'div');
-    eventName = 'on' + eventName;
-    var isSupported = eventName in el;
-    if (!isSupported) {
-        el.setAttribute(eventName, 'return;');
-        isSupported = typeof el[eventName] == 'function';
-    }
-    el = null;
-    return isSupported;
-};
-
-exports.default = eventSupport;
-
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(0);
+var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _touchSupport = __webpack_require__(10);
+var _touchSupport = __webpack_require__(8);
 
 var _touchSupport2 = _interopRequireDefault(_touchSupport);
 
-var _touchStyles = __webpack_require__(9);
+var _touchStyles = __webpack_require__(10);
 
 var _touchStyles2 = _interopRequireDefault(_touchStyles);
 
@@ -1420,7 +1466,72 @@ exports.default = Tappable;
 
 
 /***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _eventSupport = __webpack_require__(9);
+
+var _eventSupport2 = _interopRequireDefault(_eventSupport);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var __TouchSupported = void 0;
+var touchSupport = function touchSupport() {
+    if (typeof __TouchSupported === 'boolean') return __TouchSupported;
+
+    __TouchSupported = (0, _eventSupport2.default)("touchstart"); //("ontouchstart" in document.documentElement)
+    return __TouchSupported;
+};
+
+exports.default = touchSupport;
+
+
+/***/ }),
 /* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var TAGNAMES = {
+    'select': 'input',
+    'change': 'input',
+    'submit': 'form',
+    'reset': 'form',
+    'error': 'img',
+    'load': 'img',
+    'abort': 'img'
+};
+
+var eventSupport = function eventSupport(eventName) {
+    //to support compilation in server-side
+    if (typeof window === "undefined" || typeof document === "undefined") return false;
+    var el = document.createElement(TAGNAMES[eventName] || 'div');
+    eventName = 'on' + eventName;
+    var isSupported = eventName in el;
+    if (!isSupported) {
+        el.setAttribute(eventName, 'return;');
+        isSupported = typeof el[eventName] == 'function';
+    }
+    el = null;
+    return isSupported;
+};
+
+exports.default = eventSupport;
+
+
+/***/ }),
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1441,34 +1552,6 @@ var touchStyles = {
 };
 
 exports.default = touchStyles;
-
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _eventSupport = __webpack_require__(7);
-
-var _eventSupport2 = _interopRequireDefault(_eventSupport);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var __TouchSupported = void 0;
-var touchSupport = function touchSupport() {
-    if (typeof __TouchSupported === 'boolean') return __TouchSupported;
-
-    __TouchSupported = (0, _eventSupport2.default)("touchstart"); //("ontouchstart" in document.documentElement)
-    return __TouchSupported;
-};
-
-exports.default = touchSupport;
 
 
 /***/ })
