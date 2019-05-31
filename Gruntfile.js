@@ -1,9 +1,13 @@
 "use strict";
 
+const sass = require('node-sass')
+
 var webpack_cfg = require('./webpack.config')
 //var extend = require('util')._extend
 
 module.exports = function(grunt) {
+    require('load-grunt-tasks')(grunt)
+
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         project: {
@@ -35,14 +39,15 @@ module.exports = function(grunt) {
             },
         },
         sass: {
+            options: {
+                implementation: sass,
+                style: 'expanded',
+                compass: true,
+                //sourcemap: 'none',
+                //for grunt-sass
+                sourceMap: false,
+            },
             dev: {
-                options: {
-                    style: 'expanded',
-                    compass: true,
-                    //, sourcemap: 'none',
-                    //for grunt-sass,
-                    sourceMap: false,
-                },
                 files: [
                     {
                         expand: true,
@@ -54,13 +59,6 @@ module.exports = function(grunt) {
                 ],
             },
             dist: {
-                options: {
-                    style: 'expanded', //'compressed'
-                    compass: true,
-                    //, sourcemap: 'none',
-                    //for grunt-sass,
-                    sourceMap: false,
-                },
                 files: [
                     { './css/month-picker.css': './scss/pack-month-picker.scss' },
                 ],
@@ -106,12 +104,12 @@ module.exports = function(grunt) {
         }
     })
 
-    grunt.loadNpmTasks('grunt-contrib-watch')
-    grunt.loadNpmTasks('grunt-sass')
-    grunt.loadNpmTasks('grunt-contrib-clean')
-    grunt.loadNpmTasks('grunt-contrib-concat')
-    grunt.loadNpmTasks('grunt-babel')
-    grunt.loadNpmTasks('grunt-webpack')
+    // grunt.loadNpmTasks('grunt-contrib-watch')
+    // grunt.loadNpmTasks('grunt-sass')
+    // grunt.loadNpmTasks('grunt-contrib-clean')
+    // grunt.loadNpmTasks('grunt-contrib-concat')
+    // grunt.loadNpmTasks('grunt-babel')
+    // grunt.loadNpmTasks('grunt-webpack')
 
 
     grunt.registerTask('default', ['sass:dev', 'webpack:demo', 'babel'])

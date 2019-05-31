@@ -4,6 +4,9 @@ Month-Picker Component offers a popup month selection panel with responsive layo
 
 
 ## Changelogs
+#### v1.3.10
+- update deps for security vulnerability
+
 #### v1.3.9
 - removed webpack-dev-server dependency
 
