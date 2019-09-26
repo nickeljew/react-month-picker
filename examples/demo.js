@@ -802,6 +802,51 @@ function getYearArray(years) {
     } else if (typeof years === 'number' && years > 0) return getYearsByNum(years);else return getYearsByNum(5);
 }
 
+function validate(d, years, idx, yearIndexes) {
+    var now = new Date(),
+        thisYear = now.getFullYear(),
+        ym = void 0;
+    if (d && typeof d.year === 'number' && d.year > __MIN_VALID_YEAR && typeof d.month === 'number' && d.month >= 1 && d.month <= 12) {
+        ym = d;
+    }
+
+    var foundThisYear = void 0;
+    for (var i = 0; i < years.length; i++) {
+        if (ym && years[i].year === ym.year) {
+            yearIndexes[idx] = i;
+            return ym;
+        } else if (years[i].year === thisYear) {
+            foundThisYear = i;
+        }
+    }
+
+    if (typeof foundThisYear === 'number') {
+        yearIndexes[idx] = foundThisYear;
+        return { year: thisYear };
+    }
+
+    var last = yearIndexes[idx] = years.length - 1;
+    return { year: years[last].year };
+}
+
+function validValues(v, years, yearIndexes) {
+    if (!v) return [];
+    if (v.from || v.to) {
+        var from = validate(v.from, years, 0, yearIndexes),
+            to = validate(v.to, years, 1, yearIndexes);
+        if (from.year > to.year || from.year === to.year && from.month > to.month) {
+            from.year = to.year;
+            from.month = to.month;
+            if (from.month < 1) {
+                from.year--;
+                from.month += 12;
+            }
+        }
+        return [from, to];
+    }
+    return [validate(v, years, 0, yearIndexes)];
+}
+
 var MonthPicker = function (_Component) {
     _inherits(MonthPicker, _Component);
 
@@ -812,7 +857,7 @@ var MonthPicker = function (_Component) {
 
         var yearArr = getYearArray(_this.props.years),
             yearIndexes = [0],
-            values = _this.validValues(_this.props.range || _this.props.value, yearArr, yearIndexes);
+            values = validValues(_this.props.range || _this.props.value, yearArr, yearIndexes);
         _this.state = {
             years: yearArr,
             values: values,
@@ -833,76 +878,11 @@ var MonthPicker = function (_Component) {
     }
 
     _createClass(MonthPicker, [{
-        key: 'validate',
-        value: function validate(d, years, idx, yearIndexes) {
-            var now = new Date(),
-                thisYear = now.getFullYear(),
-                ym = void 0;
-            if (d && typeof d.year === 'number' && d.year > __MIN_VALID_YEAR && typeof d.month === 'number' && d.month >= 1 && d.month <= 12) {
-                ym = d;
-            }
-
-            var foundThisYear = void 0;
-            for (var i = 0; i < years.length; i++) {
-                if (ym && years[i].year === ym.year) {
-                    yearIndexes[idx] = i;
-                    return ym;
-                } else if (years[i].year === thisYear) {
-                    foundThisYear = i;
-                }
-            }
-
-            if (typeof foundThisYear === 'number') {
-                yearIndexes[idx] = foundThisYear;
-                return { year: thisYear };
-            }
-
-            var last = yearIndexes[idx] = years.length - 1;
-            return { year: years[last].year };
-        }
-    }, {
-        key: 'validValues',
-        value: function validValues(v, years, yearIndexes) {
-            if (!v) return [];
-            if (v.from || v.to) {
-                var from = this.validate(v.from, years, 0, yearIndexes),
-                    to = this.validate(v.to, years, 1, yearIndexes);
-                if (from.year > to.year || from.year === to.year && from.month > to.month) {
-                    from.year = to.year;
-                    from.month = to.month;
-                    if (from.month < 1) {
-                        from.year--;
-                        from.month += 12;
-                    }
-                }
-                return [from, to];
-            }
-            return [this.validate(v, years, 0, yearIndexes)];
-        }
-    }, {
         key: 'value',
         value: function value() {
             var values = this.state.values;
             if (values.length >= 2) return { from: values[0], to: values[1] };else if (values.length === 1) return values[0];
             return {};
-        }
-    }, {
-        key: 'componentWillReceiveProps',
-        value: function componentWillReceiveProps(nextProps) {
-            var yearArr = getYearArray(nextProps.years),
-                yearIndexes = this.state.yearIndexes,
-                nextValues = nextProps.range || nextProps.value,
-                values = this.validValues(nextValues, yearArr, yearIndexes);
-            this.setState({
-                years: yearArr,
-                values: values,
-                labelYears: [false, false],
-                yearIndexes: yearIndexes,
-                lastRange: nextProps.range,
-                lastValue: nextProps.value,
-                showed: nextProps.show,
-                closeable: nextProps.show
-            });
         }
     }, {
         key: 'componentDidMount',
@@ -1141,7 +1121,7 @@ var MonthPicker = function (_Component) {
     }, {
         key: '_reset',
         value: function _reset() {
-            var values = this.validValues(this.state.lastRange || this.state.lastValue, this.state.years, this.state.yearIndexes);
+            var values = validValues(this.state.lastRange || this.state.lastValue, this.state.years, this.state.yearIndexes);
             return { values: values };
         }
     }, {
@@ -1156,6 +1136,25 @@ var MonthPicker = function (_Component) {
                 this._onDismiss();
                 e.stopPropagation();
             } else if (this.state.values.length === 1) {}
+        }
+    }], [{
+        key: 'getDerivedStateFromProps',
+        value: function getDerivedStateFromProps(nextProps, state) {
+            var yearArr = getYearArray(nextProps.years),
+                yearIndexes = state.yearIndexes,
+                nextValues = nextProps.range || nextProps.value,
+                values = validValues(nextValues, yearArr, yearIndexes);
+
+            return {
+                years: yearArr,
+                values: values,
+                labelYears: [false, false],
+                yearIndexes: yearIndexes,
+                lastRange: nextProps.range,
+                lastValue: nextProps.value,
+                showed: nextProps.show,
+                closeable: nextProps.show
+            };
         }
     }]);
 

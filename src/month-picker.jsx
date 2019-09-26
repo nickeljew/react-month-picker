@@ -97,8 +97,53 @@ function getYearArray(years) {
 }
 
 
+function validate(d, years, idx, yearIndexes) {
+    let now = new Date()
+        , thisYear = now.getFullYear()
+        , ym
+    if (d && (typeof d.year === 'number') && d.year > __MIN_VALID_YEAR
+        && (typeof d.month === 'number') && d.month >= 1 && d.month <= 12) {
+        ym = d
+    }
 
+    let foundThisYear
+    for (let i = 0; i < years.length; i++) {
+        if (ym && years[i].year === ym.year) {
+            yearIndexes[idx] = i
+            return ym
+        }
+        else if (years[i].year === thisYear) {
+            foundThisYear = i
+        }
+    }
 
+    if (typeof foundThisYear === 'number') {
+        yearIndexes[idx] = foundThisYear
+        return { year: thisYear }
+    }
+
+    const last = yearIndexes[idx] = years.length - 1
+    return { year: years[last].year }
+}
+
+function validValues(v, years, yearIndexes) {
+    if (!v)
+        return []
+    if (v.from || v.to) {
+        let from = validate(v.from, years, 0, yearIndexes)
+            , to = validate(v.to, years, 1, yearIndexes)
+        if (from.year > to.year || (from.year === to.year && from.month > to.month)) {
+            from.year = to.year
+            from.month = to.month
+            if (from.month < 1) {
+                from.year--
+                from.month += 12
+            }
+        }
+        return [from, to]
+    }
+    return [validate(v, years, 0, yearIndexes)]
+}
 
 export default class MonthPicker extends Component {
     static propTypes = {
@@ -126,7 +171,7 @@ export default class MonthPicker extends Component {
 
         const yearArr = getYearArray(this.props.years)
             , yearIndexes = [0]
-            , values = this.validValues(this.props.range || this.props.value, yearArr, yearIndexes)
+            , values = validValues(this.props.range || this.props.value, yearArr, yearIndexes)
         this.state = {
             years: yearArr,
             values: values,
@@ -145,54 +190,6 @@ export default class MonthPicker extends Component {
         this._keyDown = this._keyDown.bind(this)
     }
 
-    validate(d, years, idx, yearIndexes) {
-        let now = new Date()
-            , thisYear = now.getFullYear()
-            , ym
-        if (d && (typeof d.year === 'number') && d.year > __MIN_VALID_YEAR
-            && (typeof d.month === 'number') && d.month >= 1 && d.month <= 12) {
-            ym = d
-        }
-
-        let foundThisYear
-        for (let i = 0; i < years.length; i++) {
-            if (ym && years[i].year === ym.year) {
-                yearIndexes[idx] = i
-                return ym
-            }
-            else if (years[i].year === thisYear) {
-                foundThisYear = i
-            }
-        }
-
-        if (typeof foundThisYear === 'number') {
-            yearIndexes[idx] = foundThisYear
-            return { year: thisYear }
-        }
-
-        const last = yearIndexes[idx] = years.length - 1
-        return { year: years[last].year }
-
-    }
-    validValues(v, years, yearIndexes) {
-        if (!v)
-            return []
-        if (v.from || v.to) {
-            let from = this.validate(v.from, years, 0, yearIndexes)
-                , to = this.validate(v.to, years, 1, yearIndexes)
-            if (from.year > to.year || (from.year === to.year && from.month > to.month)) {
-                from.year = to.year
-                from.month = to.month
-                if (from.month < 1) {
-                    from.year--
-                    from.month += 12
-                }
-            }
-            return [from, to]
-        }
-        return [this.validate(v, years, 0, yearIndexes)]
-    }
-
     value() {
         const values = this.state.values
         if (values.length >= 2)
@@ -203,12 +200,13 @@ export default class MonthPicker extends Component {
     }
 
 
-    componentWillReceiveProps(nextProps) {
+    static getDerivedStateFromProps(nextProps, state) {
         const yearArr = getYearArray(nextProps.years)
-            , yearIndexes = this.state.yearIndexes
+            , yearIndexes = state.yearIndexes
             , nextValues = nextProps.range || nextProps.value //|| this.props.range || this.props.value
-            , values = this.validValues(nextValues, yearArr, yearIndexes)
-        this.setState({
+            , values = validValues(nextValues, yearArr, yearIndexes)
+
+        return {
             years: yearArr,
             values: values,
             labelYears: [false, false],
@@ -217,7 +215,7 @@ export default class MonthPicker extends Component {
             lastValue: nextProps.value,
             showed: nextProps.show,
             closeable: nextProps.show,
-        })
+        };
     }
 
     componentDidMount () {
@@ -407,7 +405,7 @@ export default class MonthPicker extends Component {
     }
 
     _reset() {
-        const values = this.validValues(this.state.lastRange || this.state.lastValue, this.state.years, this.state.yearIndexes)
+        const values = validValues(this.state.lastRange || this.state.lastValue, this.state.years, this.state.yearIndexes)
         return {values}
     }
 
