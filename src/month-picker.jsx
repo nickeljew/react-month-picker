@@ -203,21 +203,24 @@ export default class MonthPicker extends Component {
     }
 
 
-    componentWillReceiveProps(nextProps) {
-        const yearArr = getYearArray(nextProps.years)
-            , yearIndexes = this.state.yearIndexes
-            , nextValues = nextProps.range || nextProps.value //|| this.props.range || this.props.value
-            , values = this.validValues(nextValues, yearArr, yearIndexes)
-        this.setState({
-            years: yearArr,
-            values: values,
-            labelYears: [false, false],
-            yearIndexes: yearIndexes,
-            lastRange: nextProps.range,
-            lastValue: nextProps.value,
-            showed: nextProps.show,
-            closeable: nextProps.show,
-        })
+    componentDidUpdate(prevProps) {
+        if(this.props.years !== prevProps.years || this.props.range !== prevProps.range ||
+             this.props.value !== prevProps.value || this.props.show !== prevProps.show) {
+            const yearArr = getYearArray(this.props.years)
+                , yearIndexes = this.state.yearIndexes
+                , nextValues = this.props.range || this.props.value //|| this.props.range || this.props.value
+                , values = this.validValues(nextValues, yearArr, yearIndexes)
+            this.setState({
+                years: yearArr,
+                values: values,
+                labelYears: [false, false],
+                yearIndexes: yearIndexes,
+                lastRange: this.props.range,
+                lastValue: this.props.value,
+                showed: this.props.show,
+                closeable: this.props.show,
+            })
+        }
     }
 
     componentDidMount () {
