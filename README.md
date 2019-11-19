@@ -78,11 +78,11 @@ Demo file in repository: ./examples/demo.html
 
 #### Import component into your react project
 
-```
+```js
 import Picker from 'react-month-picker'
 ```
 
-```
+```jsx
 render() {
 
     let pickerLang = {
