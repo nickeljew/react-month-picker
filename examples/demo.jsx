@@ -23,10 +23,10 @@ DocReady(function() {
             this._handleClick = this._handleClick.bind(this)
         }
 
-        componentWillReceiveProps(nextProps){
-            this.setState({
-                value: nextProps.value || 'N/A',
-            })
+        static getDerivedStateFromProps(props, state) {
+            return {
+                value: props.value || 'N/A',
+            }
         }
 
         render() {
@@ -69,27 +69,16 @@ DocReady(function() {
                 mrange2: {from: {year: 2013, month: 11}, to: {year: 2016, month: 3}},
             }
 
-            this.handleClickMonthBox = this.handleClickMonthBox.bind(this)
-            this.handleAMonthChange = this.handleAMonthChange.bind(this)
-            this.handleAMonthDissmis = this.handleAMonthDissmis.bind(this)
-
-            this.handleClickMonthBox2 = this.handleClickMonthBox2.bind(this)
-            this.handleAMonthChange2 = this.handleAMonthChange2.bind(this)
-            this.handleAMonthDissmis2 = this.handleAMonthDissmis2.bind(this)
-
-            this._handleClickRangeBox = this._handleClickRangeBox.bind(this)
-            this.handleRangeChange = this.handleRangeChange.bind(this)
-            this.handleRangeDissmis = this.handleRangeDissmis.bind(this)
-
-            this._handleClickRangeBox2 = this._handleClickRangeBox2.bind(this)
-            this.handleRangeChange2 = this.handleRangeChange2.bind(this)
-            this.handleRangeDissmis2 = this.handleRangeDissmis2.bind(this)
+            this.pickAMonth = React.createRef()
+            this.pickAMonth2 = React.createRef()
+            this.pickRange = React.createRef()
+            this.pickRange2 = React.createRef()
         }
 
-        componentWillReceiveProps(nextProps){
-            this.setState({
-                value: nextProps.value || 'N/A',
-            })
+        static getDerivedStateFromProps(props, state) {
+            return {
+                value: props.value || 'N/A',
+            }
         }
 
         render() {
@@ -99,9 +88,9 @@ DocReady(function() {
                 from: 'From', to: 'To',
             }
             const mvalue = this.state.mvalue
-                , mvalue2 = this.state.mvalue2
-                , mrange = this.state.mrange
-                , mrange2 = this.state.mrange2
+            const mvalue2 = this.state.mvalue2
+            const mrange = this.state.mrange
+            const mrange2 = this.state.mrange2
 
             const makeText = m => {
                 if (m && m.year && m.month) return (pickerLang.months[m.month-1] + '. ' + m.year)
@@ -114,7 +103,7 @@ DocReady(function() {
                         <label><b>Pick A Month</b><span>(Available years: 2008, 2011, 2012, 2014, 2016)</span></label>
                         <div className="edit">
                             <Picker
-                                ref="pickAMonth"
+                                ref={this.pickAMonth}
                                 years={[2008, 2011, 2012, 2014, 2016]}
                                 value={mvalue}
                                 lang={pickerLang.months}
@@ -129,7 +118,7 @@ DocReady(function() {
                         <label><b>Pick A Month</b><span>(Available months from Feb.2016 to Sep.2016)</span></label>
                         <div className="edit">
                             <Picker
-                                ref="pickAMonth2"
+                                ref={this.pickAMonth2}
                                 years={{min: {year: 2016, month: 2}, max: {year: 2016, month: 9}}}
                                 value={mvalue2}
                                 lang={pickerLang.months}
@@ -145,7 +134,7 @@ DocReady(function() {
                         <label><b>Pick A Span of Months</b><span>(Available years from 2013 to this year)</span></label>
                         <div className="edit">
                             <Picker
-                                ref="pickRange"
+                                ref={this.pickRange}
                                 years={{min: 2013}}
                                 range={mrange}
                                 lang={pickerLang}
@@ -161,7 +150,7 @@ DocReady(function() {
                         <label><b>Pick A Span of Months</b><span>(Available months from Apr.2013 to Sep.2016)</span></label>
                         <div className="edit">
                             <Picker
-                                ref="pickRange2"
+                                ref={this.pickRange2}
                                 years={{min: {year: 2013, month: 4}, max: {year: 2016, month: 9}}}
                                 range={mrange2}
                                 lang={pickerLang}
@@ -177,43 +166,43 @@ DocReady(function() {
             )
         }
 
-        handleClickMonthBox(e) {
-            this.refs.pickAMonth.show()
+        handleClickMonthBox = (e) => {
+            this.pickAMonth.current.show()
         }
-        handleAMonthChange(value, text) {
+        handleAMonthChange = (value, text) => {
             //
         }
-        handleAMonthDissmis(value) {
+        handleAMonthDissmis = (value) => {
             this.setState( {mvalue: value} )
         }
 
-        handleClickMonthBox2(e) {
-            this.refs.pickAMonth2.show()
+        handleClickMonthBox2 = (e) => {
+            this.pickAMonth2.current.show()
         }
-        handleAMonthChange2(value, text) {
+        handleAMonthChange2 = (value, text) => {
             //
         }
-        handleAMonthDissmis2(value) {
+        handleAMonthDissmis2 = (value) => {
             this.setState( {mvalue2: value} )
         }
 
-        _handleClickRangeBox(e) {
-            this.refs.pickRange.show()
+        _handleClickRangeBox = (e) => {
+            this.pickRange.current.show()
         }
-        handleRangeChange(value, text, listIndex) {
+        handleRangeChange = (value, text, listIndex) => {
             //
         }
-        handleRangeDissmis(value) {
+        handleRangeDissmis = (value) => {
             this.setState( {mrange: value} )
         }
 
-        _handleClickRangeBox2(e) {
-            this.refs.pickRange2.show()
+        _handleClickRangeBox2 = (e) => {
+            this.pickRange2.current.show()
         }
-        handleRangeChange2(value, text, listIndex) {
+        handleRangeChange2 = (value, text, listIndex) => {
             //
         }
-        handleRangeDissmis2(value) {
+        handleRangeDissmis2 = (value) => {
             this.setState( {mrange2: value} )
         }
     }
@@ -233,10 +222,10 @@ DocReady(function() {
             }
         }
 
-        componentWillReceiveProps(nextProps){
-            this.setState({
-                value: nextProps.value
-            })
+        static getDerivedStateFromProps(props, state) {
+            return {
+                value: props.value,
+            }
         }
 
         render() {

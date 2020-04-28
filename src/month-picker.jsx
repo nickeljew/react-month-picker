@@ -31,7 +31,7 @@ const isBrowser = (typeof window !== "undefined" && typeof document !== "undefin
 const __MIN_VALID_YEAR = 1
 
 
-function mapToArray(num, callback) {
+function mapToArray (num, callback) {
     let arr = []
     for (let i = 0; i <  num; i++) {
         arr.push( callback(i) )
@@ -39,14 +39,14 @@ function mapToArray(num, callback) {
     return arr
 }
 
-function getYearMon(year, min, max) {
+function getYearMon (year, min, max) {
     let ym = typeof year === 'object' && year.year ? {year: year.year, month: year.month} : {year}
     ym.min = min || 1
     ym.max = max || 12
     return ym
 }
 
-function getYearsByNum(n, minYear) {
+function getYearsByNum (n, minYear) {
     let maxYear = (new Date()).getFullYear()
     // n is number of years
     if (n && n > 0 && n < 1000) {
@@ -70,7 +70,7 @@ function getYearsByNum(n, minYear) {
     })
 }
 
-function getYearArray(years) {
+function getYearArray (years) {
     if (Array.isArray(years))
         return years.map((y, i) => {
             return getYearMon(y)
@@ -98,100 +98,145 @@ function getYearArray(years) {
 
 
 
+function validate (d, years, idx, yearIndexes) {
+    let now = new Date(),
+        thisYear = now.getFullYear(),
+        ym
+    if (d && (typeof d.year === 'number') && d.year > __MIN_VALID_YEAR
+        && (typeof d.month === 'number') && d.month >= 1 && d.month <= 12) {
+        ym = d
+    }
+
+    let foundThisYear
+    for (let i = 0; i < years.length; i++) {
+        if (ym && years[i].year === ym.year) {
+            yearIndexes[idx] = i
+            return ym
+        }
+        else if (years[i].year === thisYear) {
+            foundThisYear = i
+        }
+    }
+
+    if (typeof foundThisYear === 'number') {
+        yearIndexes[idx] = foundThisYear
+        return { year: thisYear }
+    }
+
+    const last = yearIndexes[idx] = years.length - 1
+    return { year: years[last].year }
+
+}
+
+
+function validValues (v, years, yearIndexes) {
+    if (!v)
+        return []
+    if (v.from || v.to) {
+        let from = validate(v.from, years, 0, yearIndexes),
+            to = validate(v.to, years, 1, yearIndexes)
+        if (from.year > to.year || (from.year === to.year && from.month > to.month)) {
+            from.year = to.year
+            from.month = to.month
+            if (from.month < 1) {
+                from.year--
+                from.month += 12
+            }
+        }
+        return [from, to]
+    }
+    return [ validate(v, years, 0, yearIndexes) ]
+}
+
+
+function valuesChanged (values1, values2) {
+    if (values1.length !== values2.length) return true
+    for (let i = 0; i < values1.length; i++) {
+        const v1 = values1[i]
+        const v2 = values2[i]
+        if (v1.year !== v2.year || v1.month !== v2.month) return true
+    }
+    return false
+}
+
+
 
 
 export default class MonthPicker extends Component {
     static propTypes = {
-        years: PropTypes.oneOfType([PropTypes.array, PropTypes.object, PropTypes.number]),
-        value: PropTypes.object,
-        range: PropTypes.object,
-        lang: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+        years: PropTypes.oneOfType([
+            PropTypes.number, // exact number of a year
+            PropTypes.arrayOf(PropTypes.number), // array of specific years: [2008, 2011, 2012, 2014, 2016]
+            PropTypes.shape({ // { min: 2013 }; { min: {year: 2013, month: 4}, max: {year: 2016, month: 9} }
+                min: PropTypes.oneOfType([
+                    PropTypes.number, // { min: 2013 }
+                    PropTypes.shape({ // { min: {year: 2016, month: 2} }
+                        year: PropTypes.number,
+                        month: PropTypes.number,
+                    }),
+                ]),
+                max: PropTypes.oneOfType([
+                    PropTypes.number,
+                    PropTypes.shape({
+                        year: PropTypes.number,
+                        month: PropTypes.number,
+                    }),
+                ]),
+            }),
+        ]),
+        value: PropTypes.shape({
+            year: PropTypes.number,
+            month: PropTypes.number,
+        }),
+        range: PropTypes.shape({
+            from: PropTypes.shape({
+                year: PropTypes.number,
+                month: PropTypes.number,
+            }),
+            to: PropTypes.shape({
+                year: PropTypes.number,
+                month: PropTypes.number,
+            }),
+        }),
+        lang: PropTypes.oneOfType([
+            PropTypes.arrayOf(PropTypes.string), // lang texts for months: ['Jan', 'Feb', 'Mar', 'Apr', ... ]
+            PropTypes.shape({
+                months: PropTypes.arrayOf(PropTypes.string),
+                from: PropTypes.string, // lang text for 'from'
+                to: PropTypes.string, // lang text for 'to'
+            }),
+        ]),
         onChange: PropTypes.func,
         onYearChange: PropTypes.func,
         onShow: PropTypes.func,
         onDismiss: PropTypes.func,
         onClickAway: PropTypes.func,
         theme: PropTypes.string,
-        show: PropTypes.bool,
     }
     static defaultProps = {
         years: getYearsByNum(5),
         onChange(year, month, idx) {},
         theme: 'light',
-        show: false,
     }
 
     constructor(props, context) {
         super(props, context)
 
         const yearArr = getYearArray(this.props.years)
-            , yearIndexes = [0]
-            , values = this.validValues(this.props.range || this.props.value, yearArr, yearIndexes)
+        const yearIndexes = [0]
+        const values = validValues(this.props.range || this.props.value, yearArr, yearIndexes)
         this.state = {
             years: yearArr,
-            values: values,
+            values,
             labelYears: [false, false],
-            showed: this.props.show,
-            closeable: this.props.show, //special, must not be changed with setState
-            yearIndexes: yearIndexes,
+            showed: false,
+            closeable: false,
+            yearIndexes,
             lastRange: this.props.range,
             lastValue: this.props.value,
         }
-
-        this._handleOverlayTouchTap = this._handleOverlayTouchTap.bind(this)
-        this.handleClickMonth = this.handleClickMonth.bind(this)
-        this.goPrevYear = this.goPrevYear.bind(this)
-        this.goNextYear = this.goNextYear.bind(this)
-        this._keyDown = this._keyDown.bind(this)
     }
 
-    validate(d, years, idx, yearIndexes) {
-        let now = new Date()
-            , thisYear = now.getFullYear()
-            , ym
-        if (d && (typeof d.year === 'number') && d.year > __MIN_VALID_YEAR
-            && (typeof d.month === 'number') && d.month >= 1 && d.month <= 12) {
-            ym = d
-        }
-
-        let foundThisYear
-        for (let i = 0; i < years.length; i++) {
-            if (ym && years[i].year === ym.year) {
-                yearIndexes[idx] = i
-                return ym
-            }
-            else if (years[i].year === thisYear) {
-                foundThisYear = i
-            }
-        }
-
-        if (typeof foundThisYear === 'number') {
-            yearIndexes[idx] = foundThisYear
-            return { year: thisYear }
-        }
-
-        const last = yearIndexes[idx] = years.length - 1
-        return { year: years[last].year }
-
-    }
-    validValues(v, years, yearIndexes) {
-        if (!v)
-            return []
-        if (v.from || v.to) {
-            let from = this.validate(v.from, years, 0, yearIndexes)
-                , to = this.validate(v.to, years, 1, yearIndexes)
-            if (from.year > to.year || (from.year === to.year && from.month > to.month)) {
-                from.year = to.year
-                from.month = to.month
-                if (from.month < 1) {
-                    from.year--
-                    from.month += 12
-                }
-            }
-            return [from, to]
-        }
-        return [this.validate(v, years, 0, yearIndexes)]
-    }
 
     value() {
         const values = this.state.values
@@ -203,25 +248,41 @@ export default class MonthPicker extends Component {
     }
 
 
-    componentDidUpdate(prevProps) {
-        if(this.props.years !== prevProps.years || this.props.range !== prevProps.range ||
-             this.props.value !== prevProps.value || this.props.show !== prevProps.show) {
-            const yearArr = getYearArray(this.props.years)
-                , yearIndexes = this.state.yearIndexes
-                , nextValues = this.props.range || this.props.value //|| this.props.range || this.props.value
-                , values = this.validValues(nextValues, yearArr, yearIndexes)
-            this.setState({
-                years: yearArr,
-                values: values,
-                labelYears: [false, false],
-                yearIndexes: yearIndexes,
-                lastRange: this.props.range,
-                lastValue: this.props.value,
-                showed: this.props.show,
-                closeable: this.props.show,
-            })
-        }
-    }
+    // getSnapshotBeforeUpdate(prevProps, prevState) {
+    //     // ...
+    // }
+    // componentDidUpdate(prevProps, prevState) {
+    //     const yearIndexes = this.state.yearIndexes
+    //     const values = validValues(props.range || props.value, this.state.years, yearIndexes)
+    //     if (this.state.showed !== prevState.showed || valuesChanged(values, state.values)) {
+    //         const nextValues = this.props.range || this.props.value
+    //         const values = validValues(nextValues, this.state.years, yearIndexes)
+    //         this.setState({
+    //             values,
+    //             labelYears: [false, false],
+    //             yearIndexes,
+    //             lastRange: this.props.range,
+    //             lastValue: this.props.value,
+    //             showed: this.props.show,
+    //             closeable: this.props.show,
+    //         })
+    //     }
+    // }
+    // static getDerivedStateFromProps(props, state) {
+    //     const yearIndexes = state.yearIndexes
+    //     const values = validValues(props.range || props.value, state.years, yearIndexes)
+    //     if (valuesChanged(values, state.values)) {
+    //         return {
+    //             values,
+    //             labelYears: [false, false],
+    //             yearIndexes,
+    //             lastRange: props.range,
+    //             lastValue: props.value,
+    //         }
+    //     }
+    //     // No state update necessary
+    //     return null
+    // }
 
     componentDidMount () {
         if (isBrowser) {
@@ -236,23 +297,23 @@ export default class MonthPicker extends Component {
 
     optionPad(padIndex) {
         let values = this.state.values
-            , value = values[padIndex]
-            , labelYears = this.state.labelYears
-            , labelYear = labelYears[padIndex] = labelYears[padIndex] || value.year
-            , ymArr = this.state.years
-            , lang = this.props.lang || []
-            , months =  Array.isArray(lang) ? lang : (Array.isArray(lang.months) ? lang.months : [])
-            , prevCss = '', nextCss = ''
-            , yearMaxIdx = ymArr.length - 1
-            , yearIdx = this.state.yearIndexes[padIndex]//yearMaxIdx
+        let value = values[padIndex]
+        let labelYears = this.state.labelYears
+        let labelYear = labelYears[padIndex] = labelYears[padIndex] || value.year
+        let ymArr = this.state.years
+        let lang = this.props.lang || []
+        let months =  Array.isArray(lang) ? lang : (Array.isArray(lang.months) ? lang.months : [])
+        let prevCss = '', nextCss = ''
+        let yearMaxIdx = ymArr.length - 1
+        let yearIdx = this.state.yearIndexes[padIndex]//yearMaxIdx
 
         if (yearIdx === 0) prevCss = 'disable'
         if (yearIdx === yearMaxIdx) nextCss = 'disable'
 
         let yearActive = (labelYear === value.year)
-            , atMinYear = (labelYear === ymArr[0].year)
-            , atMaxYear = (labelYear === ymArr[yearMaxIdx].year)
-            , otherValue = false
+        let atMinYear = (labelYear === ymArr[0].year)
+        let atMaxYear = (labelYear === ymArr[yearMaxIdx].year)
+        let otherValue = false
         if (values.length > 1) {
             otherValue = values[1 - padIndex]
         }
@@ -267,14 +328,13 @@ export default class MonthPicker extends Component {
             <div className="rmp-pad" key={padIndex}>
                 <div>
                     <label>{labelPreText}{labelYear}</label>
-                    <i className={["rmp-tab", "rmp-btn", "prev", prevCss].join(' ')} data-id={padIndex} onClick={this.goPrevYear}>{'<'}</i>
-                    <i className={["rmp-tab", "rmp-btn", "next", nextCss].join(' ')} data-id={padIndex} onClick={this.goNextYear}>{'>'}</i>
+                    <i className={["rmp-tab", "rmp-btn", "prev", prevCss].join(' ')} data-id={padIndex} onClick={this._goPrevYear}>{'<'}</i>
+                    <i className={["rmp-tab", "rmp-btn", "next", nextCss].join(' ')} data-id={padIndex} onClick={this._goNextYear}>{'>'}</i>
                 </div>
                 <ul>
                     {
                         mapToArray(12, i => {
-                            let css = ''
-                                , m = i + 1
+                            let css = '', m = i + 1
                             if (yearActive && m === value.month) {
                                 css = 'active'
                             }
@@ -292,7 +352,7 @@ export default class MonthPicker extends Component {
                             }
                             if (otherValue) {
                                 let y = otherValue.year, m = otherValue.month || 0
-                                    , vy = labelYear, vm = i + 1
+                                let vy = labelYear, vm = i + 1
                                 if (y === vy && m && ( (padIndex === 0 && vm > m) || (padIndex === 1 && vm < m) )) {
                                     css = 'disable'
                                 }
@@ -300,7 +360,7 @@ export default class MonthPicker extends Component {
                                     css = 'disable'
                                 }
                             }
-                            let clickHandler = css !== 'disable' ? this.handleClickMonth : undefined
+                            let clickHandler = css !== 'disable' ? (this._handleClickMonth) : undefined
                             return (
                                 <li key={i} className={["rmp-btn", css].join(' ')}
                                     data-id={padIndex + ':' + (i+1)}
@@ -350,7 +410,7 @@ export default class MonthPicker extends Component {
         this._onShow()
     }
 
-    _handleOverlayTouchTap(e) {
+    _handleOverlayTouchTap = (e) => {
         if (this.state.closeable) {
             this._onDismiss()
             this.props.onClickAway && this.props.onClickAway(e)
@@ -358,7 +418,7 @@ export default class MonthPicker extends Component {
     }
 
     _onShow() {
-        setTimeout(function() {this.state.closeable = true;}.bind(this), 250)
+        setTimeout(() => {this.state.closeable = true}, 250)
         this.setState({ showed: true })
         this.props.onShow && this.props.onShow()
     }
@@ -368,26 +428,26 @@ export default class MonthPicker extends Component {
         this.props.onDismiss && this.props.onDismiss(this.value())
     }
 
-    handleClickMonth(e) {
+    _handleClickMonth = (e) => {
         if (this.state.showed) {
             const refid = this.getDID(e).split(':')
-                , idx = parseInt(refid[0], 10)
-                , month = parseInt(refid[1], 10)
-                , year = this.state.labelYears[idx]
-                , values = this.state.values
+            const idx = parseInt(refid[0], 10)
+            const month = parseInt(refid[1], 10)
+            const year = this.state.labelYears[idx]
+            const values = this.state.values
             values[idx] = { year, month }
-            this.setState({ values: values })
+            this.setState({ values })
             this.props.onChange(year, month, idx)
         }
     }
 
-    goPrevYear(e) {
+    _goPrevYear = (e) => {
         let idx = parseInt(this.getDID(e), 10)
         if (this.state.yearIndexes[idx] > 0) {
             this.setYear(idx, -1)
         }
     }
-    goNextYear(e) {
+    _goNextYear = (e) => {
         let idx = parseInt(this.getDID(e), 10)
         if (this.state.yearIndexes[idx] < (this.state.years.length - 1)) {
             this.setYear(idx, 1)
@@ -395,8 +455,8 @@ export default class MonthPicker extends Component {
     }
     setYear(idx, step) {
         let yearIndex = (this.state.yearIndexes[idx] += step)
-            , labelYears = this.state.labelYears
-            , theYear = this.state.years[yearIndex].year
+        let labelYears = this.state.labelYears
+        let theYear = this.state.years[yearIndex].year
         labelYears[idx] = theYear
         this.setState({
             labelYears: labelYears
@@ -410,11 +470,11 @@ export default class MonthPicker extends Component {
     }
 
     _reset() {
-        const values = this.validValues(this.state.lastRange || this.state.lastValue, this.state.years, this.state.yearIndexes)
+        const values = validValues(this.state.lastRange || this.state.lastValue, this.state.years, this.state.yearIndexes)
         return {values}
     }
 
-    _keyDown(e) {
+    _keyDown = (e) => {
         if (!this.state.showed)
             return
 

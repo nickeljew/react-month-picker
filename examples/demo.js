@@ -36,12 +36,32 @@
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
 /******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -59,1500 +79,140 @@
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
 /******/
+/******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = "./examples/demo.jsx");
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
+/******/ ({
+
+/***/ "./examples/demo.jsx":
+/*!***************************!*\
+  !*** ./examples/demo.jsx ***!
+  \***************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nvar _react = __webpack_require__(/*! react */ \"react\");\n\nvar _react2 = _interopRequireDefault(_react);\n\nvar _propTypes = __webpack_require__(/*! prop-types */ \"prop-types\");\n\nvar _propTypes2 = _interopRequireDefault(_propTypes);\n\nvar _reactDom = __webpack_require__(/*! react-dom */ \"react-dom\");\n\nvar _reactDom2 = _interopRequireDefault(_reactDom);\n\nvar _es6Docready = __webpack_require__(/*! es6-docready */ \"./node_modules/es6-docready/lib/doc-ready.js\");\n\nvar _es6Docready2 = _interopRequireDefault(_es6Docready);\n\nvar _es6Dom = __webpack_require__(/*! es6-dom */ \"./node_modules/es6-dom/lib/dom.js\");\n\nvar _es6Dom2 = _interopRequireDefault(_es6Dom);\n\nvar _monthPicker = __webpack_require__(/*! month-picker */ \"./src/month-picker.jsx\");\n\nvar _monthPicker2 = _interopRequireDefault(_monthPicker);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return call && (typeof call === \"object\" || typeof call === \"function\") ? call : self; }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function, not \" + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }\n\n(0, _es6Docready2.default)(function () {\n    var MonthBox = function (_Component) {\n        _inherits(MonthBox, _Component);\n\n        function MonthBox(props, context) {\n            _classCallCheck(this, MonthBox);\n\n            var _this = _possibleConstructorReturn(this, (MonthBox.__proto__ || Object.getPrototypeOf(MonthBox)).call(this, props, context));\n\n            _this.state = {\n                value: _this.props.value || 'N/A'\n            };\n\n            _this._handleClick = _this._handleClick.bind(_this);\n            return _this;\n        }\n\n        _createClass(MonthBox, [{\n            key: 'render',\n            value: function render() {\n\n                return _react2.default.createElement(\n                    'div',\n                    { className: 'box', onClick: this._handleClick },\n                    _react2.default.createElement(\n                        'label',\n                        null,\n                        this.state.value\n                    )\n                );\n            }\n        }, {\n            key: '_handleClick',\n            value: function _handleClick(e) {\n                this.props.onClick && this.props.onClick(e);\n            }\n        }], [{\n            key: 'getDerivedStateFromProps',\n            value: function getDerivedStateFromProps(props, state) {\n                return {\n                    value: props.value || 'N/A'\n                };\n            }\n        }]);\n\n        return MonthBox;\n    }(_react.Component);\n\n    MonthBox.propTypes = {\n        value: _propTypes2.default.string,\n        onClick: _propTypes2.default.func\n    };\n\n    var List = function (_Component2) {\n        _inherits(List, _Component2);\n\n        function List(props, context) {\n            _classCallCheck(this, List);\n\n            var _this2 = _possibleConstructorReturn(this, (List.__proto__ || Object.getPrototypeOf(List)).call(this, props, context));\n\n            _this2.handleClickMonthBox = function (e) {\n                _this2.pickAMonth.current.show();\n            };\n\n            _this2.handleAMonthChange = function (value, text) {\n                //\n            };\n\n            _this2.handleAMonthDissmis = function (value) {\n                _this2.setState({ mvalue: value });\n            };\n\n            _this2.handleClickMonthBox2 = function (e) {\n                _this2.pickAMonth2.current.show();\n            };\n\n            _this2.handleAMonthChange2 = function (value, text) {\n                //\n            };\n\n            _this2.handleAMonthDissmis2 = function (value) {\n                _this2.setState({ mvalue2: value });\n            };\n\n            _this2._handleClickRangeBox = function (e) {\n                _this2.pickRange.current.show();\n            };\n\n            _this2.handleRangeChange = function (value, text, listIndex) {\n                //\n            };\n\n            _this2.handleRangeDissmis = function (value) {\n                _this2.setState({ mrange: value });\n            };\n\n            _this2._handleClickRangeBox2 = function (e) {\n                _this2.pickRange2.current.show();\n            };\n\n            _this2.handleRangeChange2 = function (value, text, listIndex) {\n                //\n            };\n\n            _this2.handleRangeDissmis2 = function (value) {\n                _this2.setState({ mrange2: value });\n            };\n\n            _this2.state = {\n                mvalue: { year: 2014, month: 11 },\n                mvalue2: { year: 2016, month: 7 },\n                mrange: { from: { year: 2014, month: 8 }, to: { year: 2015, month: 5 } },\n                mrange2: { from: { year: 2013, month: 11 }, to: { year: 2016, month: 3 } }\n            };\n\n            _this2.pickAMonth = _react2.default.createRef();\n            _this2.pickAMonth2 = _react2.default.createRef();\n            _this2.pickRange = _react2.default.createRef();\n            _this2.pickRange2 = _react2.default.createRef();\n            return _this2;\n        }\n\n        _createClass(List, [{\n            key: 'render',\n            value: function render() {\n\n                var pickerLang = {\n                    months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],\n                    from: 'From', to: 'To'\n                };\n                var mvalue = this.state.mvalue;\n                var mvalue2 = this.state.mvalue2;\n                var mrange = this.state.mrange;\n                var mrange2 = this.state.mrange2;\n\n                var makeText = function makeText(m) {\n                    if (m && m.year && m.month) return pickerLang.months[m.month - 1] + '. ' + m.year;\n                    return '?';\n                };\n\n                return _react2.default.createElement(\n                    'ul',\n                    null,\n                    _react2.default.createElement(\n                        'li',\n                        null,\n                        _react2.default.createElement(\n                            'label',\n                            null,\n                            _react2.default.createElement(\n                                'b',\n                                null,\n                                'Pick A Month'\n                            ),\n                            _react2.default.createElement(\n                                'span',\n                                null,\n                                '(Available years: 2008, 2011, 2012, 2014, 2016)'\n                            )\n                        ),\n                        _react2.default.createElement(\n                            'div',\n                            { className: 'edit' },\n                            _react2.default.createElement(\n                                _monthPicker2.default,\n                                {\n                                    ref: this.pickAMonth,\n                                    years: [2008, 2011, 2012, 2014, 2016],\n                                    value: mvalue,\n                                    lang: pickerLang.months,\n                                    onChange: this.handleAMonthChange,\n                                    onDismiss: this.handleAMonthDissmis\n                                },\n                                _react2.default.createElement(MonthBox, { value: makeText(mvalue), onClick: this.handleClickMonthBox })\n                            )\n                        )\n                    ),\n                    _react2.default.createElement(\n                        'li',\n                        null,\n                        _react2.default.createElement(\n                            'label',\n                            null,\n                            _react2.default.createElement(\n                                'b',\n                                null,\n                                'Pick A Month'\n                            ),\n                            _react2.default.createElement(\n                                'span',\n                                null,\n                                '(Available months from Feb.2016 to Sep.2016)'\n                            )\n                        ),\n                        _react2.default.createElement(\n                            'div',\n                            { className: 'edit' },\n                            _react2.default.createElement(\n                                _monthPicker2.default,\n                                {\n                                    ref: this.pickAMonth2,\n                                    years: { min: { year: 2016, month: 2 }, max: { year: 2016, month: 9 } },\n                                    value: mvalue2,\n                                    lang: pickerLang.months,\n                                    theme: 'dark',\n                                    onChange: this.handleAMonthChange2,\n                                    onDismiss: this.handleAMonthDissmis2\n                                },\n                                _react2.default.createElement(MonthBox, { value: makeText(mvalue2), onClick: this.handleClickMonthBox2 })\n                            )\n                        )\n                    ),\n                    _react2.default.createElement(\n                        'li',\n                        null,\n                        _react2.default.createElement(\n                            'label',\n                            null,\n                            _react2.default.createElement(\n                                'b',\n                                null,\n                                'Pick A Span of Months'\n                            ),\n                            _react2.default.createElement(\n                                'span',\n                                null,\n                                '(Available years from 2013 to this year)'\n                            )\n                        ),\n                        _react2.default.createElement(\n                            'div',\n                            { className: 'edit' },\n                            _react2.default.createElement(\n                                _monthPicker2.default,\n                                {\n                                    ref: this.pickRange,\n                                    years: { min: 2013 },\n                                    range: mrange,\n                                    lang: pickerLang,\n                                    theme: 'light',\n                                    onChange: this.handleRangeChange,\n                                    onDismiss: this.handleRangeDissmis\n                                },\n                                _react2.default.createElement(MonthBox, { value: makeText(mrange.from) + ' ~ ' + makeText(mrange.to), onClick: this._handleClickRangeBox })\n                            )\n                        )\n                    ),\n                    _react2.default.createElement(\n                        'li',\n                        null,\n                        _react2.default.createElement(\n                            'label',\n                            null,\n                            _react2.default.createElement(\n                                'b',\n                                null,\n                                'Pick A Span of Months'\n                            ),\n                            _react2.default.createElement(\n                                'span',\n                                null,\n                                '(Available months from Apr.2013 to Sep.2016)'\n                            )\n                        ),\n                        _react2.default.createElement(\n                            'div',\n                            { className: 'edit' },\n                            _react2.default.createElement(\n                                _monthPicker2.default,\n                                {\n                                    ref: this.pickRange2,\n                                    years: { min: { year: 2013, month: 4 }, max: { year: 2016, month: 9 } },\n                                    range: mrange2,\n                                    lang: pickerLang,\n                                    theme: 'dark',\n                                    onChange: this.handleRangeChange2,\n                                    onDismiss: this.handleRangeDissmis2\n                                },\n                                _react2.default.createElement(MonthBox, { value: makeText(mrange2.from) + ' ~ ' + makeText(mrange2.to), onClick: this._handleClickRangeBox2 })\n                            )\n                        )\n                    )\n                );\n            }\n        }], [{\n            key: 'getDerivedStateFromProps',\n            value: function getDerivedStateFromProps(props, state) {\n                return {\n                    value: props.value || 'N/A'\n                };\n            }\n        }]);\n\n        return List;\n    }(_react.Component);\n\n    var Main = function (_Component3) {\n        _inherits(Main, _Component3);\n\n        function Main(props, context) {\n            _classCallCheck(this, Main);\n\n            var _this3 = _possibleConstructorReturn(this, (Main.__proto__ || Object.getPrototypeOf(Main)).call(this, props, context));\n\n            _this3.state = {\n                value: _this3.props.value\n            };\n            return _this3;\n        }\n\n        _createClass(Main, [{\n            key: 'render',\n            value: function render() {\n\n                return _react2.default.createElement(\n                    'div',\n                    { className: 'list-area' },\n                    _react2.default.createElement(List, null)\n                );\n            }\n        }], [{\n            key: 'getDerivedStateFromProps',\n            value: function getDerivedStateFromProps(props, state) {\n                return {\n                    value: props.value\n                };\n            }\n        }]);\n\n        return Main;\n    }(_react.Component);\n\n    Main.propTypes = {\n        value: _propTypes2.default.string,\n        onClick: _propTypes2.default.func\n    };\n\n    _reactDom2.default.render(_react2.default.createElement(Main, null), _es6Dom2.default.nodeById(\"page-container\"));\n});\n\n//# sourceURL=webpack:///./examples/demo.jsx?");
+
+/***/ }),
+
+/***/ "./node_modules/es6-docready/lib/doc-ready.js":
+/*!****************************************************!*\
+  !*** ./node_modules/es6-docready/lib/doc-ready.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n    value: true\n});\nexports[\"default\"] = docReady;\n\nfunction docReady(callback) {\n\n    function completed() {\n        document.removeEventListener(\"DOMContentLoaded\", completed, false);\n        window.removeEventListener(\"load\", completed, false);\n        callback();\n    }\n\n    //Events.on(document, 'DOMContentLoaded', completed)\n\n    if (document.readyState === \"complete\") {\n        // Handle it asynchronously to allow scripts the opportunity to delay ready\n        setTimeout(callback);\n    } else {\n\n        // Use the handy event callback\n        document.addEventListener(\"DOMContentLoaded\", completed, false);\n\n        // A fallback to window.onload, that will always work\n        window.addEventListener(\"load\", completed, false);\n    }\n}\n\nmodule.exports = exports[\"default\"];\n\n//# sourceURL=webpack:///./node_modules/es6-docready/lib/doc-ready.js?");
+
+/***/ }),
+
+/***/ "./node_modules/es6-dom/lib/dom.js":
+/*!*****************************************!*\
+  !*** ./node_modules/es6-dom/lib/dom.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n    value: true\n});\nfunction animationFrame(tick) {\n    window.requestAnimationFrame && requestAnimationFrame(tick) || setTimeout(tick, 16);\n}\n\nvar Dom = {\n    isDescendant: function isDescendant(parent, child) {\n        var node = child.parentNode;\n\n        while (node !== null) {\n            if (node === parent) return true;\n            node = node.parentNode;\n        }\n\n        return false;\n    },\n    offset: function offset(el) {\n        var rect = el.getBoundingClientRect(),\n            body = document.body,\n            html = document.documentElement,\n            scrollTop = html && html.scrollTop ? html.scrollTop : body.scrollTop,\n            scrollLeft = html && html.scrollLeft ? html.scrollLeft : body.scrollLeft;\n        return {\n            top: rect.top + scrollTop,\n            left: rect.left + scrollLeft\n        };\n    },\n    getStyleAttributeAsNumber: function getStyleAttributeAsNumber(el, attr) {\n        var attrStyle = el.style[attr];\n        var attrNum = 0;\n        if (attrStyle && attrStyle.length) {\n            attrNum = parseInt(attrStyle);\n        }\n\n        return attrNum;\n    },\n    addClass: function addClass(el, className) {\n        if (el.classList) el.classList.add(className);else el.className += ' ' + className;\n    },\n    removeClass: function removeClass(el, className) {\n        if (el.classList) el.classList.remove(className);else el.className = el.className.replace(new RegExp('(^|\\\\b)' + className.split(' ').join('|') + '(\\\\b|$)', 'gi'), ' ');\n    },\n    hasClass: function hasClass(el, className) {\n        if (el.classList) return el.classList.contains(className);else return new RegExp('(^| )' + className + '( |$)', 'gi').test(el.className);\n    },\n    toggleClass: function toggleClass(el, className) {\n        if (this.hasClass(el, className)) this.removeClass(el, className);else this.addClass(el, className);\n    },\n    forceRedraw: function forceRedraw(el) {\n        var originalDisplay = el.style.display;\n\n        el.style.display = 'none';\n        el.offsetHeight; // no need to store this anywhere, the reference is enough\n        el.style.display = originalDisplay;\n    },\n    withoutTransition: function withoutTransition(el, callback) {\n        var originalTransition = el.style.transition;\n\n        //turn off transition\n        el.style.transition = null;\n\n        callback();\n\n        //force a redraw\n        this.forceRedraw(el);\n\n        //put the transition back\n        el.style.transition = originalTransition;\n    },\n    nodeById: function nodeById(id) {\n        return document.getElementById(id);\n    },\n    nodeBySelector: function nodeBySelector(el, s) {\n        return (el || document).querySelector(s);\n    },\n    nodesBySelector: function nodesBySelector(el, s) {\n        return (el || document).querySelectorAll(s);\n    },\n    text: function text(el, _text) {\n        if (typeof _text === 'string') {\n            el && (el.innerText = _text);\n            return this;\n        }\n        return el ? el.innerText || el.textContent || '' : '';\n    },\n    documentWidth: function documentWidth() {\n        return Math.max(document.body.scrollWidth, document.body.offsetWidth, document.documentElement.clientWidth, document.documentElement.scrollWidth, document.documentElement.offsetWidth);\n    },\n    documentHeight: function documentHeight() {\n        return Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);\n    },\n    windowWidth: function windowWidth() {\n        return window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;\n    },\n    windowHeight: function windowHeight() {\n        return window.innerHeight || document.documentElement.clientHeight || document.getElementsByTagName('body')[0].clientHeight;\n    },\n    animate: function animate(tick) {\n        var duration = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 200;\n        var easing = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'linear';\n\n        var easings = {\n            linear: function linear(t) {\n                return t;\n            },\n            easeInQuad: function easeInQuad(t) {\n                return t * t;\n            },\n            easeOutQuad: function easeOutQuad(t) {\n                return t * (2 - t);\n            },\n            easeInOutQuad: function easeInOutQuad(t) {\n                return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;\n            },\n            easeInCubic: function easeInCubic(t) {\n                return t * t * t;\n            },\n            easeOutCubic: function easeOutCubic(t) {\n                return --t * t * t + 1;\n            },\n            easeInOutCubic: function easeInOutCubic(t) {\n                return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;\n            },\n            easeInQuart: function easeInQuart(t) {\n                return t * t * t * t;\n            },\n            easeOutQuart: function easeOutQuart(t) {\n                return 1 - --t * t * t * t;\n            },\n            easeInOutQuart: function easeInOutQuart(t) {\n                return t < 0.5 ? 8 * t * t * t * t : 1 - 8 * --t * t * t * t;\n            },\n            easeInQuint: function easeInQuint(t) {\n                return t * t * t * t * t;\n            },\n            easeOutQuint: function easeOutQuint(t) {\n                return 1 + --t * t * t * t * t;\n            },\n            easeInOutQuint: function easeInOutQuint(t) {\n                return t < 0.5 ? 16 * t * t * t * t * t : 1 + 16 * --t * t * t * t * t;\n            }\n        };\n\n        var startTime = 'now' in window.performance ? performance.now() : new Date().getTime();\n\n        var _tick = function _tick() {\n            var now = 'now' in window.performance ? performance.now() : new Date().getTime(),\n                time = duration <= 0 ? 1 : Math.min(1, (now - startTime) / duration);\n            var percent = easings[easing](time);\n            if (duration <= 0 || !tick(percent)) return;\n\n            animationFrame(_tick);\n        };\n\n        _tick();\n    },\n    scrollTo: function scrollTo(x, y) {\n        var duration = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 200;\n        var easing = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'linear';\n\n        var startX = window.pageXOffset,\n            startY = window.pageYOffset,\n            docW = Dom.documentWidth(),\n            docH = Dom.documentHeight(),\n            winW = Dom.windowWidth(),\n            winH = Dom.windowHeight(),\n            offsetLeft = Math.round(docW - x < winW ? docW - winW : x),\n            offsetTop = Math.round(docH - y < winH ? docH - winH : y);\n\n        Dom.animate(function (percent) {\n            var scrollLeft = Math.ceil(percent * (offsetLeft - startX) + startX),\n                scrollTop = Math.ceil(percent * (offsetTop - startY) + startY);\n\n            window.scroll(scrollLeft, scrollTop);\n\n            return window.pageXOffset < offsetLeft || window.pageYOffset < offsetTop;\n        }, duration, easing);\n    }\n};\n\nexports.default = Dom;\n\n\n//# sourceURL=webpack:///./node_modules/es6-dom/lib/dom.js?");
+
+/***/ }),
+
+/***/ "./node_modules/react-tapper/lib/event-support.js":
+/*!********************************************************!*\
+  !*** ./node_modules/react-tapper/lib/event-support.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n    value: true\n});\nvar TAGNAMES = {\n    'select': 'input',\n    'change': 'input',\n    'submit': 'form',\n    'reset': 'form',\n    'error': 'img',\n    'load': 'img',\n    'abort': 'img'\n};\n\nvar eventSupport = function eventSupport(eventName) {\n    //to support compilation in server-side\n    if (typeof window === \"undefined\" || typeof document === \"undefined\") return false;\n    var el = document.createElement(TAGNAMES[eventName] || 'div');\n    eventName = 'on' + eventName;\n    var isSupported = eventName in el;\n    if (!isSupported) {\n        el.setAttribute(eventName, 'return;');\n        isSupported = typeof el[eventName] == 'function';\n    }\n    el = null;\n    return isSupported;\n};\n\nexports.default = eventSupport;\n\n\n//# sourceURL=webpack:///./node_modules/react-tapper/lib/event-support.js?");
+
+/***/ }),
+
+/***/ "./node_modules/react-tapper/lib/tappable.js":
+/*!***************************************************!*\
+  !*** ./node_modules/react-tapper/lib/tappable.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n    value: true\n});\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nvar _react = __webpack_require__(/*! react */ \"react\");\n\nvar _react2 = _interopRequireDefault(_react);\n\nvar _propTypes = __webpack_require__(/*! prop-types */ \"prop-types\");\n\nvar _propTypes2 = _interopRequireDefault(_propTypes);\n\nvar _touchSupport = __webpack_require__(/*! ./touch-support */ \"./node_modules/react-tapper/lib/touch-support.js\");\n\nvar _touchSupport2 = _interopRequireDefault(_touchSupport);\n\nvar _touchStyles = __webpack_require__(/*! ./touch-styles */ \"./node_modules/react-tapper/lib/touch-styles.js\");\n\nvar _touchStyles2 = _interopRequireDefault(_touchStyles);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return call && (typeof call === \"object\" || typeof call === \"function\") ? call : self; }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function, not \" + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }\n\nvar _extends = Object.assign || function (target) {\n    for (var i = 1; i < arguments.length; i++) {\n        var source = arguments[i];for (var key in source) {\n            if (Object.prototype.hasOwnProperty.call(source, key)) {\n                target[key] = source[key];\n            }\n        }\n    }return target;\n};\n\nvar Tappable = function (_Component) {\n    _inherits(Tappable, _Component);\n\n    function Tappable(props, context) {\n        _classCallCheck(this, Tappable);\n\n        var _this = _possibleConstructorReturn(this, (Tappable.__proto__ || Object.getPrototypeOf(Tappable)).call(this, props, context));\n\n        _this.state = _this.getInitialState();\n\n        _this.touchable = (0, _touchSupport2.default)();\n        return _this;\n    }\n\n    _createClass(Tappable, [{\n        key: 'getInitialState',\n        value: function getInitialState() {\n            return {\n                x: null,\n                y: null,\n                swiping: false,\n                start: 0\n            };\n        }\n    }, {\n        key: 'render',\n        value: function render() {\n            var props = this.props,\n                style = {};\n            _extends(style, _touchStyles2.default, props.style);\n\n            var newComponentProps = _extends({}, props, {\n                style: style,\n                className: props.className,\n                disabled: props.disabled\n                //, handlers: this.handlers\n            }, this.handlers());\n\n            delete newComponentProps.onTap;\n            delete newComponentProps.onPress;\n            delete newComponentProps.onPinchStart;\n            delete newComponentProps.onPinchMove;\n            delete newComponentProps.onPinchEnd;\n            delete newComponentProps.moveThreshold;\n            delete newComponentProps.pressDelay;\n            delete newComponentProps.pressMoveThreshold;\n            delete newComponentProps.preventDefault;\n            delete newComponentProps.stopPropagation;\n            delete newComponentProps.component;\n            delete newComponentProps.flickThreshold;\n            delete newComponentProps.delta;\n            //delete newComponentProps.handlers\n\n            return (0, _react.createElement)(props.component, newComponentProps, props.children);\n        }\n    }, {\n        key: 'calculatePos',\n        value: function calculatePos(e) {\n            var x = e.changedTouches[0].clientX;\n            var y = e.changedTouches[0].clientY;\n\n            var xd = this.state.x - x;\n            var yd = this.state.y - y;\n\n            var axd = Math.abs(xd);\n            var ayd = Math.abs(yd);\n\n            return {\n                deltaX: xd,\n                deltaY: yd,\n                absX: axd,\n                absY: ayd\n            };\n        }\n    }, {\n        key: 'touchStart',\n        value: function touchStart(e) {\n            if (e.touches.length > 1) {\n                return;\n            }\n\n            if (!this.touchable) {\n                console.debug('Damn! You are using a non-touchable browser simulating touch events!');\n                this.touchable = true;\n            }\n\n            this.setState({\n                start: Date.now(),\n                x: e.touches[0].clientX,\n                y: e.touches[0].clientY,\n                swiping: false\n            });\n        }\n    }, {\n        key: 'touchMove',\n        value: function touchMove(e) {\n            if (!this.state.x || !this.state.y || e.touches.length > 1) {\n                return;\n            }\n\n            var cancelPageSwipe = false;\n            var pos = this.calculatePos(e);\n\n            if (pos.absX < this.props.delta && pos.absY < this.props.delta) {\n                return;\n            }\n\n            if (pos.absX > pos.absY) {\n                if (pos.deltaX > 0) {\n                    if (this.props.onSwipingLeft) {\n                        this.props.onSwipingLeft(e, pos.absX);\n                        cancelPageSwipe = true;\n                    }\n                } else {\n                    if (this.props.onSwipingRight) {\n                        this.props.onSwipingRight(e, pos.absX);\n                        cancelPageSwipe = true;\n                    }\n                }\n            } else {\n                if (pos.deltaY > 0) {\n                    if (this.props.onSwipingUp) {\n                        this.props.onSwipingUp(e, pos.absY);\n                        cancelPageSwipe = true;\n                    }\n                } else {\n                    if (this.props.onSwipingDown) {\n                        this.props.onSwipingDown(e, pos.absY);\n                        cancelPageSwipe = true;\n                    }\n                }\n            }\n\n            this.setState({ swiping: true });\n\n            if (cancelPageSwipe) {\n                e.preventDefault();\n            }\n        }\n    }, {\n        key: 'touchEnd',\n        value: function touchEnd(ev) {\n            if (this.state.swiping) {\n                var pos = this.calculatePos(ev);\n\n                var time = Date.now() - this.state.start;\n                var velocity = Math.sqrt(pos.absX * pos.absX + pos.absY * pos.absY) / time;\n                var isFlick = velocity > this.props.flickThreshold;\n\n                this.props.onSwiped && this.props.onSwiped(ev, pos.deltaX, pos.deltaY, isFlick);\n\n                if (pos.absX > pos.absY) {\n                    if (pos.deltaX > 0) {\n                        this.props.onSwipedLeft && this.props.onSwipedLeft(ev, pos.deltaX);\n                    } else {\n                        this.props.onSwipedRight && this.props.onSwipedRight(ev, pos.deltaX);\n                    }\n                } else {\n                    if (pos.deltaY > 0) {\n                        this.props.onSwipedUp && this.props.onSwipedUp(ev, pos.deltaY);\n                    } else {\n                        this.props.onSwipedDown && this.props.onSwipedDown(ev, pos.deltaY);\n                    }\n                }\n            } else {\n                this._handleTap(ev);\n            }\n\n            this.setState(this.getInitialState());\n        }\n    }, {\n        key: 'touchCancel',\n        value: function touchCancel(ev) {\n            this.setState(this.getInitialState());\n        }\n    }, {\n        key: '_handleClick',\n        value: function _handleClick(ev) {\n            var _this2 = this;\n\n            //!this.touchable && this._handleTap(ev)\n            if (this.state.start === 0) {\n                this._handleTap(ev);\n            } else {\n                setTimeout(function () {\n                    _this2.state.start === 0 && _this2._handleTap(ev);\n                }, 300);\n            }\n        }\n    }, {\n        key: '_handleTap',\n        value: function _handleTap(ev) {\n            this.props.onTap && this.props.onTap(ev);\n        }\n    }, {\n        key: 'handlers',\n        value: function handlers() {\n            return {\n                onTouchStart: this.touchStart.bind(this),\n                onTouchMove: this.touchMove.bind(this),\n                onTouchEnd: this.touchEnd.bind(this),\n                onTouchCancel: this.touchCancel.bind(this),\n                onClick: this._handleClick.bind(this)\n            };\n        }\n    }]);\n\n    return Tappable;\n}(_react.Component);\n\nTappable.propTypes = {\n    component: _propTypes2.default.any,\n    onTap: _propTypes2.default.func,\n\n    onSwiped: _propTypes2.default.func,\n    onSwipingUp: _propTypes2.default.func,\n    onSwipingRight: _propTypes2.default.func,\n    onSwipingDown: _propTypes2.default.func,\n    onSwipingLeft: _propTypes2.default.func,\n    onSwipedUp: _propTypes2.default.func,\n    onSwipedRight: _propTypes2.default.func,\n    onSwipedDown: _propTypes2.default.func,\n    onSwipedLeft: _propTypes2.default.func,\n    flickThreshold: _propTypes2.default.number,\n    delta: _propTypes2.default.number\n};\nTappable.defaultProps = {\n    component: 'div',\n    flickThreshold: 0.6,\n    delta: 10\n};\nexports.default = Tappable;\n\n\n//# sourceURL=webpack:///./node_modules/react-tapper/lib/tappable.js?");
+
+/***/ }),
+
+/***/ "./node_modules/react-tapper/lib/touch-styles.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/react-tapper/lib/touch-styles.js ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n    value: true\n});\nvar touchStyles = {\n    WebkitTapHighlightColor: 'rgba(0,0,0,0)',\n    WebkitTouchCallout: 'none',\n    WebkitUserSelect: 'none',\n    KhtmlUserSelect: 'none',\n    MozUserSelect: 'none',\n    msUserSelect: 'none',\n    userSelect: 'none'\n    //cursor: 'pointer'\n};\n\nexports.default = touchStyles;\n\n\n//# sourceURL=webpack:///./node_modules/react-tapper/lib/touch-styles.js?");
+
+/***/ }),
+
+/***/ "./node_modules/react-tapper/lib/touch-support.js":
+/*!********************************************************!*\
+  !*** ./node_modules/react-tapper/lib/touch-support.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n    value: true\n});\n\nvar _eventSupport = __webpack_require__(/*! ./event-support */ \"./node_modules/react-tapper/lib/event-support.js\");\n\nvar _eventSupport2 = _interopRequireDefault(_eventSupport);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nvar __TouchSupported = void 0;\nvar touchSupport = function touchSupport() {\n    if (typeof __TouchSupported === 'boolean') return __TouchSupported;\n\n    __TouchSupported = (0, _eventSupport2.default)(\"touchstart\"); //(\"ontouchstart\" in document.documentElement)\n    return __TouchSupported;\n};\n\nexports.default = touchSupport;\n\n\n//# sourceURL=webpack:///./node_modules/react-tapper/lib/touch-support.js?");
+
+/***/ }),
+
+/***/ "./src/month-picker.jsx":
+/*!******************************!*\
+  !*** ./src/month-picker.jsx ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\n/**\n * Month-Picker\n *\n * Properties:\n * @years:\n *  - array: [2013, 2015, 2016]\n *  - number: 5 (last 4 years and this year)\n *  - object: {min: 2013, max: 2016} (from 2013 to 2016); {min: 2013} (from 2013 to this year); {max: 2015} (5 years to 2015)\n * @value: default value for picking a single month, e.g. {year: 2015: month: 11}\n * @range: default value for picking a span of months, e.g. {from: {year: 2014: month: 7}, to: {year: 2015: month: 11}}\n * @lang: language texts\n *  - array: array of months' texts, e.g. ['Jan', 'Feb', 'Mar', 'Spr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']\n *  - object: including array of months' texts and other display texts\n *      e.g. {from: \"From:\", to: \"To:\", months: [...]}\n * @theme: theme setting of month-picker; 2 options (light/dark); default theme is light\n */\n\nObject.defineProperty(exports, \"__esModule\", {\n    value: true\n});\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nvar _typeof = typeof Symbol === \"function\" && typeof Symbol.iterator === \"symbol\" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === \"function\" && obj.constructor === Symbol && obj !== Symbol.prototype ? \"symbol\" : typeof obj; };\n\nvar _react = __webpack_require__(/*! react */ \"react\");\n\nvar _react2 = _interopRequireDefault(_react);\n\nvar _propTypes = __webpack_require__(/*! prop-types */ \"prop-types\");\n\nvar _propTypes2 = _interopRequireDefault(_propTypes);\n\nvar _reactTapper = __webpack_require__(/*! react-tapper */ \"./node_modules/react-tapper/lib/tappable.js\");\n\nvar _reactTapper2 = _interopRequireDefault(_reactTapper);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return call && (typeof call === \"object\" || typeof call === \"function\") ? call : self; }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function, not \" + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }\n\nvar isBrowser = typeof window !== \"undefined\" && typeof document !== \"undefined\";\n\nvar __MIN_VALID_YEAR = 1;\n\nfunction mapToArray(num, callback) {\n    var arr = [];\n    for (var i = 0; i < num; i++) {\n        arr.push(callback(i));\n    }\n    return arr;\n}\n\nfunction getYearMon(year, min, max) {\n    var ym = (typeof year === 'undefined' ? 'undefined' : _typeof(year)) === 'object' && year.year ? { year: year.year, month: year.month } : { year: year };\n    ym.min = min || 1;\n    ym.max = max || 12;\n    return ym;\n}\n\nfunction getYearsByNum(n, minYear) {\n    var maxYear = new Date().getFullYear();\n    // n is number of years\n    if (n && n > 0 && n < 1000) {\n        minYear = minYear || maxYear - n + 1;\n    }\n    // n is invalid value\n    else {\n            // n is max year\n            if (n && n >= 1000) maxYear = n;\n\n            if (minYear) {\n                n = maxYear - minYear + 1;\n            } else {\n                n = 5;\n                minYear = maxYear - n + 1;\n            }\n        }\n    return mapToArray(n, function (i) {\n        return getYearMon(minYear + i);\n    });\n}\n\nfunction getYearArray(years) {\n    if (Array.isArray(years)) return years.map(function (y, i) {\n        return getYearMon(y);\n    });\n    if ((typeof years === 'undefined' ? 'undefined' : _typeof(years)) === 'object') {\n        var n = 0,\n            min = 0,\n            ymin = getYearMon(years.min),\n            ymax = getYearMon(years.max);\n        if (typeof ymin.year === 'number' && ymin.year > __MIN_VALID_YEAR) min = ymin.year;\n        if (typeof ymax.year === 'number' && ymax.year >= min) n = ymax.year;\n        var arr = getYearsByNum(n, min),\n            last = arr.length - 1;\n        if (last >= 0) {\n            arr[0].min = ymin.month || arr[0].month;\n            arr[last].max = ymax.month || arr[last].month;\n        }\n        return arr;\n    } else if (typeof years === 'number' && years > 0) return getYearsByNum(years);else return getYearsByNum(5);\n}\n\nfunction validate(d, years, idx, yearIndexes) {\n    var now = new Date(),\n        thisYear = now.getFullYear(),\n        ym = void 0;\n    if (d && typeof d.year === 'number' && d.year > __MIN_VALID_YEAR && typeof d.month === 'number' && d.month >= 1 && d.month <= 12) {\n        ym = d;\n    }\n\n    var foundThisYear = void 0;\n    for (var i = 0; i < years.length; i++) {\n        if (ym && years[i].year === ym.year) {\n            yearIndexes[idx] = i;\n            return ym;\n        } else if (years[i].year === thisYear) {\n            foundThisYear = i;\n        }\n    }\n\n    if (typeof foundThisYear === 'number') {\n        yearIndexes[idx] = foundThisYear;\n        return { year: thisYear };\n    }\n\n    var last = yearIndexes[idx] = years.length - 1;\n    return { year: years[last].year };\n}\n\nfunction validValues(v, years, yearIndexes) {\n    if (!v) return [];\n    if (v.from || v.to) {\n        var from = validate(v.from, years, 0, yearIndexes),\n            to = validate(v.to, years, 1, yearIndexes);\n        if (from.year > to.year || from.year === to.year && from.month > to.month) {\n            from.year = to.year;\n            from.month = to.month;\n            if (from.month < 1) {\n                from.year--;\n                from.month += 12;\n            }\n        }\n        return [from, to];\n    }\n    return [validate(v, years, 0, yearIndexes)];\n}\n\nfunction valuesChanged(values1, values2) {\n    if (values1.length !== values2.length) return true;\n    for (var i = 0; i < values1.length; i++) {\n        var v1 = values1[i];\n        var v2 = values2[i];\n        if (v1.year !== v2.year || v1.month !== v2.month) return true;\n    }\n    return false;\n}\n\nvar MonthPicker = function (_Component) {\n    _inherits(MonthPicker, _Component);\n\n    function MonthPicker(props, context) {\n        _classCallCheck(this, MonthPicker);\n\n        var _this = _possibleConstructorReturn(this, (MonthPicker.__proto__ || Object.getPrototypeOf(MonthPicker)).call(this, props, context));\n\n        _initialiseProps.call(_this);\n\n        var yearArr = getYearArray(_this.props.years);\n        var yearIndexes = [0];\n        var values = validValues(_this.props.range || _this.props.value, yearArr, yearIndexes);\n        _this.state = {\n            years: yearArr,\n            values: values,\n            labelYears: [false, false],\n            showed: false,\n            closeable: false,\n            yearIndexes: yearIndexes,\n            lastRange: _this.props.range,\n            lastValue: _this.props.value\n        };\n        return _this;\n    }\n\n    _createClass(MonthPicker, [{\n        key: 'value',\n        value: function value() {\n            var values = this.state.values;\n            if (values.length >= 2) return { from: values[0], to: values[1] };else if (values.length === 1) return values[0];\n            return {};\n        }\n\n        // getSnapshotBeforeUpdate(prevProps, prevState) {\n        //     // ...\n        // }\n        // componentDidUpdate(prevProps, prevState) {\n        //     const yearIndexes = this.state.yearIndexes\n        //     const values = validValues(props.range || props.value, this.state.years, yearIndexes)\n        //     if (this.state.showed !== prevState.showed || valuesChanged(values, state.values)) {\n        //         const nextValues = this.props.range || this.props.value\n        //         const values = validValues(nextValues, this.state.years, yearIndexes)\n        //         this.setState({\n        //             values,\n        //             labelYears: [false, false],\n        //             yearIndexes,\n        //             lastRange: this.props.range,\n        //             lastValue: this.props.value,\n        //             showed: this.props.show,\n        //             closeable: this.props.show,\n        //         })\n        //     }\n        // }\n        // static getDerivedStateFromProps(props, state) {\n        //     const yearIndexes = state.yearIndexes\n        //     const values = validValues(props.range || props.value, state.years, yearIndexes)\n        //     if (valuesChanged(values, state.values)) {\n        //         return {\n        //             values,\n        //             labelYears: [false, false],\n        //             yearIndexes,\n        //             lastRange: props.range,\n        //             lastValue: props.value,\n        //         }\n        //     }\n        //     // No state update necessary\n        //     return null\n        // }\n\n    }, {\n        key: 'componentDidMount',\n        value: function componentDidMount() {\n            if (isBrowser) {\n                document.addEventListener('keydown', this._keyDown);\n            }\n        }\n    }, {\n        key: 'componentWillUnmount',\n        value: function componentWillUnmount() {\n            if (isBrowser) {\n                document.removeEventListener('keydown', this._keyDown);\n            }\n        }\n    }, {\n        key: 'optionPad',\n        value: function optionPad(padIndex) {\n            var _this2 = this;\n\n            var values = this.state.values;\n            var value = values[padIndex];\n            var labelYears = this.state.labelYears;\n            var labelYear = labelYears[padIndex] = labelYears[padIndex] || value.year;\n            var ymArr = this.state.years;\n            var lang = this.props.lang || [];\n            var months = Array.isArray(lang) ? lang : Array.isArray(lang.months) ? lang.months : [];\n            var prevCss = '',\n                nextCss = '';\n            var yearMaxIdx = ymArr.length - 1;\n            var yearIdx = this.state.yearIndexes[padIndex]; //yearMaxIdx\n\n            if (yearIdx === 0) prevCss = 'disable';\n            if (yearIdx === yearMaxIdx) nextCss = 'disable';\n\n            var yearActive = labelYear === value.year;\n            var atMinYear = labelYear === ymArr[0].year;\n            var atMaxYear = labelYear === ymArr[yearMaxIdx].year;\n            var otherValue = false;\n            if (values.length > 1) {\n                otherValue = values[1 - padIndex];\n            }\n\n            var labelTextKey = padIndex === 0 ? 'from' : 'to',\n                labelPreText = void 0;\n            if (otherValue && this.props.lang[labelTextKey]) {\n                labelPreText = _react2.default.createElement(\n                    'b',\n                    null,\n                    this.props.lang[labelTextKey]\n                );\n            }\n\n            return _react2.default.createElement(\n                'div',\n                { className: 'rmp-pad', key: padIndex },\n                _react2.default.createElement(\n                    'div',\n                    null,\n                    _react2.default.createElement(\n                        'label',\n                        null,\n                        labelPreText,\n                        labelYear\n                    ),\n                    _react2.default.createElement(\n                        'i',\n                        { className: [\"rmp-tab\", \"rmp-btn\", \"prev\", prevCss].join(' '), 'data-id': padIndex, onClick: this._goPrevYear },\n                        '<'\n                    ),\n                    _react2.default.createElement(\n                        'i',\n                        { className: [\"rmp-tab\", \"rmp-btn\", \"next\", nextCss].join(' '), 'data-id': padIndex, onClick: this._goNextYear },\n                        '>'\n                    )\n                ),\n                _react2.default.createElement(\n                    'ul',\n                    null,\n                    mapToArray(12, function (i) {\n                        var css = '',\n                            m = i + 1;\n                        if (yearActive && m === value.month) {\n                            css = 'active';\n                        }\n                        if (values.length > 1 && padIndex === 0 && (labelYear > value.year || labelYear === value.year && m > value.month)) {\n                            css = 'select';\n                        }\n                        if (values.length > 1 && padIndex === 1 && (labelYear < value.year || labelYear === value.year && m < value.month)) {\n                            css = 'select';\n                        }\n                        if (atMinYear && m < ymArr[0].min) {\n                            css = 'disable';\n                        }\n                        if (atMaxYear && m > ymArr[yearMaxIdx].max) {\n                            css = 'disable';\n                        }\n                        if (otherValue) {\n                            var y = otherValue.year,\n                                _m = otherValue.month || 0;\n                            var vy = labelYear,\n                                vm = i + 1;\n                            if (y === vy && _m && (padIndex === 0 && vm > _m || padIndex === 1 && vm < _m)) {\n                                css = 'disable';\n                            } else if (y > vy && padIndex === 1 || y < vy && padIndex === 0) {\n                                css = 'disable';\n                            }\n                        }\n                        var clickHandler = css !== 'disable' ? _this2._handleClickMonth : undefined;\n                        return _react2.default.createElement(\n                            'li',\n                            { key: i, className: [\"rmp-btn\", css].join(' '),\n                                'data-id': padIndex + ':' + (i + 1),\n                                onClick: clickHandler },\n                            months.length > i ? months[i] : i\n                        );\n                    })\n                )\n            );\n        }\n    }, {\n        key: 'render',\n        value: function render() {\n            var pads = [];\n            var popupClass = '';\n            if (this.state.values.length > 1) {\n                pads.push(this.optionPad(0), this.optionPad(1));\n                popupClass = 'range';\n            } else {\n                pads.push(this.optionPad(0));\n            }\n\n            return _react2.default.createElement(\n                'div',\n                { className: [\"month-picker\", this.props.className].join(' ') },\n                this.props.children,\n                _react2.default.createElement(\n                    'div',\n                    { className: [\"rmp-container\", \"rmp-table\", this.props.className, this.state.showed ? \"show\" : ''].join(' ') },\n                    _react2.default.createElement(_reactTapper2.default, { className: 'rmp-overlay', onTap: this._handleOverlayTouchTap }),\n                    _react2.default.createElement(\n                        'div',\n                        { className: 'rmp-cell' },\n                        _react2.default.createElement(\n                            'div',\n                            { className: [\"rmp-popup\", popupClass, this.props.theme, this.state.showed ? \"show\" : ''].join(' ') },\n                            pads\n                        )\n                    )\n                )\n            );\n        }\n    }, {\n        key: 'dismiss',\n        value: function dismiss() {\n            if (this.state.closeable) {\n                this._onDismiss();\n            }\n        }\n    }, {\n        key: 'show',\n        value: function show() {\n            // prevent rapid show/hide\n            this._onShow();\n        }\n    }, {\n        key: '_onShow',\n        value: function _onShow() {\n            var _this3 = this;\n\n            setTimeout(function () {\n                _this3.state.closeable = true;\n            }, 250);\n            this.setState({ showed: true });\n            this.props.onShow && this.props.onShow();\n        }\n    }, {\n        key: '_onDismiss',\n        value: function _onDismiss(s) {\n            this.setState(Object.assign({ showed: false, loading: false }, s));\n            this.props.onDismiss && this.props.onDismiss(this.value());\n        }\n    }, {\n        key: 'setYear',\n        value: function setYear(idx, step) {\n            var yearIndex = this.state.yearIndexes[idx] += step;\n            var labelYears = this.state.labelYears;\n            var theYear = this.state.years[yearIndex].year;\n            labelYears[idx] = theYear;\n            this.setState({\n                labelYears: labelYears\n            });\n            this.props.onYearChange && this.props.onYearChange(theYear);\n        }\n    }, {\n        key: 'getDID',\n        value: function getDID(e) {\n            var el = e.target;\n            return el.dataset ? el.dataset.id : el.getAttribute('data-id');\n        }\n    }, {\n        key: '_reset',\n        value: function _reset() {\n            var values = validValues(this.state.lastRange || this.state.lastValue, this.state.years, this.state.yearIndexes);\n            return { values: values };\n        }\n    }]);\n\n    return MonthPicker;\n}(_react.Component);\n\nMonthPicker.propTypes = {\n    years: _propTypes2.default.oneOfType([_propTypes2.default.number, // exact number of a year\n    _propTypes2.default.arrayOf(_propTypes2.default.number), // array of specific years: [2008, 2011, 2012, 2014, 2016]\n    _propTypes2.default.shape({ // { min: 2013 }; { min: {year: 2013, month: 4}, max: {year: 2016, month: 9} }\n        min: _propTypes2.default.oneOfType([_propTypes2.default.number, // { min: 2013 }\n        _propTypes2.default.shape({ // { min: {year: 2016, month: 2} }\n            year: _propTypes2.default.number,\n            month: _propTypes2.default.number\n        })]),\n        max: _propTypes2.default.oneOfType([_propTypes2.default.number, _propTypes2.default.shape({\n            year: _propTypes2.default.number,\n            month: _propTypes2.default.number\n        })])\n    })]),\n    value: _propTypes2.default.shape({\n        year: _propTypes2.default.number,\n        month: _propTypes2.default.number\n    }),\n    range: _propTypes2.default.shape({\n        from: _propTypes2.default.shape({\n            year: _propTypes2.default.number,\n            month: _propTypes2.default.number\n        }),\n        to: _propTypes2.default.shape({\n            year: _propTypes2.default.number,\n            month: _propTypes2.default.number\n        })\n    }),\n    lang: _propTypes2.default.oneOfType([_propTypes2.default.arrayOf(_propTypes2.default.string), // lang texts for months: ['Jan', 'Feb', 'Mar', 'Apr', ... ]\n    _propTypes2.default.shape({\n        months: _propTypes2.default.arrayOf(_propTypes2.default.string),\n        from: _propTypes2.default.string, // lang text for 'from'\n        to: _propTypes2.default.string // lang text for 'to'\n    })]),\n    onChange: _propTypes2.default.func,\n    onYearChange: _propTypes2.default.func,\n    onShow: _propTypes2.default.func,\n    onDismiss: _propTypes2.default.func,\n    onClickAway: _propTypes2.default.func,\n    theme: _propTypes2.default.string\n};\nMonthPicker.defaultProps = {\n    years: getYearsByNum(5),\n    onChange: function onChange(year, month, idx) {},\n\n    theme: 'light'\n};\n\nvar _initialiseProps = function _initialiseProps() {\n    var _this4 = this;\n\n    this._handleOverlayTouchTap = function (e) {\n        if (_this4.state.closeable) {\n            _this4._onDismiss();\n            _this4.props.onClickAway && _this4.props.onClickAway(e);\n        }\n    };\n\n    this._handleClickMonth = function (e) {\n        if (_this4.state.showed) {\n            var refid = _this4.getDID(e).split(':');\n            var idx = parseInt(refid[0], 10);\n            var month = parseInt(refid[1], 10);\n            var year = _this4.state.labelYears[idx];\n            var values = _this4.state.values;\n            values[idx] = { year: year, month: month };\n            _this4.setState({ values: values });\n            _this4.props.onChange(year, month, idx);\n        }\n    };\n\n    this._goPrevYear = function (e) {\n        var idx = parseInt(_this4.getDID(e), 10);\n        if (_this4.state.yearIndexes[idx] > 0) {\n            _this4.setYear(idx, -1);\n        }\n    };\n\n    this._goNextYear = function (e) {\n        var idx = parseInt(_this4.getDID(e), 10);\n        if (_this4.state.yearIndexes[idx] < _this4.state.years.length - 1) {\n            _this4.setYear(idx, 1);\n        }\n    };\n\n    this._keyDown = function (e) {\n        if (!_this4.state.showed) return;\n\n        if (e.key === 'Escape') {\n            _this4._onDismiss(_this4._reset());\n            e.stopPropagation();\n        } else if (e.key === 'Enter') {\n            _this4._onDismiss();\n            e.stopPropagation();\n        } else if (_this4.state.values.length === 1) {\n            //console.log(e.key, e.keyCode)\n            // const value = this.state.values[0]\n            //     , year = value.year\n            // let month = value.month\n            // if (e.key === 'ArrowLeft') {\n            //     month--\n            // }\n            // else if (e.key === 'ArrowRight') {\n            //     month++\n            // }\n            // else if (e.key === 'ArrowUp') {\n            //     month -= 3\n            // }\n            // else if (e.key === 'ArrowDown') {\n            //     month += 3\n            // }\n            // if (month > 0 && month < 13 && month !== value.month) {\n            //     this.setState({ values: [{ year, month }] })\n            //     this.props.onChange(year, month, 0)\n            //     e.stopPropagation()\n            // }\n        }\n    };\n};\n\nexports.default = MonthPicker;\n\n//# sourceURL=webpack:///./src/month-picker.jsx?");
+
+/***/ }),
+
+/***/ "prop-types":
+/*!****************************!*\
+  !*** external "PropTypes" ***!
+  \****************************/
+/*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = React;
+eval("module.exports = PropTypes;\n\n//# sourceURL=webpack:///external_%22PropTypes%22?");
 
 /***/ }),
-/* 1 */
+
+/***/ "react":
+/*!************************!*\
+  !*** external "React" ***!
+  \************************/
+/*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = PropTypes;
+eval("module.exports = React;\n\n//# sourceURL=webpack:///external_%22React%22?");
 
 /***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _reactDom = __webpack_require__(3);
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
-var _es6Docready = __webpack_require__(4);
-
-var _es6Docready2 = _interopRequireDefault(_es6Docready);
-
-var _es6Dom = __webpack_require__(5);
-
-var _es6Dom2 = _interopRequireDefault(_es6Dom);
-
-var _monthPicker = __webpack_require__(6);
-
-var _monthPicker2 = _interopRequireDefault(_monthPicker);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-(0, _es6Docready2.default)(function () {
-    var MonthBox = function (_Component) {
-        _inherits(MonthBox, _Component);
-
-        function MonthBox(props, context) {
-            _classCallCheck(this, MonthBox);
-
-            var _this = _possibleConstructorReturn(this, (MonthBox.__proto__ || Object.getPrototypeOf(MonthBox)).call(this, props, context));
-
-            _this.state = {
-                value: _this.props.value || 'N/A'
-            };
-
-            _this._handleClick = _this._handleClick.bind(_this);
-            return _this;
-        }
-
-        _createClass(MonthBox, [{
-            key: 'componentWillReceiveProps',
-            value: function componentWillReceiveProps(nextProps) {
-                this.setState({
-                    value: nextProps.value || 'N/A'
-                });
-            }
-        }, {
-            key: 'render',
-            value: function render() {
-
-                return _react2.default.createElement(
-                    'div',
-                    { className: 'box', onClick: this._handleClick },
-                    _react2.default.createElement(
-                        'label',
-                        null,
-                        this.state.value
-                    )
-                );
-            }
-        }, {
-            key: '_handleClick',
-            value: function _handleClick(e) {
-                this.props.onClick && this.props.onClick(e);
-            }
-        }]);
-
-        return MonthBox;
-    }(_react.Component);
-
-    MonthBox.propTypes = {
-        value: _propTypes2.default.string,
-        onClick: _propTypes2.default.func
-    };
-
-    var List = function (_Component2) {
-        _inherits(List, _Component2);
-
-        function List(props, context) {
-            _classCallCheck(this, List);
-
-            var _this2 = _possibleConstructorReturn(this, (List.__proto__ || Object.getPrototypeOf(List)).call(this, props, context));
-
-            _this2.state = {
-                mvalue: { year: 2014, month: 11 },
-                mvalue2: { year: 2016, month: 7 },
-                mrange: { from: { year: 2014, month: 8 }, to: { year: 2015, month: 5 } },
-                mrange2: { from: { year: 2013, month: 11 }, to: { year: 2016, month: 3 } }
-            };
-
-            _this2.handleClickMonthBox = _this2.handleClickMonthBox.bind(_this2);
-            _this2.handleAMonthChange = _this2.handleAMonthChange.bind(_this2);
-            _this2.handleAMonthDissmis = _this2.handleAMonthDissmis.bind(_this2);
-
-            _this2.handleClickMonthBox2 = _this2.handleClickMonthBox2.bind(_this2);
-            _this2.handleAMonthChange2 = _this2.handleAMonthChange2.bind(_this2);
-            _this2.handleAMonthDissmis2 = _this2.handleAMonthDissmis2.bind(_this2);
-
-            _this2._handleClickRangeBox = _this2._handleClickRangeBox.bind(_this2);
-            _this2.handleRangeChange = _this2.handleRangeChange.bind(_this2);
-            _this2.handleRangeDissmis = _this2.handleRangeDissmis.bind(_this2);
-
-            _this2._handleClickRangeBox2 = _this2._handleClickRangeBox2.bind(_this2);
-            _this2.handleRangeChange2 = _this2.handleRangeChange2.bind(_this2);
-            _this2.handleRangeDissmis2 = _this2.handleRangeDissmis2.bind(_this2);
-            return _this2;
-        }
-
-        _createClass(List, [{
-            key: 'componentWillReceiveProps',
-            value: function componentWillReceiveProps(nextProps) {
-                this.setState({
-                    value: nextProps.value || 'N/A'
-                });
-            }
-        }, {
-            key: 'render',
-            value: function render() {
-
-                var pickerLang = {
-                    months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                    from: 'From', to: 'To'
-                };
-                var mvalue = this.state.mvalue,
-                    mvalue2 = this.state.mvalue2,
-                    mrange = this.state.mrange,
-                    mrange2 = this.state.mrange2;
-
-                var makeText = function makeText(m) {
-                    if (m && m.year && m.month) return pickerLang.months[m.month - 1] + '. ' + m.year;
-                    return '?';
-                };
-
-                return _react2.default.createElement(
-                    'ul',
-                    null,
-                    _react2.default.createElement(
-                        'li',
-                        null,
-                        _react2.default.createElement(
-                            'label',
-                            null,
-                            _react2.default.createElement(
-                                'b',
-                                null,
-                                'Pick A Month'
-                            ),
-                            _react2.default.createElement(
-                                'span',
-                                null,
-                                '(Available years: 2008, 2011, 2012, 2014, 2016)'
-                            )
-                        ),
-                        _react2.default.createElement(
-                            'div',
-                            { className: 'edit' },
-                            _react2.default.createElement(
-                                _monthPicker2.default,
-                                {
-                                    ref: 'pickAMonth',
-                                    years: [2008, 2011, 2012, 2014, 2016],
-                                    value: mvalue,
-                                    lang: pickerLang.months,
-                                    onChange: this.handleAMonthChange,
-                                    onDismiss: this.handleAMonthDissmis
-                                },
-                                _react2.default.createElement(MonthBox, { value: makeText(mvalue), onClick: this.handleClickMonthBox })
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        'li',
-                        null,
-                        _react2.default.createElement(
-                            'label',
-                            null,
-                            _react2.default.createElement(
-                                'b',
-                                null,
-                                'Pick A Month'
-                            ),
-                            _react2.default.createElement(
-                                'span',
-                                null,
-                                '(Available months from Feb.2016 to Sep.2016)'
-                            )
-                        ),
-                        _react2.default.createElement(
-                            'div',
-                            { className: 'edit' },
-                            _react2.default.createElement(
-                                _monthPicker2.default,
-                                {
-                                    ref: 'pickAMonth2',
-                                    years: { min: { year: 2016, month: 2 }, max: { year: 2016, month: 9 } },
-                                    value: mvalue2,
-                                    lang: pickerLang.months,
-                                    theme: 'dark',
-                                    onChange: this.handleAMonthChange2,
-                                    onDismiss: this.handleAMonthDissmis2
-                                },
-                                _react2.default.createElement(MonthBox, { value: makeText(mvalue2), onClick: this.handleClickMonthBox2 })
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        'li',
-                        null,
-                        _react2.default.createElement(
-                            'label',
-                            null,
-                            _react2.default.createElement(
-                                'b',
-                                null,
-                                'Pick A Span of Months'
-                            ),
-                            _react2.default.createElement(
-                                'span',
-                                null,
-                                '(Available years from 2013 to this year)'
-                            )
-                        ),
-                        _react2.default.createElement(
-                            'div',
-                            { className: 'edit' },
-                            _react2.default.createElement(
-                                _monthPicker2.default,
-                                {
-                                    ref: 'pickRange',
-                                    years: { min: 2013 },
-                                    range: mrange,
-                                    lang: pickerLang,
-                                    theme: 'light',
-                                    onChange: this.handleRangeChange,
-                                    onDismiss: this.handleRangeDissmis
-                                },
-                                _react2.default.createElement(MonthBox, { value: makeText(mrange.from) + ' ~ ' + makeText(mrange.to), onClick: this._handleClickRangeBox })
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        'li',
-                        null,
-                        _react2.default.createElement(
-                            'label',
-                            null,
-                            _react2.default.createElement(
-                                'b',
-                                null,
-                                'Pick A Span of Months'
-                            ),
-                            _react2.default.createElement(
-                                'span',
-                                null,
-                                '(Available months from Apr.2013 to Sep.2016)'
-                            )
-                        ),
-                        _react2.default.createElement(
-                            'div',
-                            { className: 'edit' },
-                            _react2.default.createElement(
-                                _monthPicker2.default,
-                                {
-                                    ref: 'pickRange2',
-                                    years: { min: { year: 2013, month: 4 }, max: { year: 2016, month: 9 } },
-                                    range: mrange2,
-                                    lang: pickerLang,
-                                    theme: 'dark',
-                                    onChange: this.handleRangeChange2,
-                                    onDismiss: this.handleRangeDissmis2
-                                },
-                                _react2.default.createElement(MonthBox, { value: makeText(mrange2.from) + ' ~ ' + makeText(mrange2.to), onClick: this._handleClickRangeBox2 })
-                            )
-                        )
-                    )
-                );
-            }
-        }, {
-            key: 'handleClickMonthBox',
-            value: function handleClickMonthBox(e) {
-                this.refs.pickAMonth.show();
-            }
-        }, {
-            key: 'handleAMonthChange',
-            value: function handleAMonthChange(value, text) {}
-        }, {
-            key: 'handleAMonthDissmis',
-            value: function handleAMonthDissmis(value) {
-                this.setState({ mvalue: value });
-            }
-        }, {
-            key: 'handleClickMonthBox2',
-            value: function handleClickMonthBox2(e) {
-                this.refs.pickAMonth2.show();
-            }
-        }, {
-            key: 'handleAMonthChange2',
-            value: function handleAMonthChange2(value, text) {}
-        }, {
-            key: 'handleAMonthDissmis2',
-            value: function handleAMonthDissmis2(value) {
-                this.setState({ mvalue2: value });
-            }
-        }, {
-            key: '_handleClickRangeBox',
-            value: function _handleClickRangeBox(e) {
-                this.refs.pickRange.show();
-            }
-        }, {
-            key: 'handleRangeChange',
-            value: function handleRangeChange(value, text, listIndex) {}
-        }, {
-            key: 'handleRangeDissmis',
-            value: function handleRangeDissmis(value) {
-                this.setState({ mrange: value });
-            }
-        }, {
-            key: '_handleClickRangeBox2',
-            value: function _handleClickRangeBox2(e) {
-                this.refs.pickRange2.show();
-            }
-        }, {
-            key: 'handleRangeChange2',
-            value: function handleRangeChange2(value, text, listIndex) {}
-        }, {
-            key: 'handleRangeDissmis2',
-            value: function handleRangeDissmis2(value) {
-                this.setState({ mrange2: value });
-            }
-        }]);
-
-        return List;
-    }(_react.Component);
-
-    var Main = function (_Component3) {
-        _inherits(Main, _Component3);
-
-        function Main(props, context) {
-            _classCallCheck(this, Main);
-
-            var _this3 = _possibleConstructorReturn(this, (Main.__proto__ || Object.getPrototypeOf(Main)).call(this, props, context));
-
-            _this3.state = {
-                value: _this3.props.value
-            };
-            return _this3;
-        }
-
-        _createClass(Main, [{
-            key: 'componentWillReceiveProps',
-            value: function componentWillReceiveProps(nextProps) {
-                this.setState({
-                    value: nextProps.value
-                });
-            }
-        }, {
-            key: 'render',
-            value: function render() {
-
-                return _react2.default.createElement(
-                    'div',
-                    { className: 'list-area' },
-                    _react2.default.createElement(List, null)
-                );
-            }
-        }]);
-
-        return Main;
-    }(_react.Component);
-
-    Main.propTypes = {
-        value: _propTypes2.default.string,
-        onClick: _propTypes2.default.func
-    };
-
-    _reactDom2.default.render(_react2.default.createElement(Main, null), _es6Dom2.default.nodeById("page-container"));
-});
-
-/***/ }),
-/* 3 */
+/***/ "react-dom":
+/*!***************************!*\
+  !*** external "ReactDOM" ***!
+  \***************************/
+/*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ReactDOM;
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports["default"] = docReady;
-
-function docReady(callback) {
-
-    function completed() {
-        document.removeEventListener("DOMContentLoaded", completed, false);
-        window.removeEventListener("load", completed, false);
-        callback();
-    }
-
-    //Events.on(document, 'DOMContentLoaded', completed)
-
-    if (document.readyState === "complete") {
-        // Handle it asynchronously to allow scripts the opportunity to delay ready
-        setTimeout(callback);
-    } else {
-
-        // Use the handy event callback
-        document.addEventListener("DOMContentLoaded", completed, false);
-
-        // A fallback to window.onload, that will always work
-        window.addEventListener("load", completed, false);
-    }
-}
-
-module.exports = exports["default"];
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-function animationFrame(tick) {
-    window.requestAnimationFrame && requestAnimationFrame(tick) || setTimeout(tick, 16);
-}
-
-var Dom = {
-    isDescendant: function isDescendant(parent, child) {
-        var node = child.parentNode;
-
-        while (node !== null) {
-            if (node === parent) return true;
-            node = node.parentNode;
-        }
-
-        return false;
-    },
-    offset: function offset(el) {
-        var rect = el.getBoundingClientRect(),
-            body = document.body,
-            html = document.documentElement,
-            scrollTop = html && html.scrollTop ? html.scrollTop : body.scrollTop,
-            scrollLeft = html && html.scrollLeft ? html.scrollLeft : body.scrollLeft;
-        return {
-            top: rect.top + scrollTop,
-            left: rect.left + scrollLeft
-        };
-    },
-    getStyleAttributeAsNumber: function getStyleAttributeAsNumber(el, attr) {
-        var attrStyle = el.style[attr];
-        var attrNum = 0;
-        if (attrStyle && attrStyle.length) {
-            attrNum = parseInt(attrStyle);
-        }
-
-        return attrNum;
-    },
-    addClass: function addClass(el, className) {
-        if (el.classList) el.classList.add(className);else el.className += ' ' + className;
-    },
-    removeClass: function removeClass(el, className) {
-        if (el.classList) el.classList.remove(className);else el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
-    },
-    hasClass: function hasClass(el, className) {
-        if (el.classList) return el.classList.contains(className);else return new RegExp('(^| )' + className + '( |$)', 'gi').test(el.className);
-    },
-    toggleClass: function toggleClass(el, className) {
-        if (this.hasClass(el, className)) this.removeClass(el, className);else this.addClass(el, className);
-    },
-    forceRedraw: function forceRedraw(el) {
-        var originalDisplay = el.style.display;
-
-        el.style.display = 'none';
-        el.offsetHeight; // no need to store this anywhere, the reference is enough
-        el.style.display = originalDisplay;
-    },
-    withoutTransition: function withoutTransition(el, callback) {
-        var originalTransition = el.style.transition;
-
-        //turn off transition
-        el.style.transition = null;
-
-        callback();
-
-        //force a redraw
-        this.forceRedraw(el);
-
-        //put the transition back
-        el.style.transition = originalTransition;
-    },
-    nodeById: function nodeById(id) {
-        return document.getElementById(id);
-    },
-    nodeBySelector: function nodeBySelector(el, s) {
-        return (el || document).querySelector(s);
-    },
-    nodesBySelector: function nodesBySelector(el, s) {
-        return (el || document).querySelectorAll(s);
-    },
-    text: function text(el, _text) {
-        if (typeof _text === 'string') {
-            el && (el.innerText = _text);
-            return this;
-        }
-        return el ? el.innerText || el.textContent || '' : '';
-    },
-    documentWidth: function documentWidth() {
-        return Math.max(document.body.scrollWidth, document.body.offsetWidth, document.documentElement.clientWidth, document.documentElement.scrollWidth, document.documentElement.offsetWidth);
-    },
-    documentHeight: function documentHeight() {
-        return Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);
-    },
-    windowWidth: function windowWidth() {
-        return window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
-    },
-    windowHeight: function windowHeight() {
-        return window.innerHeight || document.documentElement.clientHeight || document.getElementsByTagName('body')[0].clientHeight;
-    },
-    animate: function animate(tick) {
-        var duration = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 200;
-        var easing = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'linear';
-
-        var easings = {
-            linear: function linear(t) {
-                return t;
-            },
-            easeInQuad: function easeInQuad(t) {
-                return t * t;
-            },
-            easeOutQuad: function easeOutQuad(t) {
-                return t * (2 - t);
-            },
-            easeInOutQuad: function easeInOutQuad(t) {
-                return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-            },
-            easeInCubic: function easeInCubic(t) {
-                return t * t * t;
-            },
-            easeOutCubic: function easeOutCubic(t) {
-                return --t * t * t + 1;
-            },
-            easeInOutCubic: function easeInOutCubic(t) {
-                return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
-            },
-            easeInQuart: function easeInQuart(t) {
-                return t * t * t * t;
-            },
-            easeOutQuart: function easeOutQuart(t) {
-                return 1 - --t * t * t * t;
-            },
-            easeInOutQuart: function easeInOutQuart(t) {
-                return t < 0.5 ? 8 * t * t * t * t : 1 - 8 * --t * t * t * t;
-            },
-            easeInQuint: function easeInQuint(t) {
-                return t * t * t * t * t;
-            },
-            easeOutQuint: function easeOutQuint(t) {
-                return 1 + --t * t * t * t * t;
-            },
-            easeInOutQuint: function easeInOutQuint(t) {
-                return t < 0.5 ? 16 * t * t * t * t * t : 1 + 16 * --t * t * t * t * t;
-            }
-        };
-
-        var startTime = 'now' in window.performance ? performance.now() : new Date().getTime();
-
-        var _tick = function _tick() {
-            var now = 'now' in window.performance ? performance.now() : new Date().getTime(),
-                time = duration <= 0 ? 1 : Math.min(1, (now - startTime) / duration);
-            var percent = easings[easing](time);
-            if (duration <= 0 || !tick(percent)) return;
-
-            animationFrame(_tick);
-        };
-
-        _tick();
-    },
-    scrollTo: function scrollTo(x, y) {
-        var duration = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 200;
-        var easing = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'linear';
-
-        var startX = window.pageXOffset,
-            startY = window.pageYOffset,
-            docW = Dom.documentWidth(),
-            docH = Dom.documentHeight(),
-            winW = Dom.windowWidth(),
-            winH = Dom.windowHeight(),
-            offsetLeft = Math.round(docW - x < winW ? docW - winW : x),
-            offsetTop = Math.round(docH - y < winH ? docH - winH : y);
-
-        Dom.animate(function (percent) {
-            var scrollLeft = Math.ceil(percent * (offsetLeft - startX) + startX),
-                scrollTop = Math.ceil(percent * (offsetTop - startY) + startY);
-
-            window.scroll(scrollLeft, scrollTop);
-
-            return window.pageXOffset < offsetLeft || window.pageYOffset < offsetTop;
-        }, duration, easing);
-    }
-};
-
-exports.default = Dom;
-
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _reactTapper = __webpack_require__(7);
-
-var _reactTapper2 = _interopRequireDefault(_reactTapper);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var isBrowser = typeof window !== "undefined" && typeof document !== "undefined";
-
-var __MIN_VALID_YEAR = 1;
-
-function mapToArray(num, callback) {
-    var arr = [];
-    for (var i = 0; i < num; i++) {
-        arr.push(callback(i));
-    }
-    return arr;
-}
-
-function getYearMon(year, min, max) {
-    var ym = (typeof year === 'undefined' ? 'undefined' : _typeof(year)) === 'object' && year.year ? { year: year.year, month: year.month } : { year: year };
-    ym.min = min || 1;
-    ym.max = max || 12;
-    return ym;
-}
-
-function getYearsByNum(n, minYear) {
-    var maxYear = new Date().getFullYear();
-
-    if (n && n > 0 && n < 1000) {
-        minYear = minYear || maxYear - n + 1;
-    } else {
-            if (n && n >= 1000) maxYear = n;
-
-            if (minYear) {
-                n = maxYear - minYear + 1;
-            } else {
-                n = 5;
-                minYear = maxYear - n + 1;
-            }
-        }
-    return mapToArray(n, function (i) {
-        return getYearMon(minYear + i);
-    });
-}
-
-function getYearArray(years) {
-    if (Array.isArray(years)) return years.map(function (y, i) {
-        return getYearMon(y);
-    });
-    if ((typeof years === 'undefined' ? 'undefined' : _typeof(years)) === 'object') {
-        var n = 0,
-            min = 0,
-            ymin = getYearMon(years.min),
-            ymax = getYearMon(years.max);
-        if (typeof ymin.year === 'number' && ymin.year > __MIN_VALID_YEAR) min = ymin.year;
-        if (typeof ymax.year === 'number' && ymax.year >= min) n = ymax.year;
-        var arr = getYearsByNum(n, min),
-            last = arr.length - 1;
-        if (last >= 0) {
-            arr[0].min = ymin.month || arr[0].month;
-            arr[last].max = ymax.month || arr[last].month;
-        }
-        return arr;
-    } else if (typeof years === 'number' && years > 0) return getYearsByNum(years);else return getYearsByNum(5);
-}
-
-var MonthPicker = function (_Component) {
-    _inherits(MonthPicker, _Component);
-
-    function MonthPicker(props, context) {
-        _classCallCheck(this, MonthPicker);
-
-        var _this = _possibleConstructorReturn(this, (MonthPicker.__proto__ || Object.getPrototypeOf(MonthPicker)).call(this, props, context));
-
-        var yearArr = getYearArray(_this.props.years),
-            yearIndexes = [0],
-            values = _this.validValues(_this.props.range || _this.props.value, yearArr, yearIndexes);
-        _this.state = {
-            years: yearArr,
-            values: values,
-            labelYears: [false, false],
-            showed: _this.props.show,
-            closeable: _this.props.show,
-            yearIndexes: yearIndexes,
-            lastRange: _this.props.range,
-            lastValue: _this.props.value
-        };
-
-        _this._handleOverlayTouchTap = _this._handleOverlayTouchTap.bind(_this);
-        _this.handleClickMonth = _this.handleClickMonth.bind(_this);
-        _this.goPrevYear = _this.goPrevYear.bind(_this);
-        _this.goNextYear = _this.goNextYear.bind(_this);
-        _this._keyDown = _this._keyDown.bind(_this);
-        return _this;
-    }
-
-    _createClass(MonthPicker, [{
-        key: 'validate',
-        value: function validate(d, years, idx, yearIndexes) {
-            var now = new Date(),
-                thisYear = now.getFullYear(),
-                ym = void 0;
-            if (d && typeof d.year === 'number' && d.year > __MIN_VALID_YEAR && typeof d.month === 'number' && d.month >= 1 && d.month <= 12) {
-                ym = d;
-            }
-
-            var foundThisYear = void 0;
-            for (var i = 0; i < years.length; i++) {
-                if (ym && years[i].year === ym.year) {
-                    yearIndexes[idx] = i;
-                    return ym;
-                } else if (years[i].year === thisYear) {
-                    foundThisYear = i;
-                }
-            }
-
-            if (typeof foundThisYear === 'number') {
-                yearIndexes[idx] = foundThisYear;
-                return { year: thisYear };
-            }
-
-            var last = yearIndexes[idx] = years.length - 1;
-            return { year: years[last].year };
-        }
-    }, {
-        key: 'validValues',
-        value: function validValues(v, years, yearIndexes) {
-            if (!v) return [];
-            if (v.from || v.to) {
-                var from = this.validate(v.from, years, 0, yearIndexes),
-                    to = this.validate(v.to, years, 1, yearIndexes);
-                if (from.year > to.year || from.year === to.year && from.month > to.month) {
-                    from.year = to.year;
-                    from.month = to.month;
-                    if (from.month < 1) {
-                        from.year--;
-                        from.month += 12;
-                    }
-                }
-                return [from, to];
-            }
-            return [this.validate(v, years, 0, yearIndexes)];
-        }
-    }, {
-        key: 'value',
-        value: function value() {
-            var values = this.state.values;
-            if (values.length >= 2) return { from: values[0], to: values[1] };else if (values.length === 1) return values[0];
-            return {};
-        }
-    }, {
-        key: 'componentWillReceiveProps',
-        value: function componentWillReceiveProps(nextProps) {
-            var yearArr = getYearArray(nextProps.years),
-                yearIndexes = this.state.yearIndexes,
-                nextValues = nextProps.range || nextProps.value,
-                values = this.validValues(nextValues, yearArr, yearIndexes);
-            this.setState({
-                years: yearArr,
-                values: values,
-                labelYears: [false, false],
-                yearIndexes: yearIndexes,
-                lastRange: nextProps.range,
-                lastValue: nextProps.value,
-                showed: nextProps.show,
-                closeable: nextProps.show
-            });
-        }
-    }, {
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            if (isBrowser) {
-                document.addEventListener('keydown', this._keyDown);
-            }
-        }
-    }, {
-        key: 'componentWillUnmount',
-        value: function componentWillUnmount() {
-            if (isBrowser) {
-                document.removeEventListener('keydown', this._keyDown);
-            }
-        }
-    }, {
-        key: 'optionPad',
-        value: function optionPad(padIndex) {
-            var _this2 = this;
-
-            var values = this.state.values,
-                value = values[padIndex],
-                labelYears = this.state.labelYears,
-                labelYear = labelYears[padIndex] = labelYears[padIndex] || value.year,
-                ymArr = this.state.years,
-                lang = this.props.lang || [],
-                months = Array.isArray(lang) ? lang : Array.isArray(lang.months) ? lang.months : [],
-                prevCss = '',
-                nextCss = '',
-                yearMaxIdx = ymArr.length - 1,
-                yearIdx = this.state.yearIndexes[padIndex];
-
-            if (yearIdx === 0) prevCss = 'disable';
-            if (yearIdx === yearMaxIdx) nextCss = 'disable';
-
-            var yearActive = labelYear === value.year,
-                atMinYear = labelYear === ymArr[0].year,
-                atMaxYear = labelYear === ymArr[yearMaxIdx].year,
-                otherValue = false;
-            if (values.length > 1) {
-                otherValue = values[1 - padIndex];
-            }
-
-            var labelTextKey = padIndex === 0 ? 'from' : 'to',
-                labelPreText = void 0;
-            if (otherValue && this.props.lang[labelTextKey]) {
-                labelPreText = _react2.default.createElement(
-                    'b',
-                    null,
-                    this.props.lang[labelTextKey]
-                );
-            }
-
-            return _react2.default.createElement(
-                'div',
-                { className: 'rmp-pad', key: padIndex },
-                _react2.default.createElement(
-                    'div',
-                    null,
-                    _react2.default.createElement(
-                        'label',
-                        null,
-                        labelPreText,
-                        labelYear
-                    ),
-                    _react2.default.createElement(
-                        'i',
-                        { className: ["rmp-tab", "rmp-btn", "prev", prevCss].join(' '), 'data-id': padIndex, onClick: this.goPrevYear },
-                        '<'
-                    ),
-                    _react2.default.createElement(
-                        'i',
-                        { className: ["rmp-tab", "rmp-btn", "next", nextCss].join(' '), 'data-id': padIndex, onClick: this.goNextYear },
-                        '>'
-                    )
-                ),
-                _react2.default.createElement(
-                    'ul',
-                    null,
-                    mapToArray(12, function (i) {
-                        var css = '',
-                            m = i + 1;
-                        if (yearActive && m === value.month) {
-                            css = 'active';
-                        }
-                        if (values.length > 1 && padIndex === 0 && (labelYear > value.year || labelYear === value.year && m > value.month)) {
-                            css = 'select';
-                        }
-                        if (values.length > 1 && padIndex === 1 && (labelYear < value.year || labelYear === value.year && m < value.month)) {
-                            css = 'select';
-                        }
-                        if (atMinYear && m < ymArr[0].min) {
-                            css = 'disable';
-                        }
-                        if (atMaxYear && m > ymArr[yearMaxIdx].max) {
-                            css = 'disable';
-                        }
-                        if (otherValue) {
-                            var y = otherValue.year,
-                                _m = otherValue.month || 0,
-                                vy = labelYear,
-                                vm = i + 1;
-                            if (y === vy && _m && (padIndex === 0 && vm > _m || padIndex === 1 && vm < _m)) {
-                                css = 'disable';
-                            } else if (y > vy && padIndex === 1 || y < vy && padIndex === 0) {
-                                css = 'disable';
-                            }
-                        }
-                        var clickHandler = css !== 'disable' ? _this2.handleClickMonth : undefined;
-                        return _react2.default.createElement(
-                            'li',
-                            { key: i, className: ["rmp-btn", css].join(' '),
-                                'data-id': padIndex + ':' + (i + 1),
-                                onClick: clickHandler },
-                            months.length > i ? months[i] : i
-                        );
-                    })
-                )
-            );
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var pads = [];
-            var popupClass = '';
-            if (this.state.values.length > 1) {
-                pads.push(this.optionPad(0), this.optionPad(1));
-                popupClass = 'range';
-            } else {
-                pads.push(this.optionPad(0));
-            }
-
-            return _react2.default.createElement(
-                'div',
-                { className: ["month-picker", this.props.className].join(' ') },
-                this.props.children,
-                _react2.default.createElement(
-                    'div',
-                    { className: ["rmp-container", "rmp-table", this.props.className, this.state.showed ? "show" : ''].join(' ') },
-                    _react2.default.createElement(_reactTapper2.default, { className: 'rmp-overlay', onTap: this._handleOverlayTouchTap }),
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'rmp-cell' },
-                        _react2.default.createElement(
-                            'div',
-                            { className: ["rmp-popup", popupClass, this.props.theme, this.state.showed ? "show" : ''].join(' ') },
-                            pads
-                        )
-                    )
-                )
-            );
-        }
-    }, {
-        key: 'dismiss',
-        value: function dismiss() {
-            if (this.state.closeable) {
-                this._onDismiss();
-            }
-        }
-    }, {
-        key: 'show',
-        value: function show() {
-            this._onShow();
-        }
-    }, {
-        key: '_handleOverlayTouchTap',
-        value: function _handleOverlayTouchTap(e) {
-            if (this.state.closeable) {
-                this._onDismiss();
-                this.props.onClickAway && this.props.onClickAway(e);
-            }
-        }
-    }, {
-        key: '_onShow',
-        value: function _onShow() {
-            setTimeout(function () {
-                this.state.closeable = true;
-            }.bind(this), 250);
-            this.setState({ showed: true });
-            this.props.onShow && this.props.onShow();
-        }
-    }, {
-        key: '_onDismiss',
-        value: function _onDismiss(s) {
-            this.setState(Object.assign({ showed: false, loading: false }, s));
-            this.props.onDismiss && this.props.onDismiss(this.value());
-        }
-    }, {
-        key: 'handleClickMonth',
-        value: function handleClickMonth(e) {
-            if (this.state.showed) {
-                var refid = this.getDID(e).split(':'),
-                    idx = parseInt(refid[0], 10),
-                    month = parseInt(refid[1], 10),
-                    year = this.state.labelYears[idx],
-                    values = this.state.values;
-                values[idx] = { year: year, month: month };
-                this.setState({ values: values });
-                this.props.onChange(year, month, idx);
-            }
-        }
-    }, {
-        key: 'goPrevYear',
-        value: function goPrevYear(e) {
-            var idx = parseInt(this.getDID(e), 10);
-            if (this.state.yearIndexes[idx] > 0) {
-                this.setYear(idx, -1);
-            }
-        }
-    }, {
-        key: 'goNextYear',
-        value: function goNextYear(e) {
-            var idx = parseInt(this.getDID(e), 10);
-            if (this.state.yearIndexes[idx] < this.state.years.length - 1) {
-                this.setYear(idx, 1);
-            }
-        }
-    }, {
-        key: 'setYear',
-        value: function setYear(idx, step) {
-            var yearIndex = this.state.yearIndexes[idx] += step,
-                labelYears = this.state.labelYears,
-                theYear = this.state.years[yearIndex].year;
-            labelYears[idx] = theYear;
-            this.setState({
-                labelYears: labelYears
-            });
-            this.props.onYearChange && this.props.onYearChange(theYear);
-        }
-    }, {
-        key: 'getDID',
-        value: function getDID(e) {
-            var el = e.target;
-            return el.dataset ? el.dataset.id : el.getAttribute('data-id');
-        }
-    }, {
-        key: '_reset',
-        value: function _reset() {
-            var values = this.validValues(this.state.lastRange || this.state.lastValue, this.state.years, this.state.yearIndexes);
-            return { values: values };
-        }
-    }, {
-        key: '_keyDown',
-        value: function _keyDown(e) {
-            if (!this.state.showed) return;
-
-            if (e.key === 'Escape') {
-                this._onDismiss(this._reset());
-                e.stopPropagation();
-            } else if (e.key === 'Enter') {
-                this._onDismiss();
-                e.stopPropagation();
-            } else if (this.state.values.length === 1) {}
-        }
-    }]);
-
-    return MonthPicker;
-}(_react.Component);
-
-MonthPicker.propTypes = {
-    years: _propTypes2.default.oneOfType([_propTypes2.default.array, _propTypes2.default.object, _propTypes2.default.number]),
-    value: _propTypes2.default.object,
-    range: _propTypes2.default.object,
-    lang: _propTypes2.default.oneOfType([_propTypes2.default.array, _propTypes2.default.object]),
-    onChange: _propTypes2.default.func,
-    onYearChange: _propTypes2.default.func,
-    onShow: _propTypes2.default.func,
-    onDismiss: _propTypes2.default.func,
-    onClickAway: _propTypes2.default.func,
-    theme: _propTypes2.default.string,
-    show: _propTypes2.default.bool
-};
-MonthPicker.defaultProps = {
-    years: getYearsByNum(5),
-    onChange: function onChange(year, month, idx) {},
-
-    theme: 'light',
-    show: false
-};
-exports.default = MonthPicker;
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _touchSupport = __webpack_require__(8);
-
-var _touchSupport2 = _interopRequireDefault(_touchSupport);
-
-var _touchStyles = __webpack_require__(10);
-
-var _touchStyles2 = _interopRequireDefault(_touchStyles);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var _extends = Object.assign || function (target) {
-    for (var i = 1; i < arguments.length; i++) {
-        var source = arguments[i];for (var key in source) {
-            if (Object.prototype.hasOwnProperty.call(source, key)) {
-                target[key] = source[key];
-            }
-        }
-    }return target;
-};
-
-var Tappable = function (_Component) {
-    _inherits(Tappable, _Component);
-
-    function Tappable(props, context) {
-        _classCallCheck(this, Tappable);
-
-        var _this = _possibleConstructorReturn(this, (Tappable.__proto__ || Object.getPrototypeOf(Tappable)).call(this, props, context));
-
-        _this.state = _this.getInitialState();
-
-        _this.touchable = (0, _touchSupport2.default)();
-        return _this;
-    }
-
-    _createClass(Tappable, [{
-        key: 'getInitialState',
-        value: function getInitialState() {
-            return {
-                x: null,
-                y: null,
-                swiping: false,
-                start: 0
-            };
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var props = this.props,
-                style = {};
-            _extends(style, _touchStyles2.default, props.style);
-
-            var newComponentProps = _extends({}, props, {
-                style: style,
-                className: props.className,
-                disabled: props.disabled
-                //, handlers: this.handlers
-            }, this.handlers());
-
-            delete newComponentProps.onTap;
-            delete newComponentProps.onPress;
-            delete newComponentProps.onPinchStart;
-            delete newComponentProps.onPinchMove;
-            delete newComponentProps.onPinchEnd;
-            delete newComponentProps.moveThreshold;
-            delete newComponentProps.pressDelay;
-            delete newComponentProps.pressMoveThreshold;
-            delete newComponentProps.preventDefault;
-            delete newComponentProps.stopPropagation;
-            delete newComponentProps.component;
-            delete newComponentProps.flickThreshold;
-            delete newComponentProps.delta;
-            //delete newComponentProps.handlers
-
-            return (0, _react.createElement)(props.component, newComponentProps, props.children);
-        }
-    }, {
-        key: 'calculatePos',
-        value: function calculatePos(e) {
-            var x = e.changedTouches[0].clientX;
-            var y = e.changedTouches[0].clientY;
-
-            var xd = this.state.x - x;
-            var yd = this.state.y - y;
-
-            var axd = Math.abs(xd);
-            var ayd = Math.abs(yd);
-
-            return {
-                deltaX: xd,
-                deltaY: yd,
-                absX: axd,
-                absY: ayd
-            };
-        }
-    }, {
-        key: 'touchStart',
-        value: function touchStart(e) {
-            if (e.touches.length > 1) {
-                return;
-            }
-
-            if (!this.touchable) {
-                console.debug('Damn! You are using a non-touchable browser simulating touch events!');
-                this.touchable = true;
-            }
-
-            this.setState({
-                start: Date.now(),
-                x: e.touches[0].clientX,
-                y: e.touches[0].clientY,
-                swiping: false
-            });
-        }
-    }, {
-        key: 'touchMove',
-        value: function touchMove(e) {
-            if (!this.state.x || !this.state.y || e.touches.length > 1) {
-                return;
-            }
-
-            var cancelPageSwipe = false;
-            var pos = this.calculatePos(e);
-
-            if (pos.absX < this.props.delta && pos.absY < this.props.delta) {
-                return;
-            }
-
-            if (pos.absX > pos.absY) {
-                if (pos.deltaX > 0) {
-                    if (this.props.onSwipingLeft) {
-                        this.props.onSwipingLeft(e, pos.absX);
-                        cancelPageSwipe = true;
-                    }
-                } else {
-                    if (this.props.onSwipingRight) {
-                        this.props.onSwipingRight(e, pos.absX);
-                        cancelPageSwipe = true;
-                    }
-                }
-            } else {
-                if (pos.deltaY > 0) {
-                    if (this.props.onSwipingUp) {
-                        this.props.onSwipingUp(e, pos.absY);
-                        cancelPageSwipe = true;
-                    }
-                } else {
-                    if (this.props.onSwipingDown) {
-                        this.props.onSwipingDown(e, pos.absY);
-                        cancelPageSwipe = true;
-                    }
-                }
-            }
-
-            this.setState({ swiping: true });
-
-            if (cancelPageSwipe) {
-                e.preventDefault();
-            }
-        }
-    }, {
-        key: 'touchEnd',
-        value: function touchEnd(ev) {
-            if (this.state.swiping) {
-                var pos = this.calculatePos(ev);
-
-                var time = Date.now() - this.state.start;
-                var velocity = Math.sqrt(pos.absX * pos.absX + pos.absY * pos.absY) / time;
-                var isFlick = velocity > this.props.flickThreshold;
-
-                this.props.onSwiped && this.props.onSwiped(ev, pos.deltaX, pos.deltaY, isFlick);
-
-                if (pos.absX > pos.absY) {
-                    if (pos.deltaX > 0) {
-                        this.props.onSwipedLeft && this.props.onSwipedLeft(ev, pos.deltaX);
-                    } else {
-                        this.props.onSwipedRight && this.props.onSwipedRight(ev, pos.deltaX);
-                    }
-                } else {
-                    if (pos.deltaY > 0) {
-                        this.props.onSwipedUp && this.props.onSwipedUp(ev, pos.deltaY);
-                    } else {
-                        this.props.onSwipedDown && this.props.onSwipedDown(ev, pos.deltaY);
-                    }
-                }
-            } else {
-                this._handleTap(ev);
-            }
-
-            this.setState(this.getInitialState());
-        }
-    }, {
-        key: 'touchCancel',
-        value: function touchCancel(ev) {
-            this.setState(this.getInitialState());
-        }
-    }, {
-        key: '_handleClick',
-        value: function _handleClick(ev) {
-            var _this2 = this;
-
-            //!this.touchable && this._handleTap(ev)
-            if (this.state.start === 0) {
-                this._handleTap(ev);
-            } else {
-                setTimeout(function () {
-                    _this2.state.start === 0 && _this2._handleTap(ev);
-                }, 300);
-            }
-        }
-    }, {
-        key: '_handleTap',
-        value: function _handleTap(ev) {
-            this.props.onTap && this.props.onTap(ev);
-        }
-    }, {
-        key: 'handlers',
-        value: function handlers() {
-            return {
-                onTouchStart: this.touchStart.bind(this),
-                onTouchMove: this.touchMove.bind(this),
-                onTouchEnd: this.touchEnd.bind(this),
-                onTouchCancel: this.touchCancel.bind(this),
-                onClick: this._handleClick.bind(this)
-            };
-        }
-    }]);
-
-    return Tappable;
-}(_react.Component);
-
-Tappable.propTypes = {
-    component: _propTypes2.default.any,
-    onTap: _propTypes2.default.func,
-
-    onSwiped: _propTypes2.default.func,
-    onSwipingUp: _propTypes2.default.func,
-    onSwipingRight: _propTypes2.default.func,
-    onSwipingDown: _propTypes2.default.func,
-    onSwipingLeft: _propTypes2.default.func,
-    onSwipedUp: _propTypes2.default.func,
-    onSwipedRight: _propTypes2.default.func,
-    onSwipedDown: _propTypes2.default.func,
-    onSwipedLeft: _propTypes2.default.func,
-    flickThreshold: _propTypes2.default.number,
-    delta: _propTypes2.default.number
-};
-Tappable.defaultProps = {
-    component: 'div',
-    flickThreshold: 0.6,
-    delta: 10
-};
-exports.default = Tappable;
-
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _eventSupport = __webpack_require__(9);
-
-var _eventSupport2 = _interopRequireDefault(_eventSupport);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var __TouchSupported = void 0;
-var touchSupport = function touchSupport() {
-    if (typeof __TouchSupported === 'boolean') return __TouchSupported;
-
-    __TouchSupported = (0, _eventSupport2.default)("touchstart"); //("ontouchstart" in document.documentElement)
-    return __TouchSupported;
-};
-
-exports.default = touchSupport;
-
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-var TAGNAMES = {
-    'select': 'input',
-    'change': 'input',
-    'submit': 'form',
-    'reset': 'form',
-    'error': 'img',
-    'load': 'img',
-    'abort': 'img'
-};
-
-var eventSupport = function eventSupport(eventName) {
-    //to support compilation in server-side
-    if (typeof window === "undefined" || typeof document === "undefined") return false;
-    var el = document.createElement(TAGNAMES[eventName] || 'div');
-    eventName = 'on' + eventName;
-    var isSupported = eventName in el;
-    if (!isSupported) {
-        el.setAttribute(eventName, 'return;');
-        isSupported = typeof el[eventName] == 'function';
-    }
-    el = null;
-    return isSupported;
-};
-
-exports.default = eventSupport;
-
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-var touchStyles = {
-    WebkitTapHighlightColor: 'rgba(0,0,0,0)',
-    WebkitTouchCallout: 'none',
-    WebkitUserSelect: 'none',
-    KhtmlUserSelect: 'none',
-    MozUserSelect: 'none',
-    msUserSelect: 'none',
-    userSelect: 'none'
-    //cursor: 'pointer'
-};
-
-exports.default = touchStyles;
-
+eval("module.exports = ReactDOM;\n\n//# sourceURL=webpack:///external_%22ReactDOM%22?");
 
 /***/ })
-/******/ ]);
+
+/******/ });

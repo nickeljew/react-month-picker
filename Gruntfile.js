@@ -104,14 +104,6 @@ module.exports = function(grunt) {
         }
     })
 
-    // grunt.loadNpmTasks('grunt-contrib-watch')
-    // grunt.loadNpmTasks('grunt-sass')
-    // grunt.loadNpmTasks('grunt-contrib-clean')
-    // grunt.loadNpmTasks('grunt-contrib-concat')
-    // grunt.loadNpmTasks('grunt-babel')
-    // grunt.loadNpmTasks('grunt-webpack')
-
-
     grunt.registerTask('default', ['sass:dev', 'webpack:demo', 'babel'])
     grunt.registerTask('dev', ['sass:dev', 'webpack:demo', 'babel', 'watch'])
     grunt.registerTask('build', ['sass:dist', 'babel'])
