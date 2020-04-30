@@ -62,14 +62,16 @@ DocReady(function() {
             super(props, context)
 
             this.state = {
-                mvalue: {year: 2014, month: 11},
-                mvalue2: {year: 2016, month: 7},
-                mvalue3: {from: {year: 2014, month: 8}, to: {year: 2015, month: 5}},
-                mvalue4: {from: {year: 2013, month: 11}, to: {year: 2016, month: 3}},
+                singleValue: {year: 2014, month: 11},
+                singleValue2: {year: 2016, month: 7},
+                multiValue: [ {year: 2016, month: 7}, {year: 2016, month: 11}, {year: 2017, month: 3}, {year: 2019, month: 5}, ],
+                rangeValue: {from: {year: 2014, month: 8}, to: {year: 2015, month: 5}},
+                rangeValue2: {from: {year: 2013, month: 11}, to: {year: 2016, month: 3}},
             }
 
             this.pickAMonth = React.createRef()
             this.pickAMonth2 = React.createRef()
+            this.pickMulti = React.createRef()
             this.pickRange = React.createRef()
             this.pickRange2 = React.createRef()
         }
@@ -86,10 +88,7 @@ DocReady(function() {
                 months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                 from: 'From', to: 'To',
             }
-            const mvalue = this.state.mvalue
-            const mvalue2 = this.state.mvalue2
-            const mvalue3 = this.state.mvalue3
-            const mvalue4 = this.state.mvalue4
+            const { singleValue, singleValue2, multiValue, rangeValue, rangeValue2, } = this.state
 
             const makeText = m => {
                 if (m && m.year && m.month) return (pickerLang.months[m.month-1] + '. ' + m.year)
@@ -103,13 +102,13 @@ DocReady(function() {
                         <div className="edit">
                             <Picker
                                 ref={this.pickAMonth}
-                                years={[2008, 2011, 2012, 2014, 2016]}
-                                value={mvalue}
+                                years={[2008, 2011, 2012, 2014, 2016, 2018, 2020]}
+                                value={singleValue}
                                 lang={pickerLang.months}
                                 onChange={this.handleAMonthChange}
                                 onDismiss={this.handleAMonthDissmis}
                             >
-                                <MonthBox value={makeText(mvalue)} onClick={this.handleClickMonthBox} />
+                                <MonthBox value={makeText(singleValue)} onClick={this.handleClickMonthBox} />
                             </Picker>
                         </div>
                     </li>
@@ -119,13 +118,29 @@ DocReady(function() {
                             <Picker
                                 ref={this.pickAMonth2}
                                 years={{min: {year: 2016, month: 2}, max: {year: 2016, month: 9}}}
-                                value={mvalue2}
+                                value={singleValue2}
                                 lang={pickerLang.months}
                                 theme="dark"
                                 onChange={this.handleAMonthChange2}
                                 onDismiss={this.handleAMonthDissmis2}
                             >
-                                <MonthBox value={makeText(mvalue2)} onClick={this.handleClickMonthBox2} />
+                                <MonthBox value={makeText(singleValue2)} onClick={this.handleClickMonthBox2} />
+                            </Picker>
+                        </div>
+                    </li>
+                    <li>
+                        <label><b>Pick Several Month</b><span>(Available months from Feb.2016 to Apr.2020)</span></label>
+                        <div className="edit">
+                            <Picker
+                                ref={this.pickMulti}
+                                years={{min: {year: 2016, month: 2}, max: {year: 2020, month: 4}}}
+                                value={multiValue}
+                                lang={pickerLang.months}
+                                theme="dark"
+                                onChange={this.handleMultiChange}
+                                onDismiss={this.handleMultiDissmis}
+                            >
+                                <MonthBox value={multiValue.map(v => makeText(v)).join(' | ')} onClick={this.handleClickMultiBox} />
                             </Picker>
                         </div>
                     </li>
@@ -135,13 +150,13 @@ DocReady(function() {
                             <Picker
                                 ref={this.pickRange}
                                 years={{min: 2013}}
-                                value={mvalue3}
+                                value={rangeValue}
                                 lang={pickerLang}
                                 theme="light"
                                 onChange={this.handleRangeChange}
                                 onDismiss={this.handleRangeDissmis}
                             >
-                                <MonthBox value={makeText(mvalue3.from) + ' ~ ' + makeText(mvalue3.to)} onClick={this._handleClickRangeBox} />
+                                <MonthBox value={makeText(rangeValue.from) + ' ~ ' + makeText(rangeValue.to)} onClick={this._handleClickRangeBox} />
                             </Picker>
                         </div>
                     </li>
@@ -151,13 +166,13 @@ DocReady(function() {
                             <Picker
                                 ref={this.pickRange2}
                                 years={{min: {year: 2012, month: 4}, max: {year: 2017, month: 9}}}
-                                value={mvalue4}
+                                value={rangeValue2}
                                 lang={pickerLang}
                                 theme="dark"
                                 onChange={this.handleRangeChange2}
                                 onDismiss={this.handleRangeDissmis2}
                             >
-                                <MonthBox value={makeText(mvalue4.from) + ' ~ ' + makeText(mvalue4.to)} onClick={this._handleClickRangeBox2} />
+                                <MonthBox value={makeText(rangeValue2.from) + ' ~ ' + makeText(rangeValue2.to)} onClick={this._handleClickRangeBox2} />
                             </Picker>
                         </div>
                     </li>
@@ -172,7 +187,7 @@ DocReady(function() {
             //
         }
         handleAMonthDissmis = (value) => {
-            this.setState( {mvalue: value} )
+            this.setState( {singleValue: value} )
         }
 
         handleClickMonthBox2 = (e) => {
@@ -182,7 +197,17 @@ DocReady(function() {
             //
         }
         handleAMonthDissmis2 = (value) => {
-            this.setState( {mvalue2: value} )
+            this.setState( {singleValue2: value} )
+        }
+
+        handleClickMultiBox = (e) => {
+            this.pickMulti.current.show()
+        }
+        handleMultiChange = (value, text) => {
+            //
+        }
+        handleMultiDissmis = (value) => {
+            this.setState( {multiValue: value} )
         }
 
         _handleClickRangeBox = (e) => {
@@ -192,7 +217,7 @@ DocReady(function() {
             //
         }
         handleRangeDissmis = (value) => {
-            this.setState( {mvalue3: value} )
+            this.setState( {rangeValue: value} )
         }
 
         _handleClickRangeBox2 = (e) => {
@@ -202,7 +227,7 @@ DocReady(function() {
             //
         }
         handleRangeDissmis2 = (value) => {
-            this.setState( {mvalue4: value} )
+            this.setState( {rangeValue2: value} )
         }
     }
 

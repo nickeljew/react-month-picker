@@ -213,9 +213,14 @@
           display: block;
           float: left;
           text-align: center;
-          line-height: $option-height;
           font-size: 1.15rem;
           border-radius: 2px;
+          box-sizing: border-box;
+          border: 1px solid transparent;
+          line-height: $option-height;
+          //box-sizing: border-box;
+          //background-clip: content-box;
+          //padding: 0.1rem;
 
           @include text-ellipsis();
           -webkit-font-smoothing: antialiased;

@@ -37,7 +37,7 @@ const __YEAR = (new Date()).getFullYear()
 
 
 function mapToArray (num, callback) {
-    let arr = []
+    const arr = []
     for (let i = 0; i <  num; i++) {
         arr.push( callback(i) )
     }
@@ -45,7 +45,7 @@ function mapToArray (num, callback) {
 }
 
 function getYearMon (year, min, max) {
-    let ym = typeof year === 'object' && year.year ? {year: year.year, month: year.month} : (typeof year === 'number' ? {year} : {__YEAR})
+    const ym = typeof year === 'object' && year.year ? {year: year.year, month: year.month} : (typeof year === 'number' ? {year} : {__YEAR})
     ym.min = min || 1
     ym.max = max || 12
     return ym
@@ -141,11 +141,11 @@ function validValue (value, years, yearIndexes) {
     else if (Array.isArray(value) && value.length > 0) {
         return {
             type: 'multiple', pads: 1,
-            choices: value.map( v => validate(v, years, 0, yearIndexes) )
+            choices: value.map( (v,i) => validate(v, years, 0,i === 0 ? yearIndexes :[0]) )
         }
     }
     else if (value.from && value.to) {
-        let from = validate(value.from, years, 0, yearIndexes),
+        const from = validate(value.from, years, 0, yearIndexes),
             to = validate(value.to, years, 1, yearIndexes)
         if (from.year > to.year || (from.year === to.year && from.month > to.month)) {
             from.year = to.year
@@ -514,7 +514,10 @@ export default class MonthPicker extends Component {
                 Object.assign(rawValue, { year, month })
             }
             else if (rawValue.type === 'multiple') {
-                //TODO
+                if ( !rawValue.choices.find(c => (c.year === year && c.month === month)) ) {
+                    rawValue.choices.push({ year, month, })
+                    rawValue.choices.sort((a, b) => (a.year === b.year ? a.month - b.month : a.year - b.year))
+                }
             }
             else if (rawValue.type === 'range') {
                 const keys = _RANGE_KEYS
@@ -526,25 +529,23 @@ export default class MonthPicker extends Component {
     }
 
     _goPrevYear = (e) => {
-        let idx = parseInt(this.getDID(e), 10)
+        const idx = parseInt(this.getDID(e), 10)
         if (this.state.yearIndexes[idx] > 0) {
             this.setYear(idx, -1)
         }
     }
     _goNextYear = (e) => {
-        let idx = parseInt(this.getDID(e), 10)
+        const idx = parseInt(this.getDID(e), 10)
         if (this.state.yearIndexes[idx] < (this.state.years.length - 1)) {
             this.setYear(idx, 1)
         }
     }
     setYear(idx, step) {
-        let yearIndex = (this.state.yearIndexes[idx] += step)
-        let labelYears = this.state.labelYears
-        let theYear = this.state.years[yearIndex].year
+        const yearIndex = (this.state.yearIndexes[idx] += step)
+        const labelYears = this.state.labelYears
+        const theYear = this.state.years[yearIndex].year
         labelYears[idx] = theYear
-        this.setState({
-            labelYears: labelYears
-        })
+        this.setState({ labelYears })
         this.props.onYearChange && this.props.onYearChange(theYear)
     }
 
@@ -553,11 +554,11 @@ export default class MonthPicker extends Component {
         return el.dataset ? el.dataset.id : el.getAttribute('data-id')
     }
 
-    hasStyleClass(e, name) {
-        const el = e.target
-        const styleClass = el.getAttribute('class').split(' ')
-        return styleClass.includes(name)
-    }
+    // hasStyleClass(e, name) {
+    //     const el = e.target
+    //     const styleClass = el.getAttribute('class').split(' ')
+    //     return styleClass.includes(name)
+    // }
 
     _reset() {
         const rawValue = validValue(this.props.value, this.state.years, this.state.yearIndexes)

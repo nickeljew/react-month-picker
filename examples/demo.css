@@ -218,9 +218,11 @@ ul, li {
           display: block;
           float: left;
           text-align: center;
-          line-height: 3.4rem;
           font-size: 1.15rem;
           border-radius: 2px;
+          box-sizing: border-box;
+          border: 1px solid transparent;
+          line-height: 3.4rem;
           text-overflow: ellipsis;
           white-space: nowrap;
           *white-space: nowrap;
