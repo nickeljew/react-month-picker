@@ -30,9 +30,9 @@ or
 ###### Mobile View (Picking Span of Months)
 ![Mobile WEB](https://raw.githubusercontent.com/nickeljew/react-month-picker/master/snapshots/mobile-snapshots-02.jpg "Mobile Browser View Span of Months")
 
-## Demo
+## Online Demo
 
-Demo file in repository: ./examples/demo.html
+[Goto](https://nickeljew.github.io/react-month-picker)
 
 ## Example
 
