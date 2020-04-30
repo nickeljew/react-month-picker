@@ -13,6 +13,11 @@ import Picker from 'month-picker'
 DocReady(function() {
 
     class MonthBox extends Component {
+        static propTypes = {
+            value: PropTypes.string,
+            onClick: PropTypes.func,
+        }
+
         constructor(props, context) {
             super(props, context)
 
@@ -44,12 +49,6 @@ DocReady(function() {
     }
 
 
-    MonthBox.propTypes = {
-        value: PropTypes.string,
-        onClick: PropTypes.func,
-    }
-
-
 
 
 
@@ -65,8 +64,8 @@ DocReady(function() {
             this.state = {
                 mvalue: {year: 2014, month: 11},
                 mvalue2: {year: 2016, month: 7},
-                mrange: {from: {year: 2014, month: 8}, to: {year: 2015, month: 5}},
-                mrange2: {from: {year: 2013, month: 11}, to: {year: 2016, month: 3}},
+                mvalue3: {from: {year: 2014, month: 8}, to: {year: 2015, month: 5}},
+                mvalue4: {from: {year: 2013, month: 11}, to: {year: 2016, month: 3}},
             }
 
             this.pickAMonth = React.createRef()
@@ -89,8 +88,8 @@ DocReady(function() {
             }
             const mvalue = this.state.mvalue
             const mvalue2 = this.state.mvalue2
-            const mrange = this.state.mrange
-            const mrange2 = this.state.mrange2
+            const mvalue3 = this.state.mvalue3
+            const mvalue4 = this.state.mvalue4
 
             const makeText = m => {
                 if (m && m.year && m.month) return (pickerLang.months[m.month-1] + '. ' + m.year)
@@ -136,13 +135,13 @@ DocReady(function() {
                             <Picker
                                 ref={this.pickRange}
                                 years={{min: 2013}}
-                                range={mrange}
+                                value={mvalue3}
                                 lang={pickerLang}
                                 theme="light"
                                 onChange={this.handleRangeChange}
                                 onDismiss={this.handleRangeDissmis}
                             >
-                                <MonthBox value={makeText(mrange.from) + ' ~ ' + makeText(mrange.to)} onClick={this._handleClickRangeBox} />
+                                <MonthBox value={makeText(mvalue3.from) + ' ~ ' + makeText(mvalue3.to)} onClick={this._handleClickRangeBox} />
                             </Picker>
                         </div>
                     </li>
@@ -151,14 +150,14 @@ DocReady(function() {
                         <div className="edit">
                             <Picker
                                 ref={this.pickRange2}
-                                years={{min: {year: 2013, month: 4}, max: {year: 2016, month: 9}}}
-                                range={mrange2}
+                                years={{min: {year: 2012, month: 4}, max: {year: 2017, month: 9}}}
+                                value={mvalue4}
                                 lang={pickerLang}
                                 theme="dark"
                                 onChange={this.handleRangeChange2}
                                 onDismiss={this.handleRangeDissmis2}
                             >
-                                <MonthBox value={makeText(mrange2.from) + ' ~ ' + makeText(mrange2.to)} onClick={this._handleClickRangeBox2} />
+                                <MonthBox value={makeText(mvalue4.from) + ' ~ ' + makeText(mvalue4.to)} onClick={this._handleClickRangeBox2} />
                             </Picker>
                         </div>
                     </li>
@@ -193,7 +192,7 @@ DocReady(function() {
             //
         }
         handleRangeDissmis = (value) => {
-            this.setState( {mrange: value} )
+            this.setState( {mvalue3: value} )
         }
 
         _handleClickRangeBox2 = (e) => {
@@ -203,7 +202,7 @@ DocReady(function() {
             //
         }
         handleRangeDissmis2 = (value) => {
-            this.setState( {mrange2: value} )
+            this.setState( {mvalue4: value} )
         }
     }
 
@@ -214,6 +213,11 @@ DocReady(function() {
 
 
     class Main extends Component {
+        static propTypes = {
+            value: PropTypes.string,
+            onClick: PropTypes.func,
+        }
+
         constructor(props, context) {
             super(props, context)
 
@@ -237,14 +241,6 @@ DocReady(function() {
             )
         }
     }
-
-
-    Main.propTypes = {
-        value: PropTypes.string,
-        onClick: PropTypes.func,
-    }
-
-
 
 
 

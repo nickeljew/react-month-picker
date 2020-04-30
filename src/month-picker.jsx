@@ -8,8 +8,10 @@
  *  - array: [2013, 2015, 2016]
  *  - number: 5 (last 4 years and this year)
  *  - object: {min: 2013, max: 2016} (from 2013 to 2016); {min: 2013} (from 2013 to this year); {max: 2015} (5 years to 2015)
- * @value: default value for picking a single month, e.g. {year: 2015: month: 11}
- * @range: default value for picking a span of months, e.g. {from: {year: 2014: month: 7}, to: {year: 2015: month: 11}}
+ * @value: default value for picking
+ *  1: a single month: e.g. { year: 2015: month: 11 }
+ *  2: several months: e.g. [ { year: 2015: month: 9 }, { year: 2015: month: 11 } { year: 2016: month: 3 } ]
+ *  3: a span of months, e.g. { from: {year: 2014: month: 7}, to: {year: 2015: month: 11} }
  * @lang: language texts
  *  - array: array of months' texts, e.g. ['Jan', 'Feb', 'Mar', 'Spr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
  *  - object: including array of months' texts and other display texts
@@ -28,7 +30,10 @@ import Tappable from 'react-tapper'
 const isBrowser = (typeof window !== "undefined" && typeof document !== "undefined")
 
 
-const __MIN_VALID_YEAR = 1
+const __MIN_VALID_YEAR = 1000
+const _SINGLE_KEYS = [ 'year', 'month', ]
+const _RANGE_KEYS = [ 'from', 'to', ]
+const __YEAR = (new Date()).getFullYear()
 
 
 function mapToArray (num, callback) {
@@ -40,14 +45,14 @@ function mapToArray (num, callback) {
 }
 
 function getYearMon (year, min, max) {
-    let ym = typeof year === 'object' && year.year ? {year: year.year, month: year.month} : {year}
+    let ym = typeof year === 'object' && year.year ? {year: year.year, month: year.month} : (typeof year === 'number' ? {year} : {__YEAR})
     ym.min = min || 1
     ym.max = max || 12
     return ym
 }
 
 function getYearsByNum (n, minYear) {
-    let maxYear = (new Date()).getFullYear()
+    let maxYear = __YEAR
     // n is number of years
     if (n && n > 0 && n < 1000) {
         minYear = minYear || (maxYear - n + 1)
@@ -77,13 +82,13 @@ function getYearArray (years) {
         })
     if ((typeof years === 'object')) {
         let n = 0, min = 0
-            , ymin = getYearMon(years.min), ymax = getYearMon(years.max)
-        if ((typeof ymin.year === 'number') && ymin.year > __MIN_VALID_YEAR)
+        const ymin = getYearMon(years.min), ymax = getYearMon(years.max)
+        if (ymin.year > __MIN_VALID_YEAR)
             min = ymin.year
-        if ((typeof ymax.year === 'number') && ymax.year >= min)
+        if (ymax.year >= min)
             n = ymax.year
-        let arr = getYearsByNum(n, min)
-            , last = arr.length - 1
+        const arr = getYearsByNum(n, min)
+        const last = arr.length - 1
         if (last >= 0) {
             arr[0].min = ymin.month || arr[0].month
             arr[last].max = ymax.month || arr[last].month
@@ -99,9 +104,7 @@ function getYearArray (years) {
 
 
 function validate (d, years, idx, yearIndexes) {
-    let now = new Date(),
-        thisYear = now.getFullYear(),
-        ym
+    let ym
     if (d && (typeof d.year === 'number') && d.year > __MIN_VALID_YEAR
         && (typeof d.month === 'number') && d.month >= 1 && d.month <= 12) {
         ym = d
@@ -113,14 +116,14 @@ function validate (d, years, idx, yearIndexes) {
             yearIndexes[idx] = i
             return ym
         }
-        else if (years[i].year === thisYear) {
+        else if (years[i].year === __YEAR) {
             foundThisYear = i
         }
     }
 
     if (typeof foundThisYear === 'number') {
         yearIndexes[idx] = foundThisYear
-        return { year: thisYear }
+        return { year: __YEAR }
     }
 
     const last = yearIndexes[idx] = years.length - 1
@@ -129,12 +132,21 @@ function validate (d, years, idx, yearIndexes) {
 }
 
 
-function validValues (v, years, yearIndexes) {
-    if (!v)
-        return []
-    if (v.from || v.to) {
-        let from = validate(v.from, years, 0, yearIndexes),
-            to = validate(v.to, years, 1, yearIndexes)
+function validValue (value, years, yearIndexes) {
+    value = value || {}
+    if (value.year && value.month) {
+        const { year, month, } = validate(value, years, 0, yearIndexes)
+        return  { type: 'single', pads: 1, year, month, }
+    }
+    else if (Array.isArray(value) && value.length > 0) {
+        return {
+            type: 'multiple', pads: 1,
+            choices: value.map( v => validate(v, years, 0, yearIndexes) )
+        }
+    }
+    else if (value.from && value.to) {
+        let from = validate(value.from, years, 0, yearIndexes),
+            to = validate(value.to, years, 1, yearIndexes)
         if (from.year > to.year || (from.year === to.year && from.month > to.month)) {
             from.year = to.year
             from.month = to.month
@@ -143,23 +155,58 @@ function validValues (v, years, yearIndexes) {
                 from.month += 12
             }
         }
-        return [from, to]
+        return { type: 'range', pads: 2, from, to, }
     }
-    return [ validate(v, years, 0, yearIndexes) ]
+    return { pads: 0 }
 }
 
 
-function valuesChanged (values1, values2) {
-    if (values1.length !== values2.length) return true
-    for (let i = 0; i < values1.length; i++) {
-        const v1 = values1[i]
-        const v2 = values2[i]
-        if (v1.year !== v2.year || v1.month !== v2.month) return true
-    }
-    return false
-}
+// function valueChanged (v1, v2) {
+//     if (v1.type !== v2.type) return true
+//     const keys = _SINGLE_KEYS
+//     const items = keys.concat([ 'choice', ..._RANGE_KEYS, ])
+//     for (const i of items) {
+//         const x1 = v1[i], x2 = v2[i]
+//         if (!x1) continue
+//         if (typeof x1 === 'number' && x1 !== x2) return true
+//         if (Array.isArray(x1)) {
+//             if (!Array.isArray(x2)) return true
+//             if (x1.length !== x2.length) return true
+//             for (let j = 0; j < x1.length; j++) {
+//                 for (const k of keys) {
+//                     if (x1[j][k] !== x2[j][k]) return true
+//                 }
+//             }
+//         }
+//         if (typeof x1 === 'object' && typeof x2 === 'object') {
+//             for (const k of keys) {
+//                 if (x1[k] !== x2[k]) return true
+//             }
+//         }
+//     }
+//     return false
+// }
+//
+// function cloneValue (v) {
+//     if (!v) return v
+//     const { year, month, } = v
+//     return { year, month, }
+// }
+//
+// function cloneRange (r) {
+//     if (!r) return r
+//     const { from, to, } = r
+//     return {
+//         from: cloneValue(from),
+//         to: cloneValue(to),
+//     }
+// }
 
 
+const TypeYM = PropTypes.shape({
+    year: PropTypes.number,
+    month: PropTypes.number,
+})
 
 
 export default class MonthPicker extends Component {
@@ -167,37 +214,25 @@ export default class MonthPicker extends Component {
         years: PropTypes.oneOfType([
             PropTypes.number, // exact number of a year
             PropTypes.arrayOf(PropTypes.number), // array of specific years: [2008, 2011, 2012, 2014, 2016]
-            PropTypes.shape({ // { min: 2013 }; { min: {year: 2013, month: 4}, max: {year: 2016, month: 9} }
+            PropTypes.shape({ // { min: 2013 } | { min: {year: 2013, month: 4} } | { min: {year: 2013, month: 4}, max: {year: 2016, month: 9} }
                 min: PropTypes.oneOfType([
-                    PropTypes.number, // { min: 2013 }
-                    PropTypes.shape({ // { min: {year: 2016, month: 2} }
-                        year: PropTypes.number,
-                        month: PropTypes.number,
-                    }),
+                    PropTypes.number,
+                    TypeYM,
                 ]),
                 max: PropTypes.oneOfType([
                     PropTypes.number,
-                    PropTypes.shape({
-                        year: PropTypes.number,
-                        month: PropTypes.number,
-                    }),
+                    TypeYM,
                 ]),
             }),
         ]),
-        value: PropTypes.shape({
-            year: PropTypes.number,
-            month: PropTypes.number,
-        }),
-        range: PropTypes.shape({
-            from: PropTypes.shape({
-                year: PropTypes.number,
-                month: PropTypes.number,
-            }),
-            to: PropTypes.shape({
-                year: PropTypes.number,
-                month: PropTypes.number,
-            }),
-        }),
+        value: PropTypes.oneOfType([
+            TypeYM,
+            PropTypes.arrayOf( TypeYM ),
+            PropTypes.shape({
+                from: TypeYM,
+                to: TypeYM,
+            })
+        ]),
         lang: PropTypes.oneOfType([
             PropTypes.arrayOf(PropTypes.string), // lang texts for months: ['Jan', 'Feb', 'Mar', 'Apr', ... ]
             PropTypes.shape({
@@ -220,32 +255,40 @@ export default class MonthPicker extends Component {
     }
 
     constructor(props, context) {
+        if (props.range) {
+            console.warn('Property "range" is deprecated, and use property "value" instead')
+        }
         super(props, context)
 
         const yearArr = getYearArray(this.props.years)
         const yearIndexes = [0]
-        const values = validValues(this.props.range || this.props.value, yearArr, yearIndexes)
+        const rawValue = validValue(this.props.value, yearArr, yearIndexes)
+        if (!rawValue.type) {
+            throw new Error('invalid value of property "value" in month-picker')
+        }
         this.state = {
             years: yearArr,
-            values,
+            rawValue,
             labelYears: [false, false],
             showed: false,
             closeable: false,
             yearIndexes,
-            lastRange: this.props.range,
-            lastValue: this.props.value,
+            // lastValue: cloneValue(this.props.value),
         }
     }
 
 
     value() {
-        const values = this.state.values
-        if (values.length >= 2)
-            return { from: values[0], to: values[1] }
-        else if (values.length === 1)
-            return values[0]
-        return {}
+        const { year, month, choices, from, to,} = this.state.rawValue
+        if (from && to)
+            return { from, to,}
+        else if (choices && choices.length > 0)
+            return choices
+        else if (year && month)
+            return { year, month,}
+        return null
     }
+
 
 
     // getSnapshotBeforeUpdate(prevProps, prevState) {
@@ -253,16 +296,12 @@ export default class MonthPicker extends Component {
     // }
     // componentDidUpdate(prevProps, prevState) {
     //     const yearIndexes = this.state.yearIndexes
-    //     const values = validValues(props.range || props.value, this.state.years, yearIndexes)
-    //     if (this.state.showed !== prevState.showed || valuesChanged(values, state.values)) {
-    //         const nextValues = this.props.range || this.props.value
-    //         const values = validValues(nextValues, this.state.years, yearIndexes)
+    //     const rawValue = validValue(props.value, this.state.years, yearIndexes)
+    //     if (this.state.showed !== prevState.showed || valueChanged(rawValue, state.rawValue)) {
     //         this.setState({
-    //             values,
+    //             rawValue,
     //             labelYears: [false, false],
     //             yearIndexes,
-    //             lastRange: this.props.range,
-    //             lastValue: this.props.value,
     //             showed: this.props.show,
     //             closeable: this.props.show,
     //         })
@@ -270,14 +309,12 @@ export default class MonthPicker extends Component {
     // }
     // static getDerivedStateFromProps(props, state) {
     //     const yearIndexes = state.yearIndexes
-    //     const values = validValues(props.range || props.value, state.years, yearIndexes)
-    //     if (valuesChanged(values, state.values)) {
+    //     const rawValue = validValue(props.value, state.years, yearIndexes)
+    //     if (valueChanged(rawValue, state.rawValue)) {
     //         return {
-    //             values,
+    //             rawValue,
     //             labelYears: [false, false],
     //             yearIndexes,
-    //             lastRange: props.range,
-    //             lastValue: props.value,
     //         }
     //     }
     //     // No state update necessary
@@ -296,71 +333,109 @@ export default class MonthPicker extends Component {
     }
 
     optionPad(padIndex) {
-        let values = this.state.values
-        let value = values[padIndex]
-        let labelYears = this.state.labelYears
-        let labelYear = labelYears[padIndex] = labelYears[padIndex] || value.year
-        let ymArr = this.state.years
-        let lang = this.props.lang || []
-        let months =  Array.isArray(lang) ? lang : (Array.isArray(lang.months) ? lang.months : [])
+        const ymArr = this.state.years
+        const ymRange = [ ymArr[0], ymArr[ymArr.length - 1], ]
+        const labelYears = this.state.labelYears
+        let labelYear = labelYears[padIndex]
+
+        const rawValue = this.state.rawValue
+        const values = []
+        let isRange = false
+        if (rawValue.type === 'single') {
+            if (!labelYear) {
+                labelYear = labelYears[padIndex] = rawValue.year
+            }
+            if (rawValue.year === labelYear) {
+                rawValue.month && values.push(rawValue.month)
+            }
+        }
+        else if (rawValue.type === 'multiple') {
+            const choices = rawValue.choices
+            if (!labelYear) {
+                labelYear = labelYears[padIndex] = choices.length > 0 ? choices[0].year : ymRange[padIndex].year
+            }
+            choices.forEach(c => {
+                if (labelYear === c.year) {
+                    c.month && values.push(c.month)
+                }
+            })
+        }
+        else if (rawValue.type === 'range') {
+            isRange = true
+            if (!labelYear) {
+                labelYear = labelYears[padIndex] = rawValue[ _RANGE_KEYS[padIndex] ].year
+            }
+            const { from, to, } = rawValue
+            const startM = labelYear === from.year ? from.month : 1
+            const endM = labelYear === to.year ? to.month : 12
+            for (let i = startM; i <= endM; i++) {
+                values.push(i)
+            }
+        }
+
+        const lang = this.props.lang || []
+        const months =  Array.isArray(lang) ? lang : (Array.isArray(lang.months) ? lang.months : [])
         let prevCss = '', nextCss = ''
-        let yearMaxIdx = ymArr.length - 1
-        let yearIdx = this.state.yearIndexes[padIndex]//yearMaxIdx
+        const yearMaxIdx = ymArr.length - 1
+        const yearIdx = this.state.yearIndexes[padIndex]//yearMaxIdx
 
-        if (yearIdx === 0) prevCss = 'disable'
-        if (yearIdx === yearMaxIdx) nextCss = 'disable'
-
-        let yearActive = (labelYear === value.year)
-        let atMinYear = (labelYear === ymArr[0].year)
-        let atMaxYear = (labelYear === ymArr[yearMaxIdx].year)
-        let otherValue = false
-        if (values.length > 1) {
-            otherValue = values[1 - padIndex]
+        const atMinYear = (labelYear === ymArr[0].year)
+        const atMaxYear = (labelYear === ymArr[yearMaxIdx].year)
+        let otherValue = { year: 0, month: 0, }, labelPreText
+        if (isRange) {
+            otherValue = rawValue[ _RANGE_KEYS[1 - padIndex] ]
+            labelPreText = <b>{this.props.lang[ _RANGE_KEYS[padIndex] ]}</b>
         }
 
-        let labelTextKey = padIndex === 0 ? 'from' : 'to'
-            , labelPreText
-        if (otherValue && this.props.lang[labelTextKey]) {
-            labelPreText = <b>{this.props.lang[labelTextKey]}</b>
-        }
+        if (yearIdx === 0 || (padIndex === 1 && otherValue.year === labelYear)) prevCss = 'disable'
+        if (yearIdx === yearMaxIdx || (padIndex === 0 && otherValue.year === labelYear)) nextCss = 'disable'
+
+        const prevHandler = prevCss === 'disable' ? undefined : this._goPrevYear
+        const nextHandler = nextCss === 'disable' ? undefined : this._goNextYear
+
+        let valOffset = 0
 
         return (
             <div className="rmp-pad" key={padIndex}>
                 <div>
                     <label>{labelPreText}{labelYear}</label>
-                    <i className={["rmp-tab", "rmp-btn", "prev", prevCss].join(' ')} data-id={padIndex} onClick={this._goPrevYear}>{'<'}</i>
-                    <i className={["rmp-tab", "rmp-btn", "next", nextCss].join(' ')} data-id={padIndex} onClick={this._goNextYear}>{'>'}</i>
+                    <i className={["rmp-tab", "rmp-btn", "prev", prevCss].join(' ')} data-id={padIndex} onClick={prevHandler}>{'<'}</i>
+                    <i className={["rmp-tab", "rmp-btn", "next", nextCss].join(' ')} data-id={padIndex} onClick={nextHandler}>{'>'}</i>
                 </div>
                 <ul>
                     {
                         mapToArray(12, i => {
-                            let css = '', m = i + 1
-                            if (yearActive && m === value.month) {
-                                css = 'active'
-                            }
-                            if (values.length > 1 && padIndex === 0 && (labelYear > value.year || (labelYear === value.year && m > value.month))) {
-                                css = 'select'
-                            }
-                            if (values.length > 1 && padIndex === 1 && (labelYear < value.year || (labelYear === value.year && m < value.month))) {
-                                css = 'select'
-                            }
+                            const m = i + 1
+                            let css = ''
+
                             if (atMinYear && m < ymArr[0].min) {
                                 css = 'disable'
                             }
-                            if (atMaxYear && m > ymArr[yearMaxIdx].max) {
+                            else if (atMaxYear && m > ymArr[yearMaxIdx].max) {
                                 css = 'disable'
                             }
-                            if (otherValue) {
-                                let y = otherValue.year, m = otherValue.month || 0
-                                let vy = labelYear, vm = i + 1
-                                if (y === vy && m && ( (padIndex === 0 && vm > m) || (padIndex === 1 && vm < m) )) {
-                                    css = 'disable'
+                            else {
+                                const { from, to, } = rawValue
+                                for (let i = valOffset, last = values.length - 1; i <= last; i++) {
+                                    const v = values[i]
+                                    if (v === m) {
+                                        valOffset++
+                                        if (!isRange || (from.year === labelYear && i === 0) || (to.year === labelYear && i === last)) {
+                                            css = 'active'
+                                        }
+                                        else if (labelYear >= from.year  && labelYear <= to.year) {
+                                            css = 'select'
+                                        }
+                                    }
                                 }
-                                else if ((y > vy && padIndex === 1) || (y < vy && padIndex === 0)) {
-                                    css = 'disable'
+                                const otherM = otherValue.month
+                                if (otherM) {
+                                    if ((nextCss === 'disable' && m > otherM) || (prevCss === 'disable' && m < otherM)) {
+                                        css = 'disable'
+                                    }
                                 }
                             }
-                            let clickHandler = css !== 'disable' ? (this._handleClickMonth) : undefined
+                            const clickHandler = css !== 'disable' ? (this._handleClickMonth) : undefined
                             return (
                                 <li key={i} className={["rmp-btn", css].join(' ')}
                                     data-id={padIndex + ':' + (i+1)}
@@ -376,7 +451,7 @@ export default class MonthPicker extends Component {
     render() {
         const pads = []
         let popupClass = ''
-        if (this.state.values.length > 1) {
+        if (this.state.rawValue.type === 'range') {
             pads.push( this.optionPad(0), this.optionPad(1) )
             popupClass = 'range'
         }
@@ -434,9 +509,18 @@ export default class MonthPicker extends Component {
             const idx = parseInt(refid[0], 10)
             const month = parseInt(refid[1], 10)
             const year = this.state.labelYears[idx]
-            const values = this.state.values
-            values[idx] = { year, month }
-            this.setState({ values })
+            const rawValue = this.state.rawValue
+            if (rawValue.type === 'single') {
+                Object.assign(rawValue, { year, month })
+            }
+            else if (rawValue.type === 'multiple') {
+                //TODO
+            }
+            else if (rawValue.type === 'range') {
+                const keys = _RANGE_KEYS
+                rawValue[ keys[idx] ] = { year, month }
+            }
+            this.setState({ rawValue })
             this.props.onChange(year, month, idx)
         }
     }
@@ -465,18 +549,26 @@ export default class MonthPicker extends Component {
     }
 
     getDID(e) {
-        let el = e.target
+        const el = e.target
         return el.dataset ? el.dataset.id : el.getAttribute('data-id')
     }
 
+    hasStyleClass(e, name) {
+        const el = e.target
+        const styleClass = el.getAttribute('class').split(' ')
+        return styleClass.includes(name)
+    }
+
     _reset() {
-        const values = validValues(this.state.lastRange || this.state.lastValue, this.state.years, this.state.yearIndexes)
-        return {values}
+        const rawValue = validValue(this.props.value, this.state.years, this.state.yearIndexes)
+        return { rawValue }
     }
 
     _keyDown = (e) => {
         if (!this.state.showed)
             return
+
+        const { type, pads, year, month, choices, } = this.state.rawValue
 
         if (e.key === 'Escape') {
             this._onDismiss(this._reset())
@@ -486,10 +578,8 @@ export default class MonthPicker extends Component {
             this._onDismiss()
             e.stopPropagation()
         }
-        else if (this.state.values.length === 1) {
+        else if (pads === 1) {
             //console.log(e.key, e.keyCode)
-            // const value = this.state.values[0]
-            //     , year = value.year
             // let month = value.month
             // if (e.key === 'ArrowLeft') {
             //     month--
@@ -504,7 +594,7 @@ export default class MonthPicker extends Component {
             //     month += 3
             // }
             // if (month > 0 && month < 13 && month !== value.month) {
-            //     this.setState({ values: [{ year, month }] })
+            //     this.setState({ rawValue: { type, year, month } }) //TODO
             //     this.props.onChange(year, month, 0)
             //     e.stopPropagation()
             // }

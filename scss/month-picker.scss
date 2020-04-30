@@ -307,6 +307,7 @@
         .rmp-pad {
           .rmp-btn {
             cursor: pointer;
+            user-select: none;
 
             @media screen and (min-width: 768px) {
               &:hover {
