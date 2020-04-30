@@ -437,7 +437,7 @@ export default class MonthPicker extends Component {
                             }
                             const clickHandler = css !== 'disable' ? (this._handleClickMonth) : undefined
                             return (
-                                <li key={i} className={["rmp-btn", css].join(' ')}
+                                <li key={i} className={["rmp-btn", rawValue.type, css].join(' ')}
                                     data-id={padIndex + ':' + (i+1)}
                                     onClick={clickHandler}>{months.length > i ? months[i] : i}</li>
                             )
@@ -514,9 +514,13 @@ export default class MonthPicker extends Component {
                 Object.assign(rawValue, { year, month })
             }
             else if (rawValue.type === 'multiple') {
-                if ( !rawValue.choices.find(c => (c.year === year && c.month === month)) ) {
+                const existIndex = rawValue.choices.findIndex(c => (c.year === year && c.month === month))
+                if (existIndex < 0) {
                     rawValue.choices.push({ year, month, })
                     rawValue.choices.sort((a, b) => (a.year === b.year ? a.month - b.month : a.year - b.year))
+                }
+                else {
+                    rawValue.choices.splice(existIndex, 1)
                 }
             }
             else if (rawValue.type === 'range') {
