@@ -66,6 +66,7 @@ DocReady(function() {
                 singleValue2: {year: 2016, month: 7},
                 multiValue: [ {year: 2016, month: 7}, {year: 2016, month: 11}, {year: 2017, month: 3}, {year: 2019, month: 5}, ],
                 rangeValue: {from: {year: 2014, month: 8}, to: {year: 2015, month: 5}},
+                //rangeValue: {from: {year: 2013, month: 7}, to: {year: 2013, month: 9}},
                 rangeValue2: {from: {year: 2013, month: 11}, to: {year: 2016, month: 3}},
             }
 

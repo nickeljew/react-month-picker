@@ -6,6 +6,16 @@
   overflow: hidden;
 }
 
+@mixin unselectable() {
+  moz-user-select: -moz-none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 
 .month-picker {
   position: relative;
@@ -235,7 +245,7 @@
             background-clip: content-box;
           }
           &.range {
-            border-radius: 2px;
+            border-radius: 1px;
           }
         }
       } //.rmp-pad
@@ -268,6 +278,7 @@
         .rmp-pad {
           .rmp-btn {
             cursor: pointer;
+            @include unselectable();
 
             @media screen and (min-width: 768px) {
               &:hover {
@@ -283,9 +294,9 @@
           li.active, li.active:hover {
             background-color: rgba(31, 42, 58, 0.73);
             color: white;
-            cursor: default;
+            //cursor: default;
           }
-          .disable, .disable:hover {
+          .disable, .disable:hover, li.disable, li.disable:hover {
             background-color: transparent;
             color: #bbb;
             cursor: default;
@@ -314,7 +325,7 @@
         .rmp-pad {
           .rmp-btn {
             cursor: pointer;
-            user-select: none;
+            @include unselectable();
 
             @media screen and (min-width: 768px) {
               &:hover {
@@ -330,9 +341,9 @@
           li.active, li.active:hover {
             background-color: rgba(189, 211, 242, 0.7);
             color: #303030;
-            cursor: default;
+            //cursor: default;
           }
-          .disable, .disable:hover {
+          .disable, .disable:hover, li.disable, li.disable:hover {
             background-color: transparent;
             color: #717171;
             cursor: default;

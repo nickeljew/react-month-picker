@@ -200,6 +200,10 @@ npm run _build
 
 
 ## Changelogs
+
+#### v2.0.1
+- fixed and improved multiple selection feature
+
 #### v2.0.0
 - support multiple choices
 - deprecated property "range"

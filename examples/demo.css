@@ -210,7 +210,7 @@ ul, li {
           .month-picker > .rmp-container .rmp-popup .rmp-pad li.multiple {
             background-clip: content-box; }
           .month-picker > .rmp-container .rmp-popup .rmp-pad li.range {
-            border-radius: 2px; }
+            border-radius: 1px; }
       .month-picker > .rmp-container .rmp-popup.light {
         color: #666;
         background-color: rgba(255, 255, 255, 0.96); }
@@ -229,7 +229,14 @@ ul, li {
             .month-picker > .rmp-container .rmp-popup.light.range .rmp-pad {
               background-color: rgba(238, 238, 238, 0.9); } }
         .month-picker > .rmp-container .rmp-popup.light .rmp-pad .rmp-btn {
-          cursor: pointer; }
+          cursor: pointer;
+          moz-user-select: -moz-none;
+          -moz-user-select: none;
+          -o-user-select: none;
+          -khtml-user-select: none;
+          -webkit-user-select: none;
+          -ms-user-select: none;
+          user-select: none; }
           @media screen and (min-width: 768px) {
             .month-picker > .rmp-container .rmp-popup.light .rmp-pad .rmp-btn:hover {
               background-color: rgba(255, 227, 160, 0.59); } }
@@ -237,9 +244,8 @@ ul, li {
             background-color: #d3d3d3; }
         .month-picker > .rmp-container .rmp-popup.light .rmp-pad li.active, .month-picker > .rmp-container .rmp-popup.light .rmp-pad li.active:hover {
           background-color: rgba(31, 42, 58, 0.73);
-          color: white;
-          cursor: default; }
-        .month-picker > .rmp-container .rmp-popup.light .rmp-pad .disable, .month-picker > .rmp-container .rmp-popup.light .rmp-pad .disable:hover {
+          color: white; }
+        .month-picker > .rmp-container .rmp-popup.light .rmp-pad .disable, .month-picker > .rmp-container .rmp-popup.light .rmp-pad .disable:hover, .month-picker > .rmp-container .rmp-popup.light .rmp-pad li.disable, .month-picker > .rmp-container .rmp-popup.light .rmp-pad li.disable:hover {
           background-color: transparent;
           color: #bbb;
           cursor: default; }
@@ -256,6 +262,12 @@ ul, li {
             background-color: rgba(70, 70, 70, 0.9); } }
         .month-picker > .rmp-container .rmp-popup.dark .rmp-pad .rmp-btn {
           cursor: pointer;
+          moz-user-select: -moz-none;
+          -moz-user-select: none;
+          -o-user-select: none;
+          -khtml-user-select: none;
+          -webkit-user-select: none;
+          -ms-user-select: none;
           user-select: none; }
           @media screen and (min-width: 768px) {
             .month-picker > .rmp-container .rmp-popup.dark .rmp-pad .rmp-btn:hover {
@@ -264,9 +276,8 @@ ul, li {
             background-color: #262828; }
         .month-picker > .rmp-container .rmp-popup.dark .rmp-pad li.active, .month-picker > .rmp-container .rmp-popup.dark .rmp-pad li.active:hover {
           background-color: rgba(189, 211, 242, 0.7);
-          color: #303030;
-          cursor: default; }
-        .month-picker > .rmp-container .rmp-popup.dark .rmp-pad .disable, .month-picker > .rmp-container .rmp-popup.dark .rmp-pad .disable:hover {
+          color: #303030; }
+        .month-picker > .rmp-container .rmp-popup.dark .rmp-pad .disable, .month-picker > .rmp-container .rmp-popup.dark .rmp-pad .disable:hover, .month-picker > .rmp-container .rmp-popup.dark .rmp-pad li.disable, .month-picker > .rmp-container .rmp-popup.dark .rmp-pad li.disable:hover {
           background-color: transparent;
           color: #717171;
           cursor: default; }

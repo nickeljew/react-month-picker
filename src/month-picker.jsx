@@ -53,19 +53,20 @@ function getYearMon (year, min, max) {
 
 function getYearsByNum (n, minYear) {
     let maxYear = __YEAR
-    // n is number of years
-    if (n && n > 0 && n < 1000) {
+    // n is count of years
+    if (n && n > 0 && n < 100) {
         minYear = minYear || (maxYear - n + 1)
     }
-    // n is invalid value
+    //
     else {
         // n is max year
-        if (n && n >= 1000)
+        if (n && n >= __MIN_VALID_YEAR)
             maxYear = n
 
         if (minYear) {
             n = maxYear - minYear + 1
-        } else {
+        }
+        else {
             n = 5
             minYear = maxYear - n + 1
         }
@@ -76,10 +77,11 @@ function getYearsByNum (n, minYear) {
 }
 
 function getYearArray (years) {
-    if (Array.isArray(years))
+    if (Array.isArray(years)) {
         return years.map((y, i) => {
             return getYearMon(y)
         })
+    }
     if ((typeof years === 'object')) {
         let n = 0, min = 0
         const ymin = getYearMon(years.min), ymax = getYearMon(years.max)
@@ -90,8 +92,8 @@ function getYearArray (years) {
         const arr = getYearsByNum(n, min)
         const last = arr.length - 1
         if (last >= 0) {
-            arr[0].min = ymin.month || arr[0].month
-            arr[last].max = ymax.month || arr[last].month
+            arr[0].min = ymin.month || arr[0].min
+            arr[last].max = ymax.month || arr[last].max
         }
         return arr
     }
@@ -387,6 +389,7 @@ export default class MonthPicker extends Component {
             labelPreText = <b>{this.props.lang[ _RANGE_KEYS[padIndex] ]}</b>
         }
 
+        //console.log('--- %s ----', rawValue.type, { padIndex, labelYear, otherValue, })
         if (yearIdx === 0 || (padIndex === 1 && otherValue.year === labelYear)) prevCss = 'disable'
         if (yearIdx === yearMaxIdx || (padIndex === 0 && otherValue.year === labelYear)) nextCss = 'disable'
 
@@ -420,7 +423,7 @@ export default class MonthPicker extends Component {
                                     const v = values[i]
                                     if (v === m) {
                                         valOffset++
-                                        if (!isRange || (from.year === labelYear && i === 0) || (to.year === labelYear && i === last)) {
+                                        if (!isRange || (from.year === labelYear && padIndex === 0 && i === 0) || (to.year === labelYear && padIndex === 1 && i === last)) {
                                             css = 'active'
                                         }
                                         else if (labelYear >= from.year  && labelYear <= to.year) {
@@ -430,7 +433,7 @@ export default class MonthPicker extends Component {
                                 }
                                 const otherM = otherValue.month
                                 if (otherM) {
-                                    if ((nextCss === 'disable' && m > otherM) || (prevCss === 'disable' && m < otherM)) {
+                                    if ((padIndex === 0 && nextCss === 'disable' && m > otherM) || (padIndex === 1 && prevCss === 'disable' && m < otherM)) {
                                         css = 'disable'
                                     }
                                 }
