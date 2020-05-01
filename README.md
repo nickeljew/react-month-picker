@@ -24,11 +24,11 @@ or
 
 
 ###### Mobile View (Picking A Month)
-![Mobile WEB](https://raw.githubusercontent.com/nickeljew/react-month-picker/master/snapshots/mobile-snapshots-single.jpg "Mobile Browser View For Single Month")
+![Mobile WEB](https://raw.githubusercontent.com/nickeljew/react-month-picker/master/snapshots/mobile-snapshots-single.png "Mobile Browser View For Single Month")
 
 
 ###### Mobile View (Picking Span of Months)
-![Mobile WEB](https://raw.githubusercontent.com/nickeljew/react-month-picker/master/snapshots/mobile-snapshots-range.jpg "Mobile Browser View Span of Months")
+![Mobile WEB](https://raw.githubusercontent.com/nickeljew/react-month-picker/master/snapshots/mobile-snapshots-range.png "Mobile Browser View Span of Months")
 
 ## Online Demo
 
