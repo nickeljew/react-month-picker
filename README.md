@@ -179,9 +179,10 @@ SCSS: import scss/month-picker.scss
 - object: {min: 2013, max: 2016} (from 2013 to 2016); {min: 2013} (from 2013 to this year); {max: 2015} (5 years to 2015)
 - object: {min: {year: 2013, month: 4}, max: {year: 2016, month: 9}} (from Apri.2013 to Sept.2016)
 
-@value: default value for picking a single month, e.g. {year: 2015: month: 11}
-
-@range: default value for picking a span of months, e.g. {from: {year: 2014: month: 7}, to: {year: 2015: month: 11}}
+@value:
+- single mode: for picking a single month, e.g. {year: 2015: month: 11}
+- multiple mode: for picking several months, e.g. [ {year: 2016, month: 7}, {year: 2016, month: 11} ]
+- range mode:  for picking a span of months, e.g. { from: {year: 2014: month: 7}, to: {year: 2015: month: 11} }
 
 @lang: language texts
 - array: array of months' texts, e.g. ['Jan', 'Feb', 'Mar', 'Spr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
@@ -189,17 +190,21 @@ SCSS: import scss/month-picker.scss
 
 @theme: theme setting of month-picker; 2 options (light/dark); default theme is light
 
+@age: number value; setting a new incremental age number to force refreshing with new properties 
 
 ## Developing
 
 ```sh
 npm install
-npm run _build
+npm run build
 ```
 
 
 
 ## Changelogs
+
+#### v2.1.1
+- fix README
 
 #### v2.1.0
 - add property "age" to force refreshing the component with new years, value or other properties manipulated by parent. 
