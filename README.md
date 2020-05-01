@@ -12,7 +12,7 @@ or
 ## Snapshots
 
 ###### Desktop View (Picking A Month)
-![Desktop WEB](https://raw.githubusercontent.com/nickeljew/react-month-picker/master/snapshots/pc-snapshots-01.jpg "Desktop Browser View For Single Month")
+![Desktop WEB](https://raw.githubusercontent.com/nickeljew/react-month-picker/master/snapshots/pc-snapshots-single.jpg "Desktop Browser View For Single Month")
 
 
 ###### Desktop View (Picking Several Months)
@@ -20,15 +20,15 @@ or
 
 
 ###### Desktop View (Picking Span of Months)
-![Desktop WEB](https://raw.githubusercontent.com/nickeljew/react-month-picker/master/snapshots/pc-snapshots-02.jpg "Desktop Browser View For Span of Months")
+![Desktop WEB](https://raw.githubusercontent.com/nickeljew/react-month-picker/master/snapshots/pc-snapshots-range.jpg "Desktop Browser View For Span of Months")
 
 
 ###### Mobile View (Picking A Month)
-![Mobile WEB](https://raw.githubusercontent.com/nickeljew/react-month-picker/master/snapshots/mobile-snapshots-01.jpg "Mobile Browser View For Single Month")
+![Mobile WEB](https://raw.githubusercontent.com/nickeljew/react-month-picker/master/snapshots/mobile-snapshots-single.jpg "Mobile Browser View For Single Month")
 
 
 ###### Mobile View (Picking Span of Months)
-![Mobile WEB](https://raw.githubusercontent.com/nickeljew/react-month-picker/master/snapshots/mobile-snapshots-02.jpg "Mobile Browser View Span of Months")
+![Mobile WEB](https://raw.githubusercontent.com/nickeljew/react-month-picker/master/snapshots/mobile-snapshots-range.jpg "Mobile Browser View Span of Months")
 
 ## Online Demo
 
@@ -200,6 +200,9 @@ npm run _build
 
 
 ## Changelogs
+
+#### v2.1.0
+- add property "age" to force refreshing the component with new years, value or other properties manipulated by parent. 
 
 #### v2.0.1
 - fixed and improved multiple selection feature

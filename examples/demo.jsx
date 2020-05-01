@@ -1,11 +1,12 @@
 'use strict';
 
-import React, { Component } from 'react'
+import React, { Component, useState, useEffect, } from 'react'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import DocReady from 'es6-docready'
 import Dom from 'es6-dom'
 import Picker from 'month-picker'
+import Tappable from 'react-tapper'
 
     
     
@@ -24,8 +25,6 @@ DocReady(function() {
             this.state = {
                 value: this.props.value || 'N/A',
             }
-
-            this._handleClick = this._handleClick.bind(this)
         }
 
         static getDerivedStateFromProps(props, state) {
@@ -43,15 +42,101 @@ DocReady(function() {
             )
         }
 
-        _handleClick(e) {
+        _handleClick = (e) => {
             this.props.onClick && this.props.onClick(e)
         }
     }
 
 
+    const numSort = (a, b) => a - b
+    const copySort = (arr) => arr.sort(numSort)
+    const yearsConv = (arr) => copySort(arr).filter(y => y >= 1000 && y <= 2500).map(y => String(y))
 
+    class YearsPanel extends Component {
+        static propTypes = {
+            years: PropTypes.arrayOf(PropTypes.number),
+            onChange: PropTypes.func,
+        }
 
+        constructor(props, context) {
+            super(props, context)
 
+            const years = yearsConv(this.props.years)
+            this.state = {
+                yearsTag: this.props.years.join(' '),
+                years,
+                showed: false,
+                closeable: false,
+                char: '',
+            }
+        }
+
+        static getDerivedStateFromProps(props, state) {
+            const yearsTag = props.years.join(' ')
+            if (yearsTag !== state.yearsTag) {
+                return {
+                    yearsTag,
+                    years: yearsConv(props.years),
+                }
+            }
+            return null
+        }
+
+        render() {
+            const { showed, years, input, } = this.state
+            return (
+                <div className={["years-panel", "table", (showed ? "show" : '')].join(' ').trim()}>
+                    <Tappable className="overlay" onTap={this._handleOverlayTouchTap} />
+                    <div className="cell">
+                        <div className="popup">
+                            <textarea rows="8" value={years.join('\n')} onKeyDown={this._handleKeyDown} onChange={this._handleChange} />
+                        </div>
+                    </div>
+                </div>
+            )
+        }
+
+        _handleOverlayTouchTap = (e) => {
+            if (this.state.closeable) {
+                const years = this.state.years
+                    .map(y => parseInt(y,10))
+                    .filter(y => !isNaN(y) && y >= 1000 && y <= 2500)
+                    .sort(numSort)
+                this.setState({
+                    showed: false,
+                    closeable: false,
+                    yearsTag: years.join(' '),
+                    years: years.map(y => String(y)),
+                })
+                this.props.onChange && this.props.onChange(years)
+            }
+        }
+
+        show() {
+            if (!this.state.showed) {
+                setTimeout(() => {this.state.closeable = true}, 250)
+                this.setState({ showed: true })
+            }
+        }
+
+        _handleKeyDown = (e) => {
+            if (e.metaKey || e.ctrlKey || e.altKey) {
+                return
+            }
+            const code = e.keyCode
+            if ([ 8, 13, 37, 38, 39, 40].includes(code)) {
+                return
+            }
+            if (code >= 48 && code <= 57) {
+                return
+            }
+            e.preventDefault()
+        }
+
+        _handleChange = (e) => {
+            this.setState({ years: e.target.value.split('\n') })
+        }
+    }
 
 
 
@@ -62,6 +147,8 @@ DocReady(function() {
             super(props, context)
 
             this.state = {
+                yearsOfSingle: [ 2008, 2011, 2012, 2014, 2016, ],
+                ageOfSingle: 0,
                 singleValue: {year: 2014, month: 11},
                 singleValue2: {year: 2016, month: 7},
                 multiValue: [ {year: 2016, month: 7}, {year: 2016, month: 11}, {year: 2017, month: 3}, {year: 2019, month: 5}, ],
@@ -70,6 +157,7 @@ DocReady(function() {
                 rangeValue2: {from: {year: 2013, month: 11}, to: {year: 2016, month: 3}},
             }
 
+            this.yearsPanel = React.createRef()
             this.pickAMonth = React.createRef()
             this.pickAMonth2 = React.createRef()
             this.pickMulti = React.createRef()
@@ -77,18 +165,12 @@ DocReady(function() {
             this.pickRange2 = React.createRef()
         }
 
-        static getDerivedStateFromProps(props, state) {
-            return {
-                value: props.value || 'N/A',
-            }
-        }
-
         render() {
             const pickerLang = {
                 months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                 from: 'From', to: 'To',
             }
-            const { singleValue, singleValue2, multiValue, rangeValue, rangeValue2, } = this.state
+            const { yearsOfSingle, ageOfSingle, singleValue, singleValue2, multiValue, rangeValue, rangeValue2, } = this.state
 
             const makeText = m => {
                 if (m && m.year && m.month) return (pickerLang.months[m.month-1] + '. ' + m.year)
@@ -98,11 +180,19 @@ DocReady(function() {
             return (
                 <ul>
                     <li>
-                        <label><b>Pick A Month</b><span>(Available years: 2008, 2011, 2012, 2014, 2016)</span></label>
+                        <label>
+                            <b>Pick A Month</b>
+                            <span>
+                                <i>(Available years: {yearsOfSingle.join(', ')})</i>
+                                <i className="sub-btn" onClick={this.handleClickEditYears}>Edit</i>
+                                <YearsPanel ref={this.yearsPanel} years={yearsOfSingle} onChange={this.handleYearsChanged} />
+                            </span>
+                        </label>
                         <div className="edit">
                             <Picker
                                 ref={this.pickAMonth}
-                                years={[2008, 2011, 2012, 2014, 2016, 2018, 2020]}
+                                age={ageOfSingle}
+                                years={yearsOfSingle}
                                 value={singleValue}
                                 lang={pickerLang.months}
                                 onChange={this.handleAMonthChange}
@@ -113,7 +203,10 @@ DocReady(function() {
                         </div>
                     </li>
                     <li>
-                        <label><b>Pick A Month</b><span>(Available months from Feb.2016 to Sep.2016)</span></label>
+                        <label>
+                            <b>Pick A Month</b>
+                            <span>(Available months from Feb.2016 to Sep.2016)</span>
+                        </label>
                         <div className="edit">
                             <Picker
                                 ref={this.pickAMonth2}
@@ -129,7 +222,10 @@ DocReady(function() {
                         </div>
                     </li>
                     <li>
-                        <label><b>Pick Several Month</b><span>(Available months from Feb.2016 to Apr.2020)</span></label>
+                        <label>
+                            <b>Pick Several Month</b>
+                            <span>(Available months from Feb.2016 to Apr.2020)</span>
+                        </label>
                         <div className="edit">
                             <Picker
                                 ref={this.pickMulti}
@@ -145,7 +241,10 @@ DocReady(function() {
                         </div>
                     </li>
                     <li>
-                        <label><b>Pick A Span of Months</b><span>(Available years from 2013 to this year)</span></label>
+                        <label>
+                            <b>Pick A Span of Months</b>
+                            <span>(Available years from 2013 to this year)</span>
+                        </label>
                         <div className="edit">
                             <Picker
                                 ref={this.pickRange}
@@ -161,7 +260,10 @@ DocReady(function() {
                         </div>
                     </li>
                     <li>
-                        <label><b>Pick A Span of Months</b><span>(Available months from Apr.2013 to Sep.2016)</span></label>
+                        <label>
+                            <b>Pick A Span of Months</b>
+                            <span>(Available months from Apr.2013 to Sep.2016)</span>
+                        </label>
                         <div className="edit">
                             <Picker
                                 ref={this.pickRange2}
@@ -178,6 +280,16 @@ DocReady(function() {
                     </li>
                 </ul>
             )
+        }
+
+        handleClickEditYears = (e) => {
+            this.yearsPanel.current.show()
+        }
+        handleYearsChanged = (years) => {
+            this.setState({
+                yearsOfSingle: years.concat(),
+                ageOfSingle: this.state.ageOfSingle + 1,
+            })
         }
 
         handleClickMonthBox = (e) => {
@@ -248,12 +360,6 @@ DocReady(function() {
 
             this.state = {
                 value: this.props.value
-            }
-        }
-
-        static getDerivedStateFromProps(props, state) {
-            return {
-                value: props.value,
             }
         }
 

@@ -80,7 +80,7 @@ function getYearArray (years) {
     if (Array.isArray(years)) {
         return years.map((y, i) => {
             return getYearMon(y)
-        })
+        }).sort((a, b) => (a.year - b.year))
     }
     if ((typeof years === 'object')) {
         let n = 0, min = 0
@@ -213,6 +213,7 @@ const TypeYM = PropTypes.shape({
 
 export default class MonthPicker extends Component {
     static propTypes = {
+        age: PropTypes.number,
         years: PropTypes.oneOfType([
             PropTypes.number, // exact number of a year
             PropTypes.arrayOf(PropTypes.number), // array of specific years: [2008, 2011, 2012, 2014, 2016]
@@ -251,6 +252,7 @@ export default class MonthPicker extends Component {
         theme: PropTypes.string,
     }
     static defaultProps = {
+        age: 0,
         years: getYearsByNum(5),
         onChange(year, month, idx) {},
         theme: 'light',
@@ -269,13 +271,13 @@ export default class MonthPicker extends Component {
             throw new Error('invalid value of property "value" in month-picker')
         }
         this.state = {
+            age: this.props.age,
             years: yearArr,
             rawValue,
             labelYears: [false, false],
             showed: false,
             closeable: false,
             yearIndexes,
-            // lastValue: cloneValue(this.props.value),
         }
     }
 
@@ -297,31 +299,23 @@ export default class MonthPicker extends Component {
     //     // ...
     // }
     // componentDidUpdate(prevProps, prevState) {
-    //     const yearIndexes = this.state.yearIndexes
-    //     const rawValue = validValue(props.value, this.state.years, yearIndexes)
-    //     if (this.state.showed !== prevState.showed || valueChanged(rawValue, state.rawValue)) {
-    //         this.setState({
-    //             rawValue,
-    //             labelYears: [false, false],
-    //             yearIndexes,
-    //             showed: this.props.show,
-    //             closeable: this.props.show,
-    //         })
-    //     }
     // }
-    // static getDerivedStateFromProps(props, state) {
-    //     const yearIndexes = state.yearIndexes
-    //     const rawValue = validValue(props.value, state.years, yearIndexes)
-    //     if (valueChanged(rawValue, state.rawValue)) {
-    //         return {
-    //             rawValue,
-    //             labelYears: [false, false],
-    //             yearIndexes,
-    //         }
-    //     }
-    //     // No state update necessary
-    //     return null
-    // }
+    static getDerivedStateFromProps(props, state) {
+        if (props.age > state.age) {
+            const yearArr = getYearArray(props.years)
+            const yearIndexes = [0]
+            const rawValue = validValue(props.value, yearArr, yearIndexes)
+            return {
+                age: props.age,
+                years: yearArr,
+                rawValue,
+                labelYears: [false, false],
+                yearIndexes,
+            }
+        }
+        // No state update necessary
+        return null
+    }
 
     componentDidMount () {
         if (isBrowser) {

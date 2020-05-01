@@ -322,6 +322,70 @@ ul, li {
   .month-picker .tab.btn.next:before {
     content: ""; }
 
+.years-panel {
+  position: fixed;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  z-index: 100;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  left: -10000px;
+  transition: left 0ms cubic-bezier(0.23, 1, 0.32, 1) 450ms; }
+  .years-panel.table {
+    display: table; }
+  .years-panel.show {
+    left: 0;
+    transition: left 0ms cubic-bezier(0.23, 1, 0.32, 1) 0ms; }
+  .years-panel.show > .overlay {
+    left: 0;
+    background-color: rgba(82, 82, 82, 0.49); }
+  .years-panel > .overlay {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+    top: 0;
+    left: -10000px;
+    opacity: 1;
+    -webkit-tap-highlight-color: transparent;
+    will-change: opacity;
+    transform: translateZ(0);
+    transition: left 0ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, opacity 400ms cubic-bezier(0.23, 1, 0.32, 1) 0ms; }
+  .years-panel .cell {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%; }
+  .years-panel .popup {
+    display: inline-block;
+    transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1);
+    margin: 0 auto;
+    z-index: 10;
+    font-size: 1.2rem;
+    opacity: 0;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.81);
+    padding: 1.8rem; }
+    .years-panel .popup textarea {
+      outline: none;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1.5rem;
+      width: 20rem;
+      line-height: 150%;
+      padding: 1rem; }
+    .years-panel .popup:after {
+      content: ' ';
+      clear: both;
+      display: table; }
+  .years-panel.show .popup {
+    opacity: 1;
+    transform: translate3d(0, 0, 0); }
+
 .list-area {
   margin-top: 5rem; }
   @media screen and (min-width: 768px) {
@@ -356,6 +420,11 @@ ul, li {
             color: #bfbfbf;
             left: 1.6rem;
             top: 1.5em; }
+            .list-area > ul > li > label span i {
+              display: inline-block;
+              font-style: normal; }
+              .list-area > ul > li > label span i.sub-btn {
+                display: none; }
         .list-area > ul > li .edit {
           margin-left: 9rem;
           line-height: 5rem; } }
@@ -384,6 +453,17 @@ ul, li {
             font-size: 0.9em;
             color: #afafaf;
             margin-top: 0.4em; }
+            .list-area > ul > li > label span i {
+              display: inline-block;
+              font-style: normal; }
+              .list-area > ul > li > label span i.sub-btn {
+                padding: 0.1rem 0.3rem;
+                margin-left: 1.5rem;
+                border-radius: 3px;
+                background-color: #696969;
+                color: white;
+                font-size: 0.8em;
+                cursor: pointer; }
         .list-area > ul > li .edit {
           padding: 1px;
           height: 3.3rem; } }
