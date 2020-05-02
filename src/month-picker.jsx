@@ -129,21 +129,22 @@ function validate (d, years, idx, yearIndexes) {
     }
 
     const last = yearIndexes[idx] = years.length - 1
-    return { year: years[last].year }
+    const y = years[last]
+    return { year: y.year, month: Math.floor( (y.max - y.min) / 2 ) }
 
 }
 
 
 function validValue (value, years, yearIndexes) {
     value = value || {}
-    if (value.year && value.month) {
+    if (typeof value.year === 'number') {
         const { year, month, } = validate(value, years, 0, yearIndexes)
         return  { type: 'single', pads: 1, year, month, }
     }
     else if (Array.isArray(value) && value.length > 0) {
         return {
             type: 'multiple', pads: 1,
-            choices: value.map( (v,i) => validate(v, years, 0,i === 0 ? yearIndexes :[0]) )
+            choices: value.map( (v,i) => validate(v, years, 0,i === 0 ? yearIndexes : [0]) )
         }
     }
     else if (value.from && value.to) {
@@ -205,6 +206,19 @@ function validValue (value, years, yearIndexes) {
 // }
 
 
+function validateAutoRange (n) {
+    if (n <= 0) return 0
+    return Math.floor(n)
+}
+
+function compareYM (ym1, ym2) {
+    const d = ym1.year - ym2.year
+    return d === 0 ? (ym1.month - ym2.month) : d
+}
+
+
+
+
 const TypeYM = PropTypes.shape({
     year: PropTypes.number,
     month: PropTypes.number,
@@ -214,6 +228,7 @@ const TypeYM = PropTypes.shape({
 export default class MonthPicker extends Component {
     static propTypes = {
         age: PropTypes.number,
+        autoRange: PropTypes.number,
         years: PropTypes.oneOfType([
             PropTypes.number, // exact number of a year
             PropTypes.arrayOf(PropTypes.number), // array of specific years: [2008, 2011, 2012, 2014, 2016]
@@ -253,6 +268,7 @@ export default class MonthPicker extends Component {
     }
     static defaultProps = {
         age: 0,
+        autoRange: 0,
         years: getYearsByNum(5),
         onChange(year, month, idx) {},
         theme: 'light',
@@ -272,12 +288,12 @@ export default class MonthPicker extends Component {
         }
         this.state = {
             age: this.props.age,
+            autoRange: validateAutoRange(this.props.autoRange),
             years: yearArr,
             rawValue,
-            labelYears: [false, false],
+            yearIndexes,
             showed: false,
             closeable: false,
-            yearIndexes,
         }
     }
 
@@ -307,9 +323,9 @@ export default class MonthPicker extends Component {
             const rawValue = validValue(props.value, yearArr, yearIndexes)
             return {
                 age: props.age,
+                autoRange: validateAutoRange(props.autoRange),
                 years: yearArr,
                 rawValue,
-                labelYears: [false, false],
                 yearIndexes,
             }
         }
@@ -329,27 +345,19 @@ export default class MonthPicker extends Component {
     }
 
     optionPad(padIndex) {
-        const ymArr = this.state.years
-        const ymRange = [ ymArr[0], ymArr[ymArr.length - 1], ]
-        const labelYears = this.state.labelYears
-        let labelYear = labelYears[padIndex]
+        const { years: ymArr, rawValue, yearIndexes, autoRange, } = this.state
+        const yearIdx = yearIndexes[ padIndex ]
+        let labelYear = ymArr[yearIdx].year
 
-        const rawValue = this.state.rawValue
         const values = []
         let isRange = false
         if (rawValue.type === 'single') {
-            if (!labelYear) {
-                labelYear = labelYears[padIndex] = rawValue.year
-            }
             if (rawValue.year === labelYear) {
                 rawValue.month && values.push(rawValue.month)
             }
         }
         else if (rawValue.type === 'multiple') {
             const choices = rawValue.choices
-            if (!labelYear) {
-                labelYear = labelYears[padIndex] = choices.length > 0 ? choices[0].year : ymRange[padIndex].year
-            }
             choices.forEach(c => {
                 if (labelYear === c.year) {
                     c.month && values.push(c.month)
@@ -358,9 +366,6 @@ export default class MonthPicker extends Component {
         }
         else if (rawValue.type === 'range') {
             isRange = true
-            if (!labelYear) {
-                labelYear = labelYears[padIndex] = rawValue[ _RANGE_KEYS[padIndex] ].year
-            }
             const { from, to, } = rawValue
             const startM = labelYear === from.year ? from.month : 1
             const endM = labelYear === to.year ? to.month : 12
@@ -373,7 +378,6 @@ export default class MonthPicker extends Component {
         const months =  Array.isArray(lang) ? lang : (Array.isArray(lang.months) ? lang.months : [])
         let prevCss = '', nextCss = ''
         const yearMaxIdx = ymArr.length - 1
-        const yearIdx = this.state.yearIndexes[padIndex]//yearMaxIdx
 
         const atMinYear = (labelYear === ymArr[0].year)
         const atMaxYear = (labelYear === ymArr[yearMaxIdx].year)
@@ -383,9 +387,12 @@ export default class MonthPicker extends Component {
             labelPreText = <b>{this.props.lang[ _RANGE_KEYS[padIndex] ]}</b>
         }
 
-        //console.log('--- %s ----', rawValue.type, { padIndex, labelYear, otherValue, })
-        if (yearIdx === 0 || (padIndex === 1 && otherValue.year === labelYear)) prevCss = 'disable'
-        if (yearIdx === yearMaxIdx || (padIndex === 0 && otherValue.year === labelYear)) nextCss = 'disable'
+        if (yearIdx === 0) prevCss = 'disable'
+        if (yearIdx === yearMaxIdx) nextCss = 'disable'
+        if (autoRange === 0) {
+            if (padIndex === 1 && otherValue.year === labelYear) prevCss = 'disable'
+            if (padIndex === 0 && otherValue.year === labelYear) nextCss = 'disable'
+        }
 
         const prevHandler = prevCss === 'disable' ? undefined : this._goPrevYear
         const nextHandler = nextCss === 'disable' ? undefined : this._goNextYear
@@ -425,10 +432,12 @@ export default class MonthPicker extends Component {
                                         }
                                     }
                                 }
-                                const otherM = otherValue.month
-                                if (otherM) {
-                                    if ((padIndex === 0 && nextCss === 'disable' && m > otherM) || (padIndex === 1 && prevCss === 'disable' && m < otherM)) {
-                                        css = 'disable'
+                                if (this.state.autoRange === 0) {
+                                    const otherM = otherValue.month
+                                    if (otherM) {
+                                        if ((padIndex === 0 && nextCss === 'disable' && m > otherM) || (padIndex === 1 && prevCss === 'disable' && m < otherM)) {
+                                            css = 'disable'
+                                        }
                                     }
                                 }
                             }
@@ -505,12 +514,14 @@ export default class MonthPicker extends Component {
             const refid = this.getDID(e).split(':')
             const idx = parseInt(refid[0], 10)
             const month = parseInt(refid[1], 10)
-            const year = this.state.labelYears[idx]
-            const rawValue = this.state.rawValue
+            const year = this.state.years[ this.state.yearIndexes[idx] ].year
+            const rawValue = Object.assign({}, this.state.rawValue)
+            const update = { rawValue }
             if (rawValue.type === 'single') {
                 Object.assign(rawValue, { year, month })
             }
             else if (rawValue.type === 'multiple') {
+                Object.assign(rawValue, { choices: rawValue.choices.concat() })
                 const existIndex = rawValue.choices.findIndex(c => (c.year === year && c.month === month))
                 if (existIndex < 0) {
                     rawValue.choices.push({ year, month, })
@@ -522,11 +533,60 @@ export default class MonthPicker extends Component {
             }
             else if (rawValue.type === 'range') {
                 const keys = _RANGE_KEYS
-                rawValue[ keys[idx] ] = { year, month }
+                const thisKey = keys[idx], otherKey = keys[1 - idx]
+                const pick = { year, month }
+                Object.assign(rawValue,{ [thisKey]: pick })
+
+                const d = compareYM(pick, rawValue[otherKey])
+                if ((thisKey === 'from' && d > 0) || (thisKey === 'to' && d < 0)) {
+                    const n = Math.sign(d) * this.state.autoRange
+                    const otherV = this.getAvailable (n, { year, month, })
+                    if (otherV) {
+                        Object.assign(rawValue, { [otherKey]: otherV })
+                        const { yearIndexes, years, } = this.state
+                        for (let i = 0, l = years.length; i < l; i++) {
+                            if (years[i].year === otherV.year) {
+                                update.yearIndexes = yearIndexes.concat()
+                                update.yearIndexes[1 - idx] = i
+                                break
+                            }
+                        }
+                    }
+                }
             }
-            this.setState({ rawValue })
+            this.setState(update)
             this.props.onChange(year, month, idx)
         }
+    }
+
+    getAvailable (n, { year, month, }) {
+        if (n === 0) return null
+        month += n - 1
+        while (month > 12 || month < 1) {
+            if (month > 12) {
+                month -= 12
+                year += 1
+            }
+            else {
+                month += 12
+                year -= 1
+            }
+        }
+
+        const { years } = this.state
+        if (n > 0) {
+            const y = years[ years.length - 1 ]
+            const last = { year: y.year, month: y.max, }
+            const d = compareYM({ year, month, }, last)
+            if (d > 0) return last
+        }
+        else {
+            const y = years[0]
+            const first = { year: y.year, month: y.min, }
+            const d = compareYM({ year, month, }, first)
+            if (d < 0) return first
+        }
+        return { year, month, }
     }
 
     _goPrevYear = (e) => {
@@ -542,11 +602,11 @@ export default class MonthPicker extends Component {
         }
     }
     setYear(idx, step) {
-        const yearIndex = (this.state.yearIndexes[idx] += step)
-        const labelYears = this.state.labelYears
-        const theYear = this.state.years[yearIndex].year
-        labelYears[idx] = theYear
-        this.setState({ labelYears })
+        const yearIndexes = this.state.yearIndexes.concat()
+        yearIndexes[idx] += step
+        this.setState({ yearIndexes })
+
+        const theYear = this.state.years[ yearIndexes[idx] ].year
         this.props.onYearChange && this.props.onYearChange(theYear)
     }
 

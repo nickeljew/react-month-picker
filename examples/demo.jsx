@@ -181,7 +181,7 @@ DocReady(function() {
                 <ul>
                     <li>
                         <label>
-                            <b>Pick A Month</b>
+                            <b>Pick A Month (with age)</b>
                             <span>
                                 <i>(Available years: {yearsOfSingle.join(', ')})</i>
                                 <i className="sub-btn" onClick={this.handleClickEditYears}>Edit</i>
@@ -223,7 +223,7 @@ DocReady(function() {
                     </li>
                     <li>
                         <label>
-                            <b>Pick Several Month</b>
+                            <b>Pick Several Months</b>
                             <span>(Available months from Feb.2016 to Apr.2020)</span>
                         </label>
                         <div className="edit">
@@ -261,12 +261,13 @@ DocReady(function() {
                     </li>
                     <li>
                         <label>
-                            <b>Pick A Span of Months</b>
+                            <b>Pick A Span of Months (with autoRange)</b>
                             <span>(Available months from Apr.2013 to Sep.2016)</span>
                         </label>
                         <div className="edit">
                             <Picker
                                 ref={this.pickRange2}
+                                autoRange={6}
                                 years={{min: {year: 2012, month: 4}, max: {year: 2017, month: 9}}}
                                 value={rangeValue2}
                                 lang={pickerLang}
