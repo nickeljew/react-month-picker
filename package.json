@@ -12,7 +12,7 @@
     "react"
   ],
   "author": "Nickel Jianhui Zhu <nickeljew@hotmail.com>",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "license": "MIT",
   "private": false,
   "main": "lib/month-picker.js",
@@ -20,41 +20,39 @@
   "scripts": {},
   "babel": {
     "plugins": [
-      "transform-react-jsx",
-      "transform-class-properties"
+      "@babel/plugin-transform-react-jsx"
     ],
     "presets": [
-      "env",
-      "react"
+      "@babel/preset-env",
+      "@babel/preset-react"
     ]
   },
   "dependencies": {
-    "react-tapper": "^0.1.16"
+    "react-tapper": "^0.1.23"
   },
   "peerDependencies": {
-    "prop-types": "^15.7.2",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "prop-types": "^15.6.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   },
   "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-loader": "7.1.5",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-react-jsx": "^6.24.1",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-react": "^6.24.1",
+    "@babel/core": "^7.14.0",
+    "@babel/plugin-transform-react-jsx": "^7.13.12",
+    "@babel/preset-env": "^7.14.1",
+    "@babel/preset-react": "^7.13.13",
+    "babel-loader": "^8.2.2",
     "es6-docready": "^1.0.0",
-    "es6-dom": "^1.0.0",
-    "grunt": "^1.1.0",
-    "grunt-babel": "7.0.0",
+    "es6-dom": "^1.1.2",
+    "grunt": "^1.4.0",
+    "grunt-babel": "^8.0.0",
     "grunt-contrib-clean": "^2.0.0",
     "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-watch": "^1.1.0",
     "grunt-sass": "^3.1.0",
-    "grunt-webpack": "^3.1.3",
+    "grunt-webpack": "^4.0.3",
     "load-grunt-tasks": "^5.1.0",
-    "node-sass": "^4.14.0",
-    "webpack": "^4.43.0"
+    "node-sass": "^6.0.0",
+    "webpack": "^5.36.2"
   },
   "repository": {
     "type": "git",

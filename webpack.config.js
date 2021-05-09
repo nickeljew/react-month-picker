@@ -5,7 +5,6 @@ const path = require('path')
 process.traceDeprecation = true
 
 module.exports = {
-    mode: 'development',
     entry: {
         demo: './examples/demo.jsx',
         //react: ['react', 'react-dom'],
@@ -42,7 +41,7 @@ module.exports = {
             },
         ],
     },
-    //, watch: true
-    target: 'web',
     plugins: [],
+    target: 'web',
+    mode: 'development',
 }
