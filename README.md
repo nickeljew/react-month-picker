@@ -197,7 +197,7 @@ Initial selection
 
 ##### @lang:
 language texts
-- array: array of months' texts, e.g. ['Jan', 'Feb', 'Mar', 'Spr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+- array: array of months' texts, e.g. ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 - object: including array of months' texts and other display texts, e.g. {from: "From:", to: "To:", months: [...]}
 
 ##### @theme:
