@@ -8,6 +8,8 @@
     top: 1px;
     left: -10000px;
     transition: left 0ms cubic-bezier(0.23, 1, 0.32, 1) 450ms; }
+  .month-picker > .rmp-container:not(.show) {
+    display: none; }
     @media screen and (max-width: 767px) {
       .month-picker > .rmp-container {
         position: fixed;
