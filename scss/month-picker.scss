@@ -90,10 +90,10 @@
     $option-height: 3.4rem;
     $mon-pad-width: 20rem;
     $mon-pad-cols: 3;
-    $mon-pad-rows: math.div(12, $mon-pad-cols);
+    $mon-pad-rows: round(math.div(12, $mon-pad-cols));
     $mon-option-width: math.div(100%, $mon-pad-cols);
     $m-mon-pad-cols: 4;
-    $m-mon-pad-rows: math.div(12, $m-mon-pad-cols);
+    $m-mon-pad-rows: round(math.div(12, $m-mon-pad-cols));
     $m-mon-option-width: math.div(100%, $m-mon-pad-cols);
 
     $popup-pad: 0.4rem;
