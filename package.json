@@ -51,7 +51,7 @@
     "grunt-sass": "^3.1.0",
     "grunt-webpack": "^4.0.3",
     "load-grunt-tasks": "^5.1.0",
-    "node-sass": "^6.0.0",
+    "node-sass": "^7.0.0",
     "webpack": "^5.36.2"
   },
   "repository": {
