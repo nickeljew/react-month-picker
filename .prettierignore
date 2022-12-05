@@ -1,0 +1,11 @@
+.cache
+.husky
+dist
+coverage
+node_modules
+public/build
+public/fonts
+public/imgs
+
+**/*.d.ts
+**/*.yaml

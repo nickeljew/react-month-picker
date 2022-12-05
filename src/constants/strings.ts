@@ -1,0 +1,1 @@
+export const DROPDOWN_HEIGHT_PIXEL_SIZE = '36'
