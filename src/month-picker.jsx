@@ -137,11 +137,13 @@ function validate (d, years, idx, yearIndexes) {
 
 function validValue (value, years, yearIndexes) {
     value = value || {}
+    console.log('VALUE', value);
     if (typeof value.year === 'number') {
         const { year, month, } = validate(value, years, 0, yearIndexes)
         return  { type: 'single', pads: 1, year, month, }
     }
     else if (Array.isArray(value) && value.length > 0) {
+        console.log('ENTER');
         return {
             type: 'multiple', pads: 1,
             choices: value.map( (v,i) => validate(v, years, 0,i === 0 ? yearIndexes : [0]) )
@@ -162,49 +164,6 @@ function validValue (value, years, yearIndexes) {
     }
     return { pads: 0 }
 }
-
-
-// function valueChanged (v1, v2) {
-//     if (v1.type !== v2.type) return true
-//     const keys = _SINGLE_KEYS
-//     const items = keys.concat([ 'choice', ..._RANGE_KEYS, ])
-//     for (const i of items) {
-//         const x1 = v1[i], x2 = v2[i]
-//         if (!x1) continue
-//         if (typeof x1 === 'number' && x1 !== x2) return true
-//         if (Array.isArray(x1)) {
-//             if (!Array.isArray(x2)) return true
-//             if (x1.length !== x2.length) return true
-//             for (let j = 0; j < x1.length; j++) {
-//                 for (const k of keys) {
-//                     if (x1[j][k] !== x2[j][k]) return true
-//                 }
-//             }
-//         }
-//         if (typeof x1 === 'object' && typeof x2 === 'object') {
-//             for (const k of keys) {
-//                 if (x1[k] !== x2[k]) return true
-//             }
-//         }
-//     }
-//     return false
-// }
-//
-// function cloneValue (v) {
-//     if (!v) return v
-//     const { year, month, } = v
-//     return { year, month, }
-// }
-//
-// function cloneRange (r) {
-//     if (!r) return r
-//     const { from, to, } = r
-//     return {
-//         from: cloneValue(from),
-//         to: cloneValue(to),
-//     }
-// }
-
 
 function validateAutoRange (n) {
     if (n <= 0) return 0
@@ -282,15 +241,19 @@ export default class MonthPicker extends Component {
 
         const yearArr = getYearArray(this.props.years)
         const yearIndexes = [0]
+        console.log('PROPS', this.props)
         const rawValue = validValue(this.props.value, yearArr, yearIndexes)
+        console.log('DREAM', rawValue)
         if (!rawValue.type) {
             throw new Error('invalid value of property "value" in month-picker')
         }
+        const selectedValue = rawValue
         this.state = {
             age: this.props.age,
             autoRange: validateAutoRange(this.props.autoRange),
             years: yearArr,
             rawValue,
+            selectedValue,
             yearIndexes,
             showed: false,
             closeable: false,
@@ -336,6 +299,32 @@ export default class MonthPicker extends Component {
     componentDidMount () {
         if (isBrowser) {
             document.addEventListener('keydown', this._keyDown)
+            // Setup hover effect (we only want do to do this when the type of the control is in multiple mode)
+            if(this.state.rawValue.type === 'multiple')
+            {   
+                const monthButtons = [].slice.call(document.getElementsByClassName('multiple'));
+                monthButtons.forEach(monthButton => {
+                    monthButton.addEventListener('mouseover', event => {
+    
+                        // Check to see if we currently have an active button.
+                        const { selectedValue } = this.state;
+                        const dataId = parseInt(monthButton.getAttribute('data-id').split(':')[1], 10);
+    
+                        if(selectedValue && dataId)
+                        {
+                            // If there is a button currently selected, what we need to do is add the hover class to the buttons between the currently selected button and the button that is being hovered over.
+                            const diff = Math.abs(dataId - selectedValue.month);
+                            for(let i = 1 ; i < diff; i +=1 )
+                            {
+                                const nextMonth = dataId > selectedValue.month ? selectedValue.month + i : selectedValue.month - i;
+                                const element = document.querySelector(`[data-id="${selectedValue.idx}:${nextMonth}"]`);
+                                element && element.classList.add('hover');
+                            }
+                            this.forceUpdate()
+                        }
+                    })
+                })
+            }
         }
     }
     componentWillUnmount () {
@@ -435,6 +424,7 @@ export default class MonthPicker extends Component {
                                 if (this.state.autoRange === 0) {
                                     const otherM = otherValue.month
                                     if (otherM) {
+                                        // If we are on the first pad and 
                                         if ((padIndex === 0 && nextCss === 'disable' && m > otherM) || (padIndex === 1 && prevCss === 'disable' && m < otherM)) {
                                             css = 'disable'
                                         }
@@ -516,7 +506,9 @@ export default class MonthPicker extends Component {
             const month = parseInt(refid[1], 10)
             const year = this.state.years[ this.state.yearIndexes[idx] ].year
             const rawValue = Object.assign({}, this.state.rawValue)
-            const update = { rawValue }
+            // This is pass by reference, any change to rawValue will also update update.
+            const selectedValue = { year, month, idx };
+            const update = { rawValue, selectedValue }
             if (rawValue.type === 'single') {
                 Object.assign(rawValue, { year, month })
             }
@@ -555,7 +547,7 @@ export default class MonthPicker extends Component {
                 }
             }
             this.setState(update)
-            this.props.onChange(year, month, idx)
+            this.props.onChange(update)
         }
     }
 
@@ -615,12 +607,6 @@ export default class MonthPicker extends Component {
         return el.dataset ? el.dataset.id : el.getAttribute('data-id')
     }
 
-    // hasStyleClass(e, name) {
-    //     const el = e.target
-    //     const styleClass = el.getAttribute('class').split(' ')
-    //     return styleClass.includes(name)
-    // }
-
     _reset() {
         const rawValue = validValue(this.props.value, this.state.years, this.state.yearIndexes)
         return { rawValue }
@@ -639,27 +625,6 @@ export default class MonthPicker extends Component {
         else if (e.key === 'Enter') {
             this._onDismiss()
             e.stopPropagation()
-        }
-        else if (pads === 1) {
-            //console.log(e.key, e.keyCode)
-            // let month = value.month
-            // if (e.key === 'ArrowLeft') {
-            //     month--
-            // }
-            // else if (e.key === 'ArrowRight') {
-            //     month++
-            // }
-            // else if (e.key === 'ArrowUp') {
-            //     month -= 3
-            // }
-            // else if (e.key === 'ArrowDown') {
-            //     month += 3
-            // }
-            // if (month > 0 && month < 13 && month !== value.month) {
-            //     this.setState({ rawValue: { type, year, month } }) //TODO
-            //     this.props.onChange(year, month, 0)
-            //     e.stopPropagation()
-            // }
         }
     }
 }
