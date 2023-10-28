@@ -31,7 +31,6 @@ const isBrowser = (typeof window !== "undefined" && typeof document !== "undefin
 
 
 const __MIN_VALID_YEAR = 1000
-const _SINGLE_KEYS = [ 'year', 'month', ]
 const _RANGE_KEYS = [ 'from', 'to', ]
 const __YEAR = (new Date()).getFullYear()
 
@@ -137,30 +136,24 @@ function validate (d, years, idx, yearIndexes) {
 
 function validValue (value, years, yearIndexes) {
     value = value || {}
-    console.log('VALUE', value);
     if (typeof value.year === 'number') {
         const { year, month, } = validate(value, years, 0, yearIndexes)
         return  { type: 'single', pads: 1, year, month, }
     }
+
     else if (Array.isArray(value) && value.length > 0) {
-        console.log('ENTER');
-        return {
-            type: 'multiple', pads: 1,
-            choices: value.map( (v,i) => validate(v, years, 0,i === 0 ? yearIndexes : [0]) )
+        const from = validate(value.from, years, 0, yearIndexes),
+        to = validate(value.to, years, 1, yearIndexes)
+    if (from.year > to.year || (from.year === to.year && from.month > to.month)) {
+        from.year = to.year
+        from.month = to.month
+        if (from.month < 1) {
+            from.year--
+            from.month += 12
         }
     }
-    else if (value.from && value.to) {
-        const from = validate(value.from, years, 0, yearIndexes),
-            to = validate(value.to, years, 1, yearIndexes)
-        if (from.year > to.year || (from.year === to.year && from.month > to.month)) {
-            from.year = to.year
-            from.month = to.month
-            if (from.month < 1) {
-                from.year--
-                from.month += 12
-            }
-        }
-        return { type: 'range', pads: 2, from, to, }
+
+    return { type: 'multiple-range', pads: 2, from, to, }
     }
     return { pads: 0 }
 }
@@ -353,15 +346,6 @@ export default class MonthPicker extends Component {
                 }
             })
         }
-        else if (rawValue.type === 'range') {
-            isRange = true
-            const { from, to, } = rawValue
-            const startM = labelYear === from.year ? from.month : 1
-            const endM = labelYear === to.year ? to.month : 12
-            for (let i = startM; i <= endM; i++) {
-                values.push(i)
-            }
-        }
 
         const lang = this.props.lang || []
         const months =  Array.isArray(lang) ? lang : (Array.isArray(lang.months) ? lang.months : [])
@@ -499,6 +483,13 @@ export default class MonthPicker extends Component {
         this.props.onDismiss && this.props.onDismiss(this.value())
     }
 
+    _onShouldClose() {
+        if(this.state.closable)
+        {
+            this._onDismiss();
+        }
+    }
+
     _handleClickMonth = (e) => {
         if (this.state.showed) {
             const refid = this.getDID(e).split(':')
@@ -521,29 +512,6 @@ export default class MonthPicker extends Component {
                 }
                 else {
                     rawValue.choices.splice(existIndex, 1)
-                }
-            }
-            else if (rawValue.type === 'range') {
-                const keys = _RANGE_KEYS
-                const thisKey = keys[idx], otherKey = keys[1 - idx]
-                const pick = { year, month }
-                Object.assign(rawValue,{ [thisKey]: pick })
-
-                const d = compareYM(pick, rawValue[otherKey])
-                if ((thisKey === 'from' && d > 0) || (thisKey === 'to' && d < 0)) {
-                    const n = Math.sign(d) * this.state.autoRange
-                    const otherV = this.getAvailable (n, { year, month, })
-                    if (otherV) {
-                        Object.assign(rawValue, { [otherKey]: otherV })
-                        const { yearIndexes, years, } = this.state
-                        for (let i = 0, l = years.length; i < l; i++) {
-                            if (years[i].year === otherV.year) {
-                                update.yearIndexes = yearIndexes.concat()
-                                update.yearIndexes[1 - idx] = i
-                                break
-                            }
-                        }
-                    }
                 }
             }
             this.setState(update)
