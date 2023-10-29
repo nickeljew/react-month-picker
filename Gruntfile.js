@@ -1,6 +1,6 @@
 "use strict";
 
-const sass = require('node-sass')
+const sass = require('sass')
 
 var webpack_cfg = require('./webpack.config')
 //var extend = require('util')._extend

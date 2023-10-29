@@ -20,14 +20,16 @@
   "scripts": {},
   "babel": {
     "plugins": [
-      "@babel/plugin-transform-react-jsx"
+      "transform-react-jsx",
+      "transform-class-properties"
     ],
     "presets": [
-      "@babel/preset-env",
-      "@babel/preset-react"
+      "env",
+      "react"
     ]
   },
   "dependencies": {
+    "@babel/plugin-transform-react-jsx": "^7.22.15",
     "react-tapper": "0.1.16",
     "sass": "^1.69.5"
   },
