@@ -237,9 +237,7 @@ export default class MonthPicker extends Component {
 
         const yearArr = getYearArray(this.props.years)
         const yearIndexes = [0]
-        console.log('PROPS', this.props)
         const rawValue = validValue(this.props.value, yearArr, yearIndexes)
-        console.log('DREAM', rawValue)
         if (!rawValue.type) {
             throw new Error('invalid value of property "value" in month-picker')
         }
@@ -492,13 +490,7 @@ export default class MonthPicker extends Component {
     render() {
         const pads = []
         let popupClass = ''
-        if (this.state.rawValue.type === 'range') {
-            pads.push( this.optionPad(0), this.optionPad(1) )
-            popupClass = 'range'
-        }
-        else {
-            pads.push( this.optionPad(0) )
-        }
+        pads.push( this.optionPad(0) )
 
         return (
             <div className={["month-picker", this.props.className].join(' ')}>
