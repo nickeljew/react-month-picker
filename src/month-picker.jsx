@@ -169,6 +169,11 @@ function compareYM (ym1, ym2) {
     return d === 0 ? (ym1.month - ym2.month) : d
 }
 
+function isOlderThan(ym1, ym2)
+{
+    return ym1.year > ym2.year || (ym1.year === ym2.year && ym1.month > ym2.month)
+}
+
 const TypeYM = PropTypes.shape({
     year: PropTypes.number,
     month: PropTypes.number,
@@ -565,7 +570,7 @@ export default class MonthPicker extends Component {
     }
 
     _onDismiss(s) {
-        this.setState(Object.assign({showed: false, loading: false, selectedValue: undefined}, s))
+        this.setState(Object.assign({showed: false, loading: false}, s))
         this.props.onDismiss && this.props.onDismiss(this.value())
     }
 
@@ -611,12 +616,18 @@ export default class MonthPicker extends Component {
             }
             
             this.setState(update)
-            console.log('DREAMS OF AN UPDATE', update)
             // We don't want to call the onChange function if the user is in the process of selecting a range.
             if(rawValue.type !== 'range' || (rawValue.type === 'range' && update.rawValue.from && update.rawValue.to))
             {
+                // If we are in the ranged state
+                const currentState = update.rawValue
 
-                this.props.onChange(update.rawValue)
+                if(rawValue.type === 'range')
+                {
+                    currentState.from = isOlderThan(rawValue.from, rawValue.to) ? rawValue.from: rawValue.to;
+                    currentState.to = isOlderThan(rawValue.from, rawValue.to) ? rawValue.to: rawValue.from;
+                }
+                this.props.onChange(currentState);
 
                 if(rawValue.type !== 'multiple')
                 {
@@ -661,7 +672,6 @@ export default class MonthPicker extends Component {
         if(rawValue.type === 'range')
         {
             const monthButtons = [].slice.call(document.getElementsByClassName('range'));
-            console.log('DREAM OF THE MONTH BUTTONS', monthButtons)
             monthButtons.forEach(monthButton => {
                 monthButton.classList.remove("select");
             })
