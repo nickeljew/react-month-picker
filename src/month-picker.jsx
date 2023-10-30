@@ -565,7 +565,7 @@ export default class MonthPicker extends Component {
     }
 
     _onDismiss(s) {
-        this.setState(Object.assign({showed: false, loading: false}, s))
+        this.setState(Object.assign({showed: false, loading: false, selectedValue: undefined}, s))
         this.props.onDismiss && this.props.onDismiss(this.value())
     }
 
