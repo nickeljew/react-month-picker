@@ -396,19 +396,18 @@ export default class MonthPicker extends Component {
                 {                                   
                     const { year: selectedYear, month: selectedMonth } = selectedValue;
                     const isSameYear = currentYear === selectedYear;
-                    console.log('DREAM', classNames)
                     if (classNames.includes("prev") && !classNames.includes("disable")) {
-                        this.setHoverState(1, true, selectedMonth, isSameYear);
+                        console.log(selectedMonth, selectedYear)
+                        this.setHoverState(currentYear <= selectedYear ? 1 : _NUM_MONTHS + 1, true, selectedMonth, isSameYear);
                       } else if (
                           classNames.includes("next") &&
                         !classNames.includes("disable")
                       ) {
-                        this.setHoverState(12, false, selectedMonth, isSameYear);
+                        this.setHoverState(currentYear >= isSameYear ? 12 : 0, false, selectedMonth, isSameYear);
                       }
                 }
               });
               arrowButton.addEventListener("mouseleave", (_) => {
-                console.log('LEAVING THE MOUSE')
                 this.resetHoverRangeStatus();
               });
             });
