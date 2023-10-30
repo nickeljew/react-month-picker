@@ -164,11 +164,6 @@ function validValue (value, years, yearIndexes) {
     return { pads: 0 }
 }
 
-function validateAutoRange (n) {
-    if (n <= 0) return 0
-    return Math.floor(n)
-}
-
 function compareYM (ym1, ym2) {
     const d = ym1.year - ym2.year
     return d === 0 ? (ym1.month - ym2.month) : d
@@ -348,46 +343,78 @@ export default class MonthPicker extends Component {
         }
     }
 
-    componentDidMount () {
+    componentDidMount() {
         if (isBrowser) {
-            document.addEventListener('keydown', this._keyDown)
-            // Setup hover effect (we only want do to do this when the type of the control is in multiple mode)
-            if(this.state.rawValue.type === 'range')
-            {   
-                const monthButtons = [].slice.call(document.getElementsByClassName('range'));
-                monthButtons.forEach(monthButton => {
-                    monthButton.addEventListener('mouseover', _ => {
+          document.addEventListener("keydown", this._keyDown);
+          // Setup hover effect (we only want do to do this when the type of the control is in multiple mode)
+          if (this.state.rawValue.type === "range") {
+            const monthButtons = [].slice.call(
+              document.getElementsByClassName("range"),
+            );
+
+
+            monthButtons.forEach((monthButton) => {
+              monthButton.addEventListener("mouseover", (_) => {
+                const { selectedValue, years, yearIndexes } = this.state;
+                const yearIdx = yearIndexes[0];
+                let currentYear = years[yearIdx].year;
+                // Check to see if we currently have an active button.
+                const dataId = parseInt(
+                  monthButton.getAttribute("data-id").split(":")[1],
+                  10,
+                );
+                if (selectedValue && dataId) {
+                                
+                const { year: selectedYear, month: selectedMonth } = selectedValue;
+                const isSameYear = currentYear === selectedYear;
+                  // If there is a button currently selected, what we need to do is add the hover class to the buttons between the currently selected button and the button that is being hovered over.
+                  const diffSign = Math.sign(dataId - selectedMonth);
     
-                        // Check to see if we currently have an active button.
-                        const { selectedValue, years, yearIndexes } = this.state;
-                        const yearIdx = yearIndexes[ 0 ]
-                        let currentYear = years[yearIdx].year;
-                        const dataId = parseInt(monthButton.getAttribute('data-id').split(':')[1], 10);
-                        if(selectedValue && dataId)
-                        {
-                            const { year: selectedYear, month: selectedMonth } = selectedValue;
-                            const isSameYear = currentYear === selectedYear;
-                            // If there is a button currently selected, what we need to do is add the hover class to the buttons between the currently selected button and the button that is being hovered over.
-                            const diffSign = Math.sign(dataId - selectedMonth);
-
-        
-
-                            if( (isSameYear && diffSign <= 0 ) || currentYear < selectedYear )
-                            {
-                               this.setHoverState(dataId, true, selectedMonth, isSameYear);
-                            }
-                            else if((isSameYear && diffSign > 0 ) || currentYear > selectedYear)
-                            { 
-                                console.log('SET HOVER STATE', dataId, selectedValue, isSameYear, diffSign)
-                                this.setHoverState(dataId, false, selectedMonth, isSameYear);  
-                            }
-                            this.forceUpdate()  
-                        }
-                })
-            })
+                  if ((isSameYear && diffSign <= 0) || currentYear < selectedYear) {
+                    this.setHoverState(dataId, true, selectedMonth, isSameYear);
+                  } else if (
+                    (isSameYear && diffSign > 0) ||
+                    currentYear > selectedYear
+                  ) {
+                    this.setHoverState(dataId, false, selectedMonth, isSameYear);
+                  }
+                  this.forceUpdate();
+                }
+              });
+            });
+    
+            const arrowButtons = [].slice.call(
+              document.getElementsByClassName("rmp-tab"),
+            );
+            arrowButtons.forEach((arrowButton) => {
+              arrowButton.addEventListener("mouseover", (_) => {
+                const { selectedValue, years, yearIndexes } = this.state;
+                const yearIdx = yearIndexes[0];
+                let currentYear = years[yearIdx].year;
+                const classNames = [].slice.call(arrowButton.classList);
+                if(selectedValue)
+                {                                   
+                    const { year: selectedYear, month: selectedMonth } = selectedValue;
+                    const isSameYear = currentYear === selectedYear;
+                    console.log('DREAM', classNames)
+                    if (classNames.includes("prev") && !classNames.includes("disable")) {
+                        this.setHoverState(1, true, selectedMonth, isSameYear);
+                      } else if (
+                          classNames.includes("next") &&
+                        !classNames.includes("disable")
+                      ) {
+                        this.setHoverState(12, false, selectedMonth, isSameYear);
+                      }
+                }
+              });
+              arrowButton.addEventListener("mouseleave", (_) => {
+                console.log('LEAVING THE MOUSE')
+                this.resetHoverRangeStatus();
+              });
+            });
+          }
         }
-    }
-}
+      }
 
 
 
@@ -421,7 +448,6 @@ export default class MonthPicker extends Component {
             isRange = true
             const { from, to, } = rawValue
             const startM = labelYear === from.year ? from.month : 1
-            const defaultMonth = to ? to.month : _NUM_MONTHS
             const endM = labelYear === to?.year ? to?.month || from.month : 12
             for (let i = startM; i <= endM; i++) {
                 values.push(i)
@@ -586,12 +612,17 @@ export default class MonthPicker extends Component {
             }
             
             this.setState(update)
-            console.log('UPDATE', update)
-
+            console.log('DREAMS OF AN UPDATE', update)
             // We don't want to call the onChange function if the user is in the process of selecting a range.
-            if(rawValue.type !== 'range' || (rawValue.type === 'range' && update.from && update.to))
+            if(rawValue.type !== 'range' || (rawValue.type === 'range' && update.rawValue.from && update.rawValue.to))
             {
-                this.props.onChange(update)
+
+                this.props.onChange(update.rawValue)
+
+                if(rawValue.type !== 'multiple')
+                {
+                    this._onDismiss();
+                }
             }     
         }
     }
@@ -630,7 +661,8 @@ export default class MonthPicker extends Component {
         const { rawValue } = this.state;
         if(rawValue.type === 'range')
         {
-            const monthButtons = [].slice.call(document.getElementsByClassName('multiple'));
+            const monthButtons = [].slice.call(document.getElementsByClassName('range'));
+            console.log('DREAM OF THE MONTH BUTTONS', monthButtons)
             monthButtons.forEach(monthButton => {
                 monthButton.classList.remove("select");
             })
