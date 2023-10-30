@@ -276,6 +276,9 @@
         }
 
         .rmp-pad {
+          .hover {
+            background-color: rgba(255, 227, 160, 0.59);
+          } 
           .rmp-btn {
             cursor: pointer;
             @include unselectable();
