@@ -297,6 +297,9 @@ ul, li {
     background-color: rgba(238, 238, 238, 0.9);
   }
 }
+.month-picker > .rmp-container .rmp-popup.light .rmp-pad .hover {
+  background-color: rgba(255, 227, 160, 0.59);
+}
 .month-picker > .rmp-container .rmp-popup.light .rmp-pad .rmp-btn {
   cursor: pointer;
   moz-user-select: -moz-none;

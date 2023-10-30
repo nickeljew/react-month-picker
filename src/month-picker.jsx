@@ -562,14 +562,20 @@ export default class MonthPicker extends Component {
             }
             else if (rawValue.type === 'range') {
                 const keys = _RANGE_KEYS
-                const thisKey = keys[idx], otherKey = keys[1 - idx]
+                // If the user has already selected a month, then we know what we are adding is the to period.
+                // Otherwise we are setting the initial value.
+                const index = this.state.selectedValue ? 1:0;
+                const thisKey = keys[index]
                 const pick = { year, month }
                 Object.assign(rawValue,{ [thisKey]: pick })
-
-                const d = compareYM(pick, rawValue[otherKey])
             }
             this.setState(update)
-            this.props.onChange(update)
+
+            // We don't want to call the onChange function if the user is in the process of selecting a range.
+            if(rawValue.type !== 'range' || (rawValue.type === 'range' && update.from && update.to))
+            {
+                this.props.onChange(update)
+            }     
         }
     }
 
@@ -607,7 +613,7 @@ export default class MonthPicker extends Component {
         const { rawValue } = this.state;
         if(rawValue.type === 'range')
         {
-            const monthButtons = [].slice.call(document.getElementsByClassName('range'));
+            const monthButtons = [].slice.call(document.getElementsByClassName('multiple'));
             monthButtons.forEach(monthButton => {
                 monthButton.classList.remove("hover");
             })
