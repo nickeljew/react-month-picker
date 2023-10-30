@@ -294,9 +294,9 @@ export default class MonthPicker extends Component {
         if (isBrowser) {
             document.addEventListener('keydown', this._keyDown)
             // Setup hover effect (we only want do to do this when the type of the control is in multiple mode)
-            if(this.state.rawValue.type === 'multiple')
+            if(this.state.rawValue.type === 'range')
             {   
-                const monthButtons = [].slice.call(document.getElementsByClassName('multiple'));
+                const monthButtons = [].slice.call(document.getElementsByClassName('range'));
                 monthButtons.forEach(monthButton => {
                     monthButton.addEventListener('mouseover', event => {
     
@@ -605,9 +605,9 @@ export default class MonthPicker extends Component {
 
     resetHoverRangeStatus = () => {
         const { rawValue } = this.state;
-        if(rawValue.type === 'multiple')
+        if(rawValue.type === 'range')
         {
-            const monthButtons = [].slice.call(document.getElementsByClassName('multiple'));
+            const monthButtons = [].slice.call(document.getElementsByClassName('range'));
             monthButtons.forEach(monthButton => {
                 monthButton.classList.remove("hover");
             })
