@@ -17,7 +17,9 @@
   "private": false,
   "main": "lib/month-picker.js",
   "style": "css/month-picker.css",
-  "scripts": {},
+  "scripts": {
+    "prettier": "npx prettier . -write"
+  },
   "babel": {
     "plugins": [
       "@babel/transform-react-jsx",
