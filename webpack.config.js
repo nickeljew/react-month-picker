@@ -6,8 +6,7 @@ process.traceDeprecation = true;
 
 module.exports = {
   entry: {
-    demo: "./examples/demo.jsx",
-    // react: ["react", "react-dom"],
+    react: ["react", "react-dom"],
   },
   output: {
     path: path.resolve(__dirname, "examples"),
