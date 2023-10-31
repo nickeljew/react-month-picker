@@ -169,11 +169,6 @@ function validValue(value, years, yearIndexes) {
   return { pads: 0 };
 }
 
-function compareYM(ym1, ym2) {
-  const d = ym1.year - ym2.year;
-  return d === 0 ? ym1.month - ym2.month : d;
-}
-
 function isOlderThan(ym1, ym2) {
   return (
     ym1.year > ym2.year || (ym1.year === ym2.year && ym1.month > ym2.month)
@@ -337,7 +332,8 @@ export default class MonthPicker extends Component {
         const monthButtons = [].slice.call(
           document.getElementsByClassName("range"),
         );
-
+        
+        // Setup hover effect for each month button
         monthButtons.forEach((monthButton) => {
           monthButton.addEventListener("mouseover", (_) => {
             const { selectedValue, years, yearIndexes } = this.state;
@@ -368,6 +364,7 @@ export default class MonthPicker extends Component {
           });
         });
 
+        // Setup hover effect for the arrow buttons
         const arrowButtons = [].slice.call(
           document.getElementsByClassName("rmp-tab"),
         );
@@ -597,6 +594,9 @@ export default class MonthPicker extends Component {
     }
   };
 
+  /**
+   * Called when the control is shown.
+   */
   _onShow() {
     setTimeout(() => {
       this.state.closeable = true;
@@ -614,6 +614,10 @@ export default class MonthPicker extends Component {
     this.props.onShow && this.props.onShow();
   }
 
+
+  /**
+   * Called when the control is hidden.
+   */
   _onDismiss(s) {
     this.setState(
       Object.assign(
@@ -624,6 +628,11 @@ export default class MonthPicker extends Component {
     this.props.onDismiss && this.props.onDismiss(this.value());
   }
 
+  /**
+   * Called when a month button is clicked
+   * @param {*} e 
+   * The element that was clicked on.
+   */
   _handleClickMonth = (e) => {
     if (this.state.showed) {
       const refid = this.getDID(e).split(":");
