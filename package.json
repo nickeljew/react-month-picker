@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "@babel/plugin-transform-react-jsx": "^7.22.15",
+    "debug": "^4.3.4",
     "react-tapper": "0.1.16",
     "sass": "^1.69.5"
   },

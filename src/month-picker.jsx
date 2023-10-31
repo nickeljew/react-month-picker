@@ -25,8 +25,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Tappable from 'react-tapper'
+import debug from 'debug'
 
-
+const monthPickerDebug = debug('month-picker');
 const isBrowser = (typeof window !== "undefined" && typeof document !== "undefined")
 
 
@@ -248,6 +249,7 @@ export default class MonthPicker extends Component {
             showed: false,
             closeable: false,
         }
+        monthPickerDebug('initial state:', this.state)
     }
 
 
@@ -274,12 +276,14 @@ export default class MonthPicker extends Component {
             const yearArr = getYearArray(props.years)
             const yearIndexes = [0]
             const rawValue = validValue(props.value, yearArr, yearIndexes)
-            return {
+            const returnVal = {
                 age: props.age,
                 years: yearArr,
                 rawValue,
                 yearIndexes,
             }
+            monthPickerDebug('getDerivedStateFromProps:', returnVal)
+            return returnVal
         }
         // No state update necessary
         return null
@@ -528,8 +532,6 @@ export default class MonthPicker extends Component {
         let popupClass = ''
         pads.push( this.optionPad(0) )
 
-        console.log('RENDERING')
-
         return (
             <div className={["month-picker", this.props.className].join(' ')}>
                 {this.props.children}
@@ -583,6 +585,13 @@ export default class MonthPicker extends Component {
             let rawValue = {
                 ...this.state.rawValue
             }
+            monthPickerDebug('(_handleClickMonth): Initial setup', {
+                rawValue,
+                selectedValue: this.state.selectedValue,
+                year,
+                month,
+                idx
+            })
             // This is pass by reference, any change to rawValue will also update update.
             const selectedValue = { year, month, idx };
             if (rawValue.type === 'single') {
@@ -621,11 +630,20 @@ export default class MonthPicker extends Component {
                     rawValue['from'] =  isOlderThan(fromValue, pick) ? pick: fromValue;
                     rawValue['to'] = isOlderThan(fromValue, pick) ? fromValue: pick;
                 }
+
+                monthPickerDebug('(_handleClickMonth): range update', {
+                    rawValue,
+                    pick
+                 })
             }
             const update = {
                 selectedValue,
                 rawValue
             }
+
+            monthPickerDebug('(_handleClickMonth): state update', {
+               update
+            })
 
             this.setState(update)
             // We don't want to call the onChange function if the user is in the process of selecting a range.
