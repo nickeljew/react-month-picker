@@ -624,9 +624,10 @@ export default class MonthPicker extends Component {
 
                 if(rawValue.type === 'range')
                 {
-                    currentState.from = isOlderThan(rawValue.from, rawValue.to) ? rawValue.from: rawValue.to;
-                    currentState.to = isOlderThan(rawValue.from, rawValue.to) ? rawValue.to: rawValue.from;
+                    currentState.from = isOlderThan(rawValue.from, rawValue.to) ? rawValue.to: rawValue.from;
+                    currentState.to = isOlderThan(rawValue.from, rawValue.to) ? rawValue.from: rawValue.to;
                 }
+                console.log(currentState);
                 this.props.onChange(currentState);
 
                 if(rawValue.type !== 'multiple')
