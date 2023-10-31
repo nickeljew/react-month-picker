@@ -326,7 +326,6 @@ export default class MonthPicker extends Component {
             for(let i = _NUM_MONTHS ; i > 0; i -= 1)
             {
                 const element = document.querySelector(`[data-id="0:${i}"]`);
-                console.log(i, element)
                 if(element) 
                 {
 
@@ -402,7 +401,6 @@ export default class MonthPicker extends Component {
                     const { year: selectedYear, month: selectedMonth } = selectedValue;
                     const isSameYear = currentYear === selectedYear;
                     if (classNames.includes("prev") && !classNames.includes("disable")) {
-                        console.log(selectedMonth, selectedYear)
                         this.setHoverState(currentYear <= selectedYear ? 1 : _NUM_MONTHS + 1, true, selectedMonth, isSameYear);
                       } else if (
                           classNames.includes("next") &&
@@ -530,6 +528,8 @@ export default class MonthPicker extends Component {
         let popupClass = ''
         pads.push( this.optionPad(0) )
 
+        console.log('RENDERING')
+
         return (
             <div className={["month-picker", this.props.className].join(' ')}>
                 {this.props.children}
@@ -580,15 +580,22 @@ export default class MonthPicker extends Component {
             const idx = parseInt(refid[0], 10)
             const month = parseInt(refid[1], 10)
             const year = this.state.years[ this.state.yearIndexes[idx] ].year
-            const rawValue = Object.assign({}, this.state.rawValue)
+            let rawValue = {
+                ...this.state.rawValue
+            }
             // This is pass by reference, any change to rawValue will also update update.
             const selectedValue = { year, month, idx };
-            const update = { rawValue, selectedValue }
             if (rawValue.type === 'single') {
-                Object.assign(rawValue, { year, month })
+                rawValue = {
+                    ...rawValue,
+                    ...{
+                        year,
+                        month
+                    }
+                }
             }
             else if (rawValue.type === 'multiple') {
-                Object.assign(rawValue, { choices: rawValue.choices.concat() })
+                rawValue['choices'] = rawValue.choices.concat();
                 const existIndex = rawValue.choices.findIndex(c => (c.year === year && c.month === month))
                 if (existIndex < 0) {
                     rawValue.choices.push({ year, month, })
@@ -599,36 +606,32 @@ export default class MonthPicker extends Component {
                 }
             }
             else if (rawValue.type === 'range') {
-                const keys = _RANGE_KEYS
                 // If the user has already selected a month, then we know what we are adding is the to period.
                 // Otherwise we are setting the initial value.
-                const index = this.state.selectedValue ? 1:0;
-                const thisKey = keys[index], otherKey = keys[1-index]
                 const pick = { year, month }
+
                 if(!this.state.selectedValue && this.state.rawValue)
                 {   
-                    // Reset the raw
-                    Object.assign(rawValue, {
-                        [otherKey]: undefined
-                    })
+                    rawValue['to'] = undefined
+                    rawValue['from'] = pick
                 }
-                Object.assign(rawValue, { [thisKey]: pick })
+                else
+                {
+                    const fromValue = rawValue.from;
+                    rawValue['from'] =  isOlderThan(fromValue, pick) ? pick: fromValue;
+                    rawValue['to'] = isOlderThan(fromValue, pick) ? fromValue: pick;
+                }
             }
-            
+            const update = {
+                selectedValue,
+                rawValue
+            }
+
             this.setState(update)
             // We don't want to call the onChange function if the user is in the process of selecting a range.
             if(rawValue.type !== 'range' || (rawValue.type === 'range' && update.rawValue.from && update.rawValue.to))
             {
-                // If we are in the ranged state
-                const currentState = update.rawValue
-
-                if(rawValue.type === 'range')
-                {
-                    currentState.from = isOlderThan(rawValue.from, rawValue.to) ? rawValue.to: rawValue.from;
-                    currentState.to = isOlderThan(rawValue.from, rawValue.to) ? rawValue.from: rawValue.to;
-                }
-                console.log(currentState);
-                this.props.onChange(currentState);
+                this.props.onChange(update);
 
                 if(rawValue.type !== 'multiple')
                 {
@@ -636,36 +639,6 @@ export default class MonthPicker extends Component {
                 }
             }     
         }
-    }
-
-    getAvailable (n, { year, month, }) {
-        if (n === 0) return null
-        month += n - 1
-        while (month > 12 || month < 1) {
-            if (month > 12) {
-                month -= 12
-                year += 1
-            }
-            else {
-                month += 12
-                year -= 1
-            }
-        }
-
-        const { years } = this.state
-        if (n > 0) {
-            const y = years[ years.length - 1 ]
-            const last = { year: y.year, month: y.max, }
-            const d = compareYM({ year, month, }, last)
-            if (d > 0) return last
-        }
-        else {
-            const y = years[0]
-            const first = { year: y.year, month: y.min, }
-            const d = compareYM({ year, month, }, first)
-            if (d < 0) return first
-        }
-        return { year, month, }
     }
 
     resetHoverRangeStatus = () => {
