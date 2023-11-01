@@ -17,10 +17,13 @@
   "private": false,
   "main": "lib/month-picker.js",
   "style": "css/month-picker.css",
-  "scripts": {},
+  "scripts": {
+    "prettier": "npx prettier . -write"
+  },
   "babel": {
     "plugins": [
-      "@babel/plugin-transform-react-jsx"
+      "@babel/transform-react-jsx",
+      "@babel/transform-optional-chaining"
     ],
     "presets": [
       "@babel/preset-env",
@@ -28,6 +31,8 @@
     ]
   },
   "dependencies": {
+    "@babel/plugin-transform-react-jsx": "^7.22.15",
+    "debug": "^4.3.4",
     "react-tapper": "0.1.16",
     "sass": "^1.69.5"
   },
@@ -37,23 +42,24 @@
     "react-dom": "^16.13.1"
   },
   "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-loader": "7.1.5",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-react-jsx": "^6.24.1",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-react": "^6.24.1",
+    "@babel/core": "^7.14.0",
+    "@babel/plugin-transform-react-jsx": "^7.13.12",
+    "@babel/preset-env": "^7.14.1",
+    "@babel/preset-react": "^7.13.13",
+    "babel-loader": "^8.2.2",
+    "babel-plugin-transform-optional-chaining": "^7.0.0-beta.3",
     "es6-docready": "^1.0.0",
-    "es6-dom": "^1.0.0",
-    "grunt": "^1.1.0",
-    "grunt-babel": "7.0.0",
+    "es6-dom": "^1.1.2",
+    "grunt": "^1.4.0",
+    "grunt-babel": "^8.0.0",
     "grunt-contrib-clean": "^2.0.0",
     "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-watch": "^1.1.0",
     "grunt-sass": "^3.1.0",
-    "grunt-webpack": "^3.1.3",
+    "grunt-webpack": "^4.0.3",
     "load-grunt-tasks": "^5.1.0",
-    "webpack": "^4.43.0"
+    "prettier": "^3.0.3",
+    "webpack": "^5.36.2"
   },
   "repository": {
     "type": "git",
