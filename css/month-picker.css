@@ -187,7 +187,7 @@
           .month-picker > .rmp-container .rmp-popup.light .rmp-pad .rmp-btn.select {
             background-color: #d3d3d3; }
         .month-picker > .rmp-container .rmp-popup.light .rmp-pad li.active, .month-picker > .rmp-container .rmp-popup.light .rmp-pad li.active:hover {
-          background-color: rgba(31, 42, 58, 0.73);
+          background-color: #2d3c78;
           color: white; }
         .month-picker > .rmp-container .rmp-popup.light .rmp-pad .disable, .month-picker > .rmp-container .rmp-popup.light .rmp-pad .disable:hover, .month-picker > .rmp-container .rmp-popup.light .rmp-pad li.disable, .month-picker > .rmp-container .rmp-popup.light .rmp-pad li.disable:hover {
           background-color: transparent;
@@ -219,7 +219,7 @@
           .month-picker > .rmp-container .rmp-popup.dark .rmp-pad .rmp-btn.select {
             background-color: #262828; }
         .month-picker > .rmp-container .rmp-popup.dark .rmp-pad li.active, .month-picker > .rmp-container .rmp-popup.dark .rmp-pad li.active:hover {
-          background-color: rgba(189, 211, 242, 0.7);
+          background-color: #2d3c78;
           color: #303030; }
         .month-picker > .rmp-container .rmp-popup.dark .rmp-pad .disable, .month-picker > .rmp-container .rmp-popup.dark .rmp-pad .disable:hover, .month-picker > .rmp-container .rmp-popup.dark .rmp-pad li.disable, .month-picker > .rmp-container .rmp-popup.dark .rmp-pad li.disable:hover {
           background-color: transparent;
