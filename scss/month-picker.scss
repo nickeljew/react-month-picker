@@ -290,12 +290,13 @@
             }
 
             &.select {
-              background-color: #d3d3d3;
+              background-color: #2d3c78;
+              opacity: 0.7;
             }
           }
 
           li.active, li.active:hover {
-            background-color: rgba(31, 42, 58, 0.73);
+            background-color: #2d3c78;
             color: white;
             //cursor: default;
           }
